@@ -88,6 +88,13 @@ function! s:describe__matchers__with_different_types()  "{{{1
   Should 0 == 0
   Should 0 != '0'
   Should 0 != []
+
+  It should fail
+
+  Should 0 < '1'
+  Should [] < []
+  Should {} < {}
+  Should function('type') < function('type')
 endfunction
 
 

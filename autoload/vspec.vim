@@ -305,9 +305,26 @@ function! s:matches_p(value_actual, expr_matcher, value_expected)  "{{{2
     else
       return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
     endif
+  elseif s:valid_matcher_ordering_p(a:expr_matcher)
+    if type(a:value_actual) != type(a:value_expected)
+      return s:FALSE
+    endif
+    if !(s:orderable_type_p(a:value_actual)
+    \    && s:orderable_type_p(a:value_expected))
+      return s:FALSE
+    endif
+    return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
   else
     return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
   endif
+endfunction
+
+
+
+
+function! s:orderable_type_p(value)  "{{{2
+  " FIXME: +float
+  return type(a:value) == type(0) || type(a:value) == type('')
 endfunction
 
 
@@ -377,7 +394,15 @@ endfunction
 
 
 function! s:valid_matcher_negative_p(expr_matcher)  "{{{2
+  " FIXME: Ad hoc way.
   return s:valid_matcher_p(a:expr_matcher) && a:expr_matcher =~# '\(!\|not\)'
+endfunction
+
+
+
+
+function! s:valid_matcher_ordering_p(expr_matcher)  "{{{2
+  return 0 <= index(s:VALID_MATCHERS_ORDERING, a:expr_matcher)
 endfunction
 
 

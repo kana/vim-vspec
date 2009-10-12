@@ -1,6 +1,8 @@
 ==== matchers with different types
 ---- It should succeed 
 ...
+---- It should fail 
+xxxx
 
 ==== matchers with literals
 ---- It should succeed 
@@ -15,6 +17,29 @@ xxxxxxxxxxxxxxxxxxxxxxxxx
 
 
 **** Result ****
+
+
+In matchers with different types
+
+It should fail
+FAILED: 0 < '1'
+       lhs: 0
+       rhs: '1'
+
+It should fail
+FAILED: [] < []
+       lhs: []
+       rhs: []
+
+It should fail
+FAILED: {} < {}
+       lhs: {}
+       rhs: {}
+
+It should fail
+FAILED: function('type') < function('type')
+       lhs: function('type')
+       rhs: function('type')
 
 
 In matchers with literals
@@ -145,4 +170,4 @@ FAILED: function('function') != function('function')
        got: function('function')
 
 
-57 examples, 25 failures
+61 examples, 29 failures
