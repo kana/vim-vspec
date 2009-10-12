@@ -100,7 +100,7 @@ endfunction
 
 
 function! Set(...)  "{{{2
-  return call('vspec#Set', a:000)
+  return call('vspec#set', a:000)
 endfunction
 
 
@@ -129,15 +129,23 @@ endfunction
 
 
 function! vspec#ref(variable_name)  "{{{2
-  return s:hint_scope()[a:variable_name]
+  if a:variable_name =~# '^s:'
+    return s:hint_scope()[a:variable_name[2:]]
+  else
+    echoerr 'Invalid variable_name:' string(a:variable_name)
+  endif
 endfunction
 
 
 
 
 function! vspec#set(variable_name, value)  "{{{2
-  let _ = s:hint_scope()
-  let _[a:variable_name] = a:value
+  if a:variable_name =~# '^s:'
+    let _ = s:hint_scope()
+    let _[a:variable_name[2:]] = a:value
+  else
+    echoerr 'Invalid variable_name:' string(a:variable_name)
+  endif
   return
 endfunction
 
@@ -165,6 +173,21 @@ function! vspec#test(spec_file)  "{{{2
 
   return
 endfunction
+
+
+
+
+function! vspec#_scope()  "{{{2
+  return s:
+endfunction
+
+
+
+
+function! vspec#_sid()  "{{{2
+  return maparg('<SID>', 'n')
+endfunction
+nnoremap <SID>  <SID>
 
 
 

@@ -1,0 +1,46 @@
+call vspec#hint({'scope': 'vspec#_scope()', 'sid': 'vspec#_sid()'})
+function! s:describe__Ref()  "{{{1
+  It should succeed
+
+  Should Ref('s:EXPR_HINT_SCOPE') ==# 'vspec#_scope()'
+  Should Ref('s:EXPR_HINT_SID') ==# 'vspec#_sid()'
+  Should eval(Ref('s:EXPR_HINT_SID')) =~# '<SNR>\d\+_'
+endfunction
+
+
+
+
+function! s:describe__Set()  "{{{1
+  It should succeed
+
+  let original_value = Ref('s:EXPR_HINT_SID')
+  Should Ref('s:EXPR_HINT_SID') ==# 'vspec#_sid()'
+
+  let l = []
+  call Set('s:EXPR_HINT_SID', l)
+  Should Ref('s:EXPR_HINT_SID') is l
+
+  call Set('s:EXPR_HINT_SID', original_value)
+  Should Ref('s:EXPR_HINT_SID') ==# 'vspec#_sid()'
+endfunction
+
+
+
+
+function! s:describe__Call()  "{{{1
+  It should succeed with script-local functions
+
+  Should Call('s:valid_matcher_p', '==') == 1
+  Should Call('s:valid_matcher_p', '=?') == 0
+
+  It should succeed with not a script-local function
+
+  Should Call('function', 'type') == function('type')
+  Should Call('getcwd') == fnamemodify('./xxx', ':p:h')
+endfunction
+
+
+
+
+" __END__  "{{{1
+" vim: filetype=vim foldmethod=marker

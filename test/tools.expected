@@ -1,0 +1,20 @@
+==== Call 
+---- It should succeed with script-local functions 
+..
+---- It should succeed with not a script-local function 
+..
+
+==== Ref 
+---- It should succeed 
+...
+
+==== Set 
+---- It should succeed 
+...
+
+
+
+**** Result ****
+
+
+10 examples, 0 failures

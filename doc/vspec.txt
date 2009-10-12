@@ -163,12 +163,10 @@ vspec#ref({varname})				*vspec#ref()*
 			Return the value of a variable.
 
 			{varname} is a string which represents the name of
-			a variable.
-
-			If {varname} starts with 's:', this function returns
-			the value of a script-local variable defined in
-			a script to be tested.  To use this feature, you have
-			to tell vspec to "scope" hint with |vspec#hint()|.
+			a script-local variable defined in a script to be
+			tested.  The name must start with 's:'.  To use this
+			feature, you have to tell vspec to "scope" hint with
+			|vspec#hint()|.
 
 vspec#set({varname}, {value})			*vspec#set()*
 			Assign {value} to a variable.  See |vspec#ref()| for
