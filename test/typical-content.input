@@ -82,7 +82,7 @@ endfunction
 
 
 
-function! s:describe__matchers__with_different_types()  "{{{1
+function! s:describe__matchers__with_wrong_types()  "{{{1
   It should succeed
 
   Should 0 == 0
