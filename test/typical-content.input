@@ -82,5 +82,16 @@ endfunction
 
 
 
+function! s:describe__matchers__with_different_types()  "{{{1
+  It should succeed
+
+  Should 0 == 0
+  Should 0 != '0'
+  Should 0 != []
+endfunction
+
+
+
+
 " __END__  "{{{1
 " vim: filetype=vim foldmethod=marker

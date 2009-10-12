@@ -298,8 +298,16 @@ function! s:matches_p(value_actual, expr_matcher, value_expected)  "{{{2
     return s:FALSE
   endif
 
-  " FIXME: Type coercing
-  return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
+  if s:valid_matcher_equality_p(a:expr_matcher)
+    let type_equality = type(a:value_actual) == type(a:value_expected)
+    if s:valid_matcher_negative_p(a:expr_matcher) && !type_equality
+      return s:TRUE
+    else
+      return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
+    endif
+  else
+    return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
+  endif
 endfunction
 
 
@@ -363,6 +371,13 @@ endfunction
 
 function! s:valid_matcher_equality_p(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_EQUALITY, a:expr_matcher)
+endfunction
+
+
+
+
+function! s:valid_matcher_negative_p(expr_matcher)  "{{{2
+  return s:valid_matcher_p(a:expr_matcher) && a:expr_matcher =~# '\(!\|not\)'
 endfunction
 
 

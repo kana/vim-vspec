@@ -1,3 +1,7 @@
+==== matchers with different types
+---- It should succeed 
+...
+
 ==== matchers with literals
 ---- It should succeed 
 .........................
@@ -141,4 +145,4 @@ FAILED: function('function') != function('function')
        got: function('function')
 
 
-54 examples, 25 failures
+57 examples, 25 failures
