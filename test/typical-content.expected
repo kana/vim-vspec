@@ -22,23 +22,23 @@ FAILED: 0 != 0
 
 It should fail
 FAILED: 0 !~ '0'
-  expected: '0'
-       got: 0
+       lhs: 0
+       rhs: '0'
 
 It should fail
 FAILED: 0 < 0
-  expected: 0
-       got: 0
+       lhs: 0
+       rhs: 0
 
 It should fail
 FAILED: 0 < -1
-  expected: -1
-       got: 0
+       lhs: 0
+       rhs: -1
 
 It should fail
 FAILED: 0 <= -1
-  expected: -1
-       got: 0
+       lhs: 0
+       rhs: -1
 
 It should fail
 FAILED: 0 == 1
@@ -47,23 +47,23 @@ FAILED: 0 == 1
 
 It should fail
 FAILED: 0 =~ '1'
-  expected: '1'
-       got: 0
+       lhs: 0
+       rhs: '1'
 
 It should fail
 FAILED: 0 > 0
-  expected: 0
-       got: 0
+       lhs: 0
+       rhs: 0
 
 It should fail
 FAILED: 0 > 1
-  expected: 1
-       got: 0
+       lhs: 0
+       rhs: 1
 
 It should fail
 FAILED: 0 >= 1
-  expected: 1
-       got: 0
+       lhs: 0
+       rhs: 1
 
 It should fail
 FAILED: 0 is 1

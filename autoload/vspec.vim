@@ -29,40 +29,51 @@ let s:EXPR_HINT_SID = 's:'
 let s:FALSE = 0
 let s:TRUE = !s:FALSE
 
-let s:VALID_MATCHERS = [
+let s:VALID_MATCHERS_EQUALITY = [
 \   '!=',
-\   '!~',
-\   '<',
-\   '<=',
 \   '==',
-\   '=~',
-\   '>',
-\   '>=',
 \   'is',
 \   'isnot',
 \
 \   '!=?',
-\   '!~?',
-\   '<?',
-\   '<=?',
 \   '==?',
-\   '=~?',
-\   '>?',
-\   '>=?',
 \   'is?',
 \   'isnot?',
 \
 \   '!=#',
-\   '!~#',
-\   '<#',
-\   '<=#',
 \   '==#',
-\   '=~#',
-\   '>#',
-\   '>=#',
 \   'is#',
 \   'isnot#',
 \ ]
+let s:VALID_MATCHERS_REGEXP = [
+\   '!~',
+\   '=~',
+\
+\   '!~?',
+\   '=~?',
+\
+\   '!~#',
+\   '=~#',
+\ ]
+let s:VALID_MATCHERS_ORDERING = [
+\   '<',
+\   '<=',
+\   '>',
+\   '>=',
+\
+\   '<?',
+\   '<=?',
+\   '>?',
+\   '>=?',
+\
+\   '<#',
+\   '<=#',
+\   '>#',
+\   '>=#',
+\ ]
+let s:VALID_MATCHERS = (s:VALID_MATCHERS_EQUALITY
+\                       + s:VALID_MATCHERS_ORDERING
+\                       + s:VALID_MATCHERS_REGEXP)
 
 let s:context_stack = []
 
@@ -310,8 +321,13 @@ function! s:output_summary(context)  "{{{2
     echon "\n"
     echo 'It' group
     echo 'FAILED:' join(exprs, ' ')
-    echo '  expected:' string(values[2])
-    echo '       got:' string(values[0])
+    if s:valid_matcher_equality_p(values[1])
+      echo '  expected:' string(values[2])
+      echo '       got:' string(values[0])
+    else
+      echo '       lhs:' string(values[0])
+      echo '       rhs:' string(values[2])
+    endif
 
     let previous_describer = describer
   endfor
@@ -340,6 +356,13 @@ endfunction
 
 function! s:valid_matcher_p(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS, a:expr_matcher)
+endfunction
+
+
+
+
+function! s:valid_matcher_equality_p(expr_matcher)  "{{{2
+  return 0 <= index(s:VALID_MATCHERS_EQUALITY, a:expr_matcher)
 endfunction
 
 
