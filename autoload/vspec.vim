@@ -27,7 +27,7 @@ let s:EXPR_HINT_SCOPE = '{}'
 let s:EXPR_HINT_SID = 's:'
 
 let s:FALSE = 0
-let s:TRUE = !s:FALES
+let s:TRUE = !s:FALSE
 
 let s:context_stack = []
 
@@ -173,7 +173,7 @@ endfunction
 
 
 function! s:pop_context()  "{{{3
-  return delete(s:context_stack, -1)
+  return remove(s:context_stack, -1)
 endfunction
 
 
@@ -202,7 +202,7 @@ function! s:extract_describers()  "{{{2
 
   let _ = split(function_names, '\n')
   let PATTERN = '\v^function \zs(\<SNR\>\d+_describe__\w+)\ze\('
-  call map(_, 'matchstr(v:val, PATTERN)'
+  call map(_, 'matchstr(v:val, PATTERN)')
   call filter(_, 'v:val != ""')
   call map(_, 'substitute(v:val, "<SNR>", "\<SNR>", "")')
   call map(_, 'f.normalize(v:val, "__")')
@@ -293,7 +293,7 @@ function! s:output_summary(context)  "{{{2
     let previous_describer = describer
   endfor
 
-  echo printf("\n%d examples, %d failures",
+  echo printf("\n%d examples, %d failures\n",
   \           a:context.total_expectations,
   \           len(a:context.failures))
   return
