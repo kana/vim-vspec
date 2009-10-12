@@ -1,0 +1,17 @@
+#!/bin/bash
+
+driver_script=",,$$.vim"
+cat <<END >"$driver_script"
+let &runtimepath = substitute(&runtimepath, \
+                              '\\V' . escape(\$HOME, '\\') . '/.vim', \
+                              './vim/dot.vim', \
+                              'g')
+1 verbose call vspec#test('$1')
+qall!
+END
+
+vim -u NONE -N -e -s -S "$driver_script" 2>&1 | sed "s|$(pwd)|.|g"
+
+rm -f "$driver_script"
+
+#__END__
