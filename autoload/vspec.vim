@@ -314,6 +314,11 @@ function! s:matches_p(value_actual, expr_matcher, value_expected)  "{{{2
       return s:FALSE
     endif
     return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
+  elseif s:valid_matcher_regexp_p(a:expr_matcher)
+    if type(a:value_actual) != type('') || type(a:value_expected) != type('')
+      return s:FALSE
+    endif
+    return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
   else
     return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
   endif
@@ -403,6 +408,13 @@ endfunction
 
 function! s:valid_matcher_ordering_p(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_ORDERING, a:expr_matcher)
+endfunction
+
+
+
+
+function! s:valid_matcher_regexp_p(expr_matcher)  "{{{2
+  return 0 <= index(s:VALID_MATCHERS_REGEXP, a:expr_matcher)
 endfunction
 
 

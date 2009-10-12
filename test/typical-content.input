@@ -2,12 +2,12 @@ function! s:describe__matchers__with_literals()  "{{{1
   It should succeed
 
   Should 0 != 1
-  Should 0 !~ '1'
+  "Should 0 !~ '1'
   Should 0 < 1
   Should 0 <= 0
   Should 0 <= 1
   Should 0 == 0
-  Should 0 =~ '0'
+  "Should 0 =~ '0'
   Should 0 > -1
   Should 0 >= 0
   Should 0 >= -1
@@ -95,6 +95,11 @@ function! s:describe__matchers__with_wrong_types()  "{{{1
   Should [] < []
   Should {} < {}
   Should function('type') < function('type')
+
+  Should 0 =~ '0'
+  Should [] =~ '[]'
+  Should {} =~ '{}'
+  Should function('type') =~ function('type')
 endfunction
 
 
