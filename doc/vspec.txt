@@ -1,0 +1,227 @@
+*vspec.txt*	Test framework for Vim script
+
+Version 0.0.0
+Script ID: ****
+Copyright (C) 2009 kana <http://whileimautomaton.net/>
+License: MIT license  {{{
+    Permission is hereby granted, free of charge, to any person obtaining
+    a copy of this software and associated documentation files (the
+    "Software"), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+}}}
+
+CONTENTS					*vspec-contents*
+
+Introduction            |vspec-introduction|
+Interface               |vspec-interface|
+  Commands                |vspec-commands|
+  Functions               |vspec-functions|
+Examples                |vspec-examples|
+Bugs                    |vspec-bugs|
+Changelog               |vspec-changelog|
+
+
+
+
+==============================================================================
+INTRODUCTION					*vspec-introduction*
+
+*vspec* is a Vim library plugin to test Vim script.
+
+FIXME: More description.
+
+
+Requirements:
+- Vim 7.2 or later
+
+Latest version:
+http://github.com/kana/config/commits/vim-vspec
+
+Document in HTML format:
+http://kana.github.com/config/vim/vspec.html
+
+
+
+
+==============================================================================
+INTERFACE					*vspec-interface*
+
+------------------------------------------------------------------------------
+COMMANDS					*vspec-commands*
+
+:It {message}					*:It*
+			Describe a group of expectations (which are described
+			by |:Should|).
+
+			{message} is a string which represents a description
+			of expectations after :It.  This message is just used
+			for output.
+
+			Examples:
+>
+				:It "should match case-sensitively"
+				:Should 'abc' =~ 'a'
+				:Should 'abc' !~ 'A'
+<
+
+:Should {actual} {matcher} {expected}		*:Should*
+			Describe an expectation - test whether {actual} value
+			matches with {expected} value, in a sense of
+			{matcher}.
+
+			{actual} and {expected} is an arbitrary Vim script
+			|expression| with the following limitation:
+
+			- Comparing operators, such as ==, !~, etc, cannot be
+			  used in {actual} and {expected}.  See |expr4| for
+			  the list of comparing operators in Vim script.
+
+			{matcher} is a comparing operator, such as ==, !~,
+			etc, which is described in |expr4|.
+
+			You have to insert one or more spaces between
+			{actual}, {matcher} and {expected}.
+
+			Examples:
+>
+				:Should 'abc' =~# 'A'
+				" ==> good
+				:Should 'abc' =~? 'A'
+				" ==> bad
+
+				:Should {} == {}
+				" ==> good
+				:Should {} isnot {}
+				" ==> bad
+<
+
+
+------------------------------------------------------------------------------
+FUNCTIONS					*vspec-functions*
+
+Call(...)					*Call()*
+			Alias of |vspec#call()|.
+
+Ref(...)					*Ref()*
+			Alias of |vspec#ref()|.
+
+Set(...)					*Set()*
+			Alias of |vspec#set()|.
+
+vspec#call({funcname}, [{arg}, ...])		*vspec##call()*
+			Like |call()|, but vspec#call() can call
+			a script-local function defined in a script to be
+			tested.
+
+			{funcname} is a string which represents the name of
+			a function.  If {funcname} starts with 's:', it calls
+			a script-local function defined in a script to be
+			tested.  To use this feature, you have to tell
+			"sid" hint to vspec with |vspec#hint()|.
+
+
+			{arg} is an arbitrary value which is given to the
+			function corresponding to o{funcname}.
+
+vspec#hint({info})				*vspec#init()*
+			Tell vspec "hint" information to use useful API to
+			test a Vim script.
+
+			{info} is a dictionary.  Each key is a string.  The
+			detail of this dictionary is as follows:
+
+			"sid"		(optional)
+				A string which is evaluated to <SID> of
+				a script to be tested.
+
+				If this value is given, you can use
+				|vspec#call()|.
+
+			"scope"		(optional)
+				A string which is evaluated to the dictionary
+				corresponding to s: (= the scope of
+				script-local variables) for a script.
+
+				If this value is given, you can use
+				|vspec#ref()| and |vspec#set()|.
+
+vspec#ref({varname})				*vspec#ref()*
+			Return the value of a variable.
+
+			{varname} is a string which represents the name of
+			a variable.
+
+			If {varname} starts with 's:', this function returns
+			the value of a script-local variable defined in
+			a script to be tested.  To use this feature, you have
+			to tell vspec to "scope" hint with |vspec#hint()|.
+
+vspec#set({varname}, {value})			*vspec#set()*
+			Assign {value} to a variable.  See |vspec#ref()| for
+			the details of {varname}.
+
+vspec#test({specfile})				*vspec#test()*
+			|:source| {specfile}, test expectations described in
+			{specfile}, then output a result of the test.
+
+
+
+
+==============================================================================
+EXAMPLES					*vspec-examples*
+
+FIXME: More description.
+
+
+
+
+==============================================================================
+BUGS						*vspec-bugs*
+
+PLANNED FEATURES ~
+
+- Custom {matcher} for |:Should|, for example:
+>
+	function! EmptyP(value)
+	  return empty(a:value)
+	endfunction
+
+	Should [] be Empty
+	" ==> good
+	Should ['a', 'b', 'c'] be Empty
+	" ==> bad
+<
+
+
+ETC ~
+
+- Welcome your feedback.
+
+
+
+
+==============================================================================
+CHANGELOG					*vspec-changelog*
+
+0.0.0	2009-10-12T10:51:26+09:00		*vspec-changelog-0.0.0*
+	- Initial version.
+
+
+
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:fen:fdl=0:fdm=marker:
