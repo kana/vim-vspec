@@ -1,0 +1,144 @@
+==== matchers with literals
+---- It should succeed 
+.........................
+---- It should fail 
+xxxxxxxxxxxxxxxxxxxxxxxxx
+
+==== matchers with variables
+---- It should succeed 
+....
+
+
+
+**** Result ****
+
+
+In matchers with literals
+
+It should fail
+FAILED: 0 != 0
+  expected: 0
+       got: 0
+
+It should fail
+FAILED: 0 !~ '0'
+  expected: '0'
+       got: 0
+
+It should fail
+FAILED: 0 < 0
+  expected: 0
+       got: 0
+
+It should fail
+FAILED: 0 < -1
+  expected: -1
+       got: 0
+
+It should fail
+FAILED: 0 <= -1
+  expected: -1
+       got: 0
+
+It should fail
+FAILED: 0 == 1
+  expected: 1
+       got: 0
+
+It should fail
+FAILED: 0 =~ '1'
+  expected: '1'
+       got: 0
+
+It should fail
+FAILED: 0 > 0
+  expected: 0
+       got: 0
+
+It should fail
+FAILED: 0 > 1
+  expected: 1
+       got: 0
+
+It should fail
+FAILED: 0 >= 1
+  expected: 1
+       got: 0
+
+It should fail
+FAILED: 0 is 1
+  expected: 1
+       got: 0
+
+It should fail
+FAILED: 0 is '0'
+  expected: '0'
+       got: 0
+
+It should fail
+FAILED: 0 isnot 0
+  expected: 0
+       got: 0
+
+It should fail
+FAILED: 'a' ==# 'b'
+  expected: 'b'
+       got: 'a'
+
+It should fail
+FAILED: 'a' ==# 'A'
+  expected: 'A'
+       got: 'a'
+
+It should fail
+FAILED: 'a' !=# 'a'
+  expected: 'a'
+       got: 'a'
+
+It should fail
+FAILED: 'a' ==? 'b'
+  expected: 'b'
+       got: 'a'
+
+It should fail
+FAILED: 'a' !=? 'A'
+  expected: 'A'
+       got: 'a'
+
+It should fail
+FAILED: 'a' !=? 'a'
+  expected: 'a'
+       got: 'a'
+
+It should fail
+FAILED: [] == [0]
+  expected: [0]
+       got: []
+
+It should fail
+FAILED: [] is []
+  expected: []
+       got: []
+
+It should fail
+FAILED: {} == {'0': 0}
+  expected: {'0': 0}
+       got: {}
+
+It should fail
+FAILED: {} is {}
+  expected: {}
+       got: {}
+
+It should fail
+FAILED: function('function') == function('type')
+  expected: function('type')
+       got: function('function')
+
+It should fail
+FAILED: function('function') != function('function')
+  expected: function('function')
+       got: function('function')
+
+
+54 examples, 25 failures
