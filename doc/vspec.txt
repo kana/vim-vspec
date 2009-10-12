@@ -78,6 +78,24 @@ COMMANDS					*vspec-commands*
 				:Should 'abc' !~ 'A'
 <
 
+:ResetContext					*:ResetContext*
+			Reset the current context of a script with one saved
+			by |:SaveContext|.
+
+			To use this feature, you have to tell "scope" hint to
+			vspec with |vspec#hint()|.
+
+:SaveContext					*:SaveContext*
+			Save the current context of a script, i.e., an
+			snapshot of script-local variables defined in the
+			script.  See also |:ResetContext|.
+
+			:SaveContext is automatically executed whenever
+			|vspec#hint()| is called with "scope" hint.
+
+			To use this feature, you have to tell "scope" hint to
+			vspec with |vspec#hint()|.
+
 :Should {actual} {matcher} {expected}		*:Should*
 			Describe an expectation - test whether {actual} value
 			matches with {expected} value, in a sense of

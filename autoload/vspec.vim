@@ -77,6 +77,8 @@ let s:VALID_MATCHERS = (s:VALID_MATCHERS_EQUALITY
 
 let s:context_stack = []
 
+let s:saved_scope = {}
+
 
 
 
@@ -116,6 +118,7 @@ endfunction
 function! vspec#hint(info)  "{{{2
   if has_key(a:info, 'scope')
     let s:EXPR_HINT_SCOPE = a:info.scope
+    call vspec#cmd_SaveContext()
   endif
 
   if has_key(a:info, 'sid')
@@ -195,6 +198,10 @@ nnoremap <SID>  <SID>
 " Commands  "{{{2
 
 command! -nargs=+ It  call vspec#cmd_It(<q-args>)
+
+command! -nargs=0 ResetContext  call vspec#cmd_ResetContext()
+command! -nargs=0 SaveContext  call vspec#cmd_SaveContext()
+
 command! -nargs=+ Should
 \ call vspec#cmd_Should(s:parse_should_args(<q-args>),
 \                       map(s:parse_should_args(<q-args>),
@@ -214,6 +221,22 @@ function! vspec#cmd_It(message)  "{{{2
   let _ = s:current_context()
   let _.group = a:message
   echo '---- It' a:message "\n"
+  return
+endfunction
+
+
+
+
+function! vspec#cmd_ResetContext()  "{{{2
+  call extend(s:hint_scope(), deepcopy(s:saved_scope), 'force')
+  return
+endfunction
+
+
+
+
+function! vspec#cmd_SaveContext()  "{{{2
+  let s:saved_scope = deepcopy(s:hint_scope())
   return
 endfunction
 
