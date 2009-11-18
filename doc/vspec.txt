@@ -233,6 +233,10 @@ ETC ~
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+0.0.1	2009-11-18T20:44:13+09:00		*vspec-changelog-0.0.1*
+	- Test driver: Fix not to read/write viminfo file for reproducibility
+	  and to avoid overwrite user's viminfo unexpectedly.
+
 0.0.0	2009-10-12T10:51:26+09:00		*vspec-changelog-0.0.0*
 	- Initial version.
 

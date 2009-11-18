@@ -10,7 +10,7 @@ let &runtimepath = substitute(&runtimepath, \
 qall!
 END
 
-vim -u NONE -N -e -s -S "$driver_script" 2>&1 | sed "s|$(pwd)|.|g"
+vim -u NONE -i NONE -N -e -s -S "$driver_script" 2>&1 | sed "s|$(pwd)|.|g"
 
 rm -f "$driver_script"
 
