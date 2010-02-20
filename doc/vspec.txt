@@ -126,6 +126,30 @@ COMMANDS					*vspec-commands*
 				:Should {} isnot {}
 				" ==> bad
 <
+						*vspec-custom-matcher*
+			If {matcher} is "be", :Should acts in another mode.
+			{expected} is treated as an alias of a function which
+			is called "custom matcher".  The custom matcher
+			corresponding to {expected} is called with {actual}
+			value.  It must return true if {actual} value is
+			valid, otherwise it must return false.  See also
+			|vspec#customize_matcher()|.
+
+			Examples:
+>
+				function! True(actual_value)
+				  return (type(a:actual_value) == type(0)
+				  \       ? a:actual_value
+				  \       : !!0)
+				endfunction
+				call vspec#customize_matcher('true',
+				\                            function('True'))
+
+				:Should 123 be true
+				" ===> good
+				:Should [123] be true
+				" ===> bad
+<
 
 
 ------------------------------------------------------------------------------
@@ -154,6 +178,10 @@ vspec#call({funcname}, [{arg}, ...])		*vspec#call()*
 
 			{arg} is an arbitrary value which is given to the
 			function corresponding to o{funcname}.
+
+vspec#customize_matcher({alias}, {function})	*vspec#customize_matcher()*
+			Register {function} as a |vspec-custom-matcher| which
+			alias is {alias}.
 
 vspec#hint({info})				*vspec#hint()*
 			Tell vspec "hint" information to use useful API to
