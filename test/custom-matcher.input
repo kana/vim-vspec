@@ -1,0 +1,23 @@
+call vspec#hint({'scope': 'vspec#_scope()', 'sid': 'vspec#_sid()'})
+function! s:describe__vspec_customize_matcher()  "{{{1
+  function! True(value)
+    return !!(a:value)
+  endfunction
+  function! False(value)
+    return !(a:value)
+  endfunction
+
+  It should succeed
+
+  call vspec#customize_matcher('foo', function('True'))
+  Should Ref('s:custom_matchers')['foo'] ==# function('True')
+
+  call vspec#customize_matcher('foo', function('False'))
+  Should Ref('s:custom_matchers')['foo'] ==# function('False')
+endfunction
+
+
+
+
+" __END__  "{{{1
+" vim: filetype=vim foldmethod=marker

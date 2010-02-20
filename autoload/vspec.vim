@@ -77,6 +77,8 @@ let s:VALID_MATCHERS = (s:VALID_MATCHERS_EQUALITY
 
 let s:context_stack = []
 
+let s:custom_matchers = {}  " alias => function
+
 let s:saved_scope = {}
 
 
@@ -110,6 +112,13 @@ endfunction
 
 function! vspec#call(function_name, ...)  "{{{2
   return call(substitute(a:function_name, '^s:', s:hint_sid(), ''), a:000)
+endfunction
+
+
+
+
+function! vspec#customize_matcher(alias, function)  "{{{2
+  let s:custom_matchers[a:alias] = a:function
 endfunction
 
 
