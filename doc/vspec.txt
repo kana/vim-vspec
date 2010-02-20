@@ -150,6 +150,13 @@ COMMANDS					*vspec-commands*
 				:Should [123] be true
 				" ===> bad
 <
+					    *vspec-predefined-custom-matchers*
+			The following custom matcheres are predefined:
+
+			"true"
+				Return true if {actual} value is true.
+			"false"
+				Return true if {actual} value is false.
 
 
 ------------------------------------------------------------------------------

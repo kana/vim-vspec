@@ -1,3 +1,11 @@
+==== Should be false
+---- It should work 
+.......
+
+==== Should be true
+---- It should work 
+........
+
 ==== Should with custom matcher
 ---- It should accept custom matcher 
 ..
@@ -19,4 +27,4 @@
 **** Result ****
 
 
-9 examples, 0 failures
+24 examples, 0 failures

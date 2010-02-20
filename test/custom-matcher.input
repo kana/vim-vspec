@@ -60,5 +60,40 @@ endfunction
 
 
 
+function! s:describe__Should__be_false()  "{{{1
+  It should work
+
+  Should vspec#_matcher_false(!!0) == !0
+  Should vspec#_matcher_false(123) == !!0
+
+  Should vspec#_matcher_false('') == !!0
+  Should vspec#_matcher_false('123') == !!0
+  Should vspec#_matcher_false([]) == !!0
+  Should vspec#_matcher_false(['123']) == !!0
+
+  Should 0 be false
+endfunction
+
+
+
+
+function! s:describe__Should__be_true()  "{{{1
+  It should work
+
+  Should vspec#_matcher_true(!0) == !0
+  Should vspec#_matcher_true(123) == !0
+
+  Should vspec#_matcher_true(!!0) == !!0
+  Should vspec#_matcher_true('') == !!0
+  Should vspec#_matcher_true('123') == !!0
+  Should vspec#_matcher_true([]) == !!0
+  Should vspec#_matcher_true(['123']) == !!0
+
+  Should 1 be true
+endfunction
+
+
+
+
 " __END__  "{{{1
 " vim: filetype=vim foldmethod=marker
