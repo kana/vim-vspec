@@ -16,10 +16,10 @@ endfunction
 
 function! s:describe__vspec_customize_matcher()  "{{{1
   function! True(value)
-    return !!(a:value)
+    return type(a:value) == type(0) ? !!(a:value) : !!0
   endfunction
   function! False(value)
-    return !(a:value)
+    return type(a:value) == type(0) ? !(a:value) : !!0
   endfunction
 
   It should succeed
@@ -29,6 +29,32 @@ function! s:describe__vspec_customize_matcher()  "{{{1
 
   call vspec#customize_matcher('foo', function('False'))
   Should Ref('s:custom_matchers')['foo'] ==# function('False')
+endfunction
+
+
+
+
+function! s:describe__Should__with_custom_matcher()  "{{{1
+  function! True(value)
+    return type(a:value) == type(0) ? !!(a:value) : !!0
+  endfunction
+  function! False(value)
+    return type(a:value) == type(0) ? !(a:value) : !!0
+  endfunction
+
+  It should accept custom matcher
+
+  call vspec#customize_matcher('my true', function('True'))
+  Should 123 be my true
+
+  call vspec#customize_matcher('my false', function('False'))
+  Should 0 be my false
+
+  It sould fail with unknown custom matcher
+
+  let v:errmsg = ''
+  silent! call Call('s:matches_p', 'foo', 'be', 'my unknown')
+  Should v:errmsg =~# 'Unknown custom matcher'
 endfunction
 
 

@@ -1,3 +1,9 @@
+==== Should with custom matcher
+---- It should accept custom matcher 
+..
+---- It sould fail with unknown custom matcher 
+.
+
 ==== s_valid_matcher_custom_p 
 ---- It should return true for "be" 
 .
@@ -13,4 +19,4 @@
 **** Result ****
 
 
-6 examples, 0 failures
+9 examples, 0 failures

@@ -74,7 +74,8 @@ let s:VALID_MATCHERS_ORDERING = [
 let s:VALID_MATCHERS_CUSTOM = [
 \   'be',
 \ ]
-let s:VALID_MATCHERS = (s:VALID_MATCHERS_EQUALITY
+let s:VALID_MATCHERS = (s:VALID_MATCHERS_CUSTOM
+\                       + s:VALID_MATCHERS_EQUALITY
 \                       + s:VALID_MATCHERS_ORDERING
 \                       + s:VALID_MATCHERS_REGEXP)
 
@@ -354,7 +355,15 @@ function! s:matches_p(value_actual, expr_matcher, value_expected)  "{{{2
     return s:FALSE
   endif
 
-  if s:valid_matcher_equality_p(a:expr_matcher)
+  if s:valid_matcher_custom_p(a:expr_matcher)
+    let custom_matcher_name = a:value_expected
+    if !has_key(s:custom_matchers, custom_matcher_name)
+      echoerr 'Unknown custom matcher:' string(custom_matcher_name)
+      return s:FALSE
+    endif
+    let MatchesP = s:custom_matchers[custom_matcher_name]
+    return MatchesP(a:value_actual)
+  elseif s:valid_matcher_equality_p(a:expr_matcher)
     let type_equality = type(a:value_actual) == type(a:value_expected)
     if s:valid_matcher_negative_p(a:expr_matcher) && !type_equality
       return s:TRUE
@@ -407,7 +416,9 @@ function! s:output_summary(context)  "{{{2
     echon "\n"
     echo 'It' group
     echo 'FAILED:' join(exprs, ' ')
-    if s:valid_matcher_equality_p(values[1])
+    if s:valid_matcher_custom_p(values[1])
+      echo '       got:' string(values[0])
+    elseif s:valid_matcher_equality_p(values[1])
       echo '  expected:' string(values[2])
       echo '       got:' string(values[0])
     else
@@ -430,11 +441,16 @@ endfunction
 function! s:parse_should_args(s, mode)  "{{{2
   let CMPS = join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
   let _ = matchlist(a:s, printf('\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$', CMPS))
-  let [actual, matcher, expected] = _[1:3]
+  let tokens =  _[1:3]
+  let [_actual, _matcher, _expected] = copy(tokens)
+  let [actual, matcher, expected] = copy(tokens)
 
   if a:mode ==# 'eval'
-    if s:valid_matcher_p(matcher)
-      let matcher = string(matcher)
+    if s:valid_matcher_p(_matcher)
+      let matcher = string(_matcher)
+    endif
+    if s:valid_matcher_custom_p(_matcher)
+      let expected = string(_expected)
     endif
   endif
 
