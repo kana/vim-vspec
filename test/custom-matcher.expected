@@ -1,3 +1,9 @@
+==== s_valid_matcher_custom_p 
+---- It should return true for "be" 
+.
+---- It should return false for other value 
+...
+
 ==== vspec_customize_matcher 
 ---- It should succeed 
 ..
@@ -7,4 +13,4 @@
 **** Result ****
 
 
-2 examples, 0 failures
+6 examples, 0 failures

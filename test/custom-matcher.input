@@ -1,4 +1,19 @@
 call vspec#hint({'scope': 'vspec#_scope()', 'sid': 'vspec#_sid()'})
+function! s:describe__s_valid_matcher_custom_p()  "{{{1
+  It should return true for "be"
+
+  Should Call('s:valid_matcher_custom_p', 'be') == !0
+
+  It should return false for other value
+
+  Should Call('s:valid_matcher_custom_p', 'foo') == !!0
+  Should Call('s:valid_matcher_custom_p', 'being') == !!0
+  Should Call('s:valid_matcher_custom_p', 'describe') == !!0
+endfunction
+
+
+
+
 function! s:describe__vspec_customize_matcher()  "{{{1
   function! True(value)
     return !!(a:value)

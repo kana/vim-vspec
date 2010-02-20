@@ -71,6 +71,9 @@ let s:VALID_MATCHERS_ORDERING = [
 \   '>#',
 \   '>=#',
 \ ]
+let s:VALID_MATCHERS_CUSTOM = [
+\   'be',
+\ ]
 let s:VALID_MATCHERS = (s:VALID_MATCHERS_EQUALITY
 \                       + s:VALID_MATCHERS_ORDERING
 \                       + s:VALID_MATCHERS_REGEXP)
@@ -443,6 +446,13 @@ endfunction
 
 function! s:valid_matcher_p(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS, a:expr_matcher)
+endfunction
+
+
+
+
+function! s:valid_matcher_custom_p(expr_matcher)  "{{{2
+  return 0 <= index(s:VALID_MATCHERS_CUSTOM, a:expr_matcher)
 endfunction
 
 
