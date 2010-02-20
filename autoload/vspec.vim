@@ -212,11 +212,9 @@ command! -nargs=0 ResetContext  call vspec#cmd_ResetContext()
 command! -nargs=0 SaveContext  call vspec#cmd_SaveContext()
 
 command! -nargs=+ Should
-\ call vspec#cmd_Should(s:parse_should_args(<q-args>),
-\                       map(s:parse_should_args(<q-args>),
-\                           'eval(s:valid_matcher_p(v:val)
-\                                 ? string(v:val)
-\                                 : v:val)'))
+\ call vspec#cmd_Should(s:parse_should_args(<q-args>, 'raw'),
+\                       map(s:parse_should_args(<q-args>, 'eval'),
+\                           'eval(v:val)'))
 
 
 
@@ -426,14 +424,18 @@ endfunction
 
 
 
-function! s:parse_should_args(s)  "{{{2
+function! s:parse_should_args(s, mode)  "{{{2
   let CMPS = join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
   let _ = matchlist(a:s, printf('\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$', CMPS))
+  let [actual, matcher, expected] = _[1:3]
 
-  " echo string(a:s)
-  " echo string(_[1:3])
+  if a:mode ==# 'eval'
+    if s:valid_matcher_p(matcher)
+      let matcher = string(matcher)
+    endif
+  endif
 
-  return _[1:3]
+  return [actual, matcher, expected]
 endfunction
 
 
