@@ -140,7 +140,7 @@ Ref(...)					*Ref()*
 Set(...)					*Set()*
 			Alias of |vspec#set()|.
 
-vspec#call({funcname}, [{arg}, ...])		*vspec##call()*
+vspec#call({funcname}, [{arg}, ...])		*vspec#call()*
 			Like |call()|, but vspec#call() can call
 			a script-local function defined in a script to be
 			tested.
@@ -155,7 +155,7 @@ vspec#call({funcname}, [{arg}, ...])		*vspec##call()*
 			{arg} is an arbitrary value which is given to the
 			function corresponding to o{funcname}.
 
-vspec#hint({info})				*vspec#init()*
+vspec#hint({info})				*vspec#hint()*
 			Tell vspec "hint" information to use useful API to
 			test a Vim script.
 
