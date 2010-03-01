@@ -1,5 +1,14 @@
 #!/bin/bash
 
+if [ "$#" = '0' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ]
+then
+  echo "Usage: $0 {input-script} [{non-standard-runtimepath} ...]"
+  exit
+fi
+
+
+
+
 driver_script=",,$$.vim"
 cat <<END >"$driver_script"
 let &runtimepath = substitute(&runtimepath, \
