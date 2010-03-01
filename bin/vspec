@@ -8,16 +8,21 @@ fi
 
 driver_script=",,$$.vim"
 input_script="$1"
+shift  # Now $@ is expanded to all {non-standard-runtimepath}s.
 
 
 
 
-cat <<END
+cat <<END >"$driver_script"
   function s:main()
-    let &runtimepath = substitute(&runtimepath, \
-                                  '\\V' . escape(\$HOME, '\\') . '/.vim', \
-                                  './vim/dot.vim', \
-                                  'g')
+    let standard_paths = split(&runtimepath, ',')[1:-1]
+    let non_standard_paths = ['$(echo "$@" | sed "s/  */', '/g")']
+    let all_paths = copy(standard_paths)
+    for i in non_standard_paths
+      let all_paths = [i] + all_paths + [i . '/after']
+    endfor
+    let &runtimepath = join(all_paths, ',')
+
     1 verbose call vspec#test('$input_script')
     qall!
   endfunction
