@@ -6,10 +6,11 @@ then
   exit
 fi
 
-
-
-
 driver_script=",,$$.vim"
+
+
+
+
 cat <<END >"$driver_script"
 let &runtimepath = substitute(&runtimepath, \
                               '\\V' . escape(\$HOME, '\\') . '/.vim', \
@@ -20,6 +21,9 @@ qall!
 END
 
 vim -u NONE -i NONE -N -e -s -S "$driver_script" 2>&1 | sed "s|$(pwd)|.|g"
+
+
+
 
 rm -f "$driver_script"
 
