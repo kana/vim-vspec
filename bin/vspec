@@ -12,13 +12,16 @@ input_script="$1"
 
 
 
-cat <<END >"$driver_script"
-let &runtimepath = substitute(&runtimepath, \
-                              '\\V' . escape(\$HOME, '\\') . '/.vim', \
-                              './vim/dot.vim', \
-                              'g')
-1 verbose call vspec#test('$input_script')
-qall!
+cat <<END
+  function s:main()
+    let &runtimepath = substitute(&runtimepath, \
+                                  '\\V' . escape(\$HOME, '\\') . '/.vim', \
+                                  './vim/dot.vim', \
+                                  'g')
+    1 verbose call vspec#test('$input_script')
+    qall!
+  endfunction
+  call s:main()
 END
 
 vim -u NONE -i NONE -N -e -s -S "$driver_script" 2>&1 | sed "s|$(pwd)|.|g"
