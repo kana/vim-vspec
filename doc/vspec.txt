@@ -1,7 +1,7 @@
 *vspec.txt*	Test framework for Vim script
 
 Version @@VERSION@@
-Script ID: ****
+Script ID: 3012
 Copyright (C) 2009-2010 kana <http://whileimautomaton.net/>
 License: MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
