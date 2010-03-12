@@ -1,6 +1,6 @@
 " vspec - Test framework for Vim script
 " Version: 0.0.2
-" Copyright (C) 2009 kana <http://whileimautomaton.net/>
+" Copyright (C) 2009-2010 kana <http://whileimautomaton.net/>
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the

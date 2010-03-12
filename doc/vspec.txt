@@ -1,8 +1,8 @@
 *vspec.txt*	Test framework for Vim script
 
-Version 0.0.2
+Version 0.0.3
 Script ID: ****
-Copyright (C) 2009 kana <http://whileimautomaton.net/>
+Copyright (C) 2009-2010 kana <http://whileimautomaton.net/>
 License: MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -43,14 +43,12 @@ INTRODUCTION					*vspec-introduction*
 
 *vspec* is a Vim library plugin to test Vim script.
 
-FIXME: More description.
-
 
 Requirements:
 - Vim 7.2 or later
 
 Latest version:
-http://github.com/kana/config/commits/vim-vspec
+http://github.com/kana/vim-vspec
 
 Document in HTML format:
 http://kana.github.com/config/vim/vspec.html
@@ -255,7 +253,7 @@ vspec#test({specfile})				*vspec#test()*
 ==============================================================================
 EXAMPLES					*vspec-examples*
 
-FIXME: More description.
+See the content in "test" directory.
 
 
 
@@ -263,19 +261,14 @@ FIXME: More description.
 ==============================================================================
 BUGS						*vspec-bugs*
 
+KNOWN ISSUES ~
+
+- Currently there is no known issue.
+
+
 PLANNED FEATURES ~
 
-- Custom {matcher} for |:Should|, for example:
->
-	function! EmptyP(value)
-	  return empty(a:value)
-	endfunction
-
-	Should [] be Empty
-	" ==> good
-	Should ['a', 'b', 'c'] be Empty
-	" ==> bad
-<
+- Currently there is no planned feature.
 
 
 ETC ~
