@@ -28,6 +28,7 @@ CONTENTS					*vspec-contents*
 
 Introduction            |vspec-introduction|
 Interface               |vspec-interface|
+  External Commands       |vspec-external-commands|
   Commands                |vspec-commands|
   Functions               |vspec-functions|
 Examples                |vspec-examples|
@@ -59,6 +60,25 @@ http://kana.github.com/config/vim/vspec.html
 
 ==============================================================================
 INTERFACE					*vspec-interface*
+
+------------------------------------------------------------------------------
+EXTERNAL COMMANDS				*vspec-external-commands*
+
+						*bin/vspec*
+bin/vspec {input-script} [{non-standard-runtimepath} ...]
+			Utility command to test Vim script with vspec.
+
+			{input-script} is the path to a file which is a test
+			script written with vspec.
+
+			{non-standard-runtimepath} is the path to a directory
+			to use as a part of 'runtimepath' while executing
+			{input-script}.
+
+			Examples:
+>
+				$ ./bin/vspec test/context.input .
+<
 
 ------------------------------------------------------------------------------
 COMMANDS					*vspec-commands*
@@ -267,6 +287,9 @@ ETC ~
 
 ==============================================================================
 CHANGELOG					*vspec-changelog*
+
+0.0.3	2010-03-12T21:43:12+09:00		*vspec-changelog-0.0.3*
+	- Add test driver |bin/vspec|.
 
 0.0.2	2010-02-20T23:11:03+09:00		*vspec-changelog-0.0.2*
 	- Add |vspec-custom-matcher|.
