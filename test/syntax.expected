@@ -1,0 +1,12 @@
+==== highlighting 
+---- It should highlight :It properly. 
+.........................
+---- It should highlight :Should properly. 
+...................................
+
+
+
+**** Result ****
+
+
+60 examples, 0 failures
