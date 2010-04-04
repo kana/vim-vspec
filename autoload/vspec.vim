@@ -215,7 +215,7 @@ command! -nargs=+ It  call vspec#cmd_It(<q-args>)
 command! -nargs=0 ResetContext  call vspec#cmd_ResetContext()
 command! -nargs=0 SaveContext  call vspec#cmd_SaveContext()
 
-command! -nargs=+ Should
+command! -complete=expression -nargs=+ Should
 \ call vspec#cmd_Should(s:parse_should_args(<q-args>, 'raw'),
 \                       map(s:parse_should_args(<q-args>, 'eval'),
 \                           'eval(v:val)'))
