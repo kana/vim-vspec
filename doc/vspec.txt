@@ -281,6 +281,11 @@ ETC ~
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+0.0.4	2010-04-04T20:59:35+09:00		*vspec-changelog-0.0.4*
+	- Add additional syntax file for |vspec-commands|.
+	- |:Should|: Provide expression completion for convenience.
+	- Improve minor stuffs.
+
 0.0.3	2010-03-12T21:43:12+09:00		*vspec-changelog-0.0.3*
 	- Add test driver |bin/vspec|.
 
