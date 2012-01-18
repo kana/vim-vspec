@@ -1,4 +1,4 @@
-" vspec - Test framework for Vim script
+" vspec - Testing framework for Vim script
 " Version: @@VERSION@@
 " Copyright (C) 2009-2012 Kana Natsuno <http://whileimautomaton.net/>
 " License: So-called MIT/X license  {{{

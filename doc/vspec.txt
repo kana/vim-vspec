@@ -1,4 +1,4 @@
-*vspec.txt*	Test framework for Vim script
+*vspec.txt*	Testing framework for Vim script
 
 Version @@VERSION@@
 Script ID: 3012
