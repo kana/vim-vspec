@@ -21,7 +21,25 @@
 "     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
+" Variables  "{{{1
+
+let s:custom_matchers = {}  " MatcherName => Funcref
+
+
+
+
+
+
+
+
 " Interface  "{{{1
+function! vspec#customize_matcher(matcher_name, funcref)  "{{{2
+  let s:custom_matchers[a:matcher_name] = a:funcref
+endfunction
+
+
+
+
 function! vspec#test(specfile_path)  "{{{2
   let compiled_specfile_path = tempname()
   call vspec#compile_specfile(a:specfile_path, compiled_specfile_path)
@@ -50,6 +68,42 @@ function! vspec#test(specfile_path)  "{{{2
 
   call delete(compiled_specfile_path)
 endfunction
+
+
+
+
+" Commands  "{{{2
+
+command! -bar -complete=expression -nargs=+ Should
+\ call vspec#cmd_Should(
+\   vspec#parse_should_args(<q-args>, 'raw'),
+\   map(vspec#parse_should_args(<q-args>, 'eval'), 'eval(v:val)')
+\ )
+
+function! vspec#cmd_Should(exprs, values)
+  let [expr_actual, expr_matcher, expr_expected] = a:exprs
+  let [Value_actual, Value_matcher, Value_expected] = a:values
+
+  if !vspec#are_matched(Value_actual, Value_matcher, Value_expected)
+    " TODO: Pass details about the failure.
+    throw 'vspec:ExpectationFailure:...'
+  endif
+endfunction
+
+
+
+
+" Predefined Custom Matchers  "{{{2
+
+function! vspec#_matcher_true(value)
+  return type(a:value) == type(0) ? !!(a:value) : s:FALSE
+endfunction
+call vspec#customize_matcher('true', function('vspec#_matcher_true'))
+
+function! vspec#_matcher_false(value)
+  return type(a:value) == type(0) ? !(a:value) : s:FALSE
+endfunction
+call vspec#customize_matcher('false', function('vspec#_matcher_false'))
 
 
 
@@ -131,10 +185,177 @@ endfunction
 
 
 " Misc.  "{{{1
+" Constants  "{{{2
+
+let s:FALSE = 0
+let s:TRUE = !0
+
+let s:VALID_MATCHERS_EQUALITY = [
+\   '!=',
+\   '==',
+\   'is',
+\   'isnot',
+\
+\   '!=?',
+\   '==?',
+\   'is?',
+\   'isnot?',
+\
+\   '!=#',
+\   '==#',
+\   'is#',
+\   'isnot#',
+\ ]
+let s:VALID_MATCHERS_REGEXP = [
+\   '!~',
+\   '=~',
+\
+\   '!~?',
+\   '=~?',
+\
+\   '!~#',
+\   '=~#',
+\ ]
+let s:VALID_MATCHERS_ORDERING = [
+\   '<',
+\   '<=',
+\   '>',
+\   '>=',
+\
+\   '<?',
+\   '<=?',
+\   '>?',
+\   '>=?',
+\
+\   '<#',
+\   '<=#',
+\   '>#',
+\   '>=#',
+\ ]
+let s:VALID_MATCHERS_CUSTOM = [
+\   'be',
+\ ]
+let s:VALID_MATCHERS = (s:VALID_MATCHERS_CUSTOM
+\                       + s:VALID_MATCHERS_EQUALITY
+\                       + s:VALID_MATCHERS_ORDERING
+\                       + s:VALID_MATCHERS_REGEXP)
+
+
+
+
 function! vspec#compile_specfile(specfile_path, result_path)  "{{{2
   let slines = readfile(a:specfile_path)
   let rlines = vspec#translate_script(slines)
   call writefile(rlines, a:result_path)
+endfunction
+
+
+
+
+function! vspec#are_matched(value_actual, expr_matcher, value_expected)  "{{{2
+  if vspec#is_custom_matcher(a:expr_matcher)
+    let custom_matcher_name = a:value_expected
+    if !has_key(s:custom_matchers, custom_matcher_name)
+      throw
+      \ 'vspec:InvalidOperation:Unknown custom matcher - '
+      \ . string(custom_matcher_name)
+    endif
+    return s:custom_matchers[custom_matcher_name](a:value_actual)
+  elseif vspec#is_equality_matcher(a:expr_matcher)
+    let type_equality = type(a:value_actual) == type(a:value_expected)
+    if vspec#is_negative_matcher(a:expr_matcher) && !type_equality
+      return s:TRUE
+    else
+      return type_equality && eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
+    endif
+  elseif vspec#is_ordering_matcher(a:expr_matcher)
+    if (type(a:value_actual) != type(a:value_expected)
+    \   || !vspec#is_orderable_type(a:value_actual)
+    \   || !vspec#is_orderable_type(a:value_expected))
+      return s:FALSE
+    endif
+    return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
+  elseif vspec#is_regexp_matcher(a:expr_matcher)
+    if type(a:value_actual) != type('') || type(a:value_expected) != type('')
+      return s:FALSE
+    endif
+    return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
+  else
+    throw 'vspec:InvalidOperation:Unknown matcher - ' . string(a:expr_matcher)
+  endif
+endfunction
+
+
+
+
+function! vspec#is_custom_matcher(expr_matcher)  "{{{2
+  return 0 <= index(s:VALID_MATCHERS_CUSTOM, a:expr_matcher)
+endfunction
+
+
+
+
+function! vspec#is_equality_matcher(expr_matcher)  "{{{2
+  return 0 <= index(s:VALID_MATCHERS_EQUALITY, a:expr_matcher)
+endfunction
+
+
+
+
+function! vspec#is_matcher(expr_matcher)  "{{{2
+  return 0 <= index(s:VALID_MATCHERS, a:expr_matcher)
+endfunction
+
+
+
+
+function! vspec#is_negative_matcher(expr_matcher)  "{{{2
+  " FIXME: Ad hoc way.
+  return vspec#is_matcher(a:expr_matcher) && a:expr_matcher =~# '\(!\|not\)'
+endfunction
+
+
+
+
+function! vspec#is_orderable_type(value)  "{{{2
+  " FIXME: +float
+  return type(a:value) == type(0) || type(a:value) == type('')
+endfunction
+
+
+
+
+function! vspec#is_ordering_matcher(expr_matcher)  "{{{2
+  return 0 <= index(s:VALID_MATCHERS_ORDERING, a:expr_matcher)
+endfunction
+
+
+
+
+function! vspec#is_regexp_matcher(expr_matcher)  "{{{2
+  return 0 <= index(s:VALID_MATCHERS_REGEXP, a:expr_matcher)
+endfunction
+
+
+
+
+function! vspec#parse_should_args(s, mode)  "{{{2
+  let CMPS = join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
+  let _ = matchlist(a:s, printf('\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$', CMPS))
+  let tokens =  _[1:3]
+  let [_actual, _matcher, _expected] = copy(tokens)
+  let [actual, matcher, expected] = copy(tokens)
+
+  if a:mode ==# 'eval'
+    if vspec#is_matcher(_matcher)
+      let matcher = string(_matcher)
+    endif
+    if vspec#is_custom_matcher(_matcher)
+      let expected = string(_expected)
+    endif
+  endif
+
+  return [actual, matcher, expected]
 endfunction
 
 
