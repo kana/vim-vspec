@@ -23,5 +23,58 @@
 " }}}
 " Interface  "{{{1
 " Misc.  "{{{1
+function! vspec#translate_script(slines)  "{{{2
+  let rlines = []
+  let stack = []
+
+  for sline in a:slines
+    let tokens = matchlist(sline, '^\s*describe\s*\(''.*''\)\s*$')
+    if !empty(tokens)
+      call insert(stack, 'describe', 0)
+      call extend(rlines, [
+      \   printf('let suite = vspec#new_suite(%s)', tokens[1]),
+      \   'call vspec#add_suite(suite)',
+      \ ])
+      continue
+    endif
+
+    let tokens = matchlist(sline, '^\s*it\s*\(''.*''\)\s*$')
+    if !empty(tokens)
+      call insert(stack, 'it', 0)
+      call extend(rlines, [
+      \   printf('call suite.add_example(%s)', tokens[1]),
+      \   printf('function! suite.example_dict[suite.generate_example_function_name(%s)]()', tokens[1]),
+      \ ])
+      continue
+    endif
+
+    let tokens = matchlist(sline, '^\s*end\s*$')
+    if !empty(tokens)
+      let type = remove(stack, 0)
+      if type ==# 'describe'
+        " Nothing to do.
+      elseif type ==# 'it'
+        call extend(rlines, [
+        \   'endfunction',
+        \ ])
+      else
+        " Nothing to do.
+      endif
+      continue
+    endif
+
+    call add(rlines, sline)
+  endfor
+
+  return rlines
+endfunction
+
+
+
+
+
+
+
+
 " __END__  "{{{1
 " vim: foldmethod=marker
