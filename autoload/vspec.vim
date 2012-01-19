@@ -23,6 +23,15 @@
 " }}}
 " Interface  "{{{1
 " Misc.  "{{{1
+function! vspec#compile_specfile(specfile_path, result_path)  "{{{2
+  let slines = readfile(a:specfile_path)
+  let rlines = vspec#translate_script(slines)
+  call writefile(rlines, a:result_path)
+endfunction
+
+
+
+
 function! vspec#translate_script(slines)  "{{{2
   let rlines = []
   let stack = []
