@@ -22,6 +22,78 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 " Interface  "{{{1
+" Suites  "{{{1
+" Prototype  "{{{2
+
+let s:suite = {}
+
+let s:suite.subject = ''
+let s:suite.example_list = []  " [Description]
+let s:suite.example_dict = {}  " Description -> Function
+
+function! s:suite.add_example(example)
+  call add(self.example_list, a:example)
+endfunction
+
+function! s:suite.generate_example_function_name(example)
+  return substitute(
+  \   a:example,
+  \   '[^[:alnum:]]',
+  \   '\="_" . printf("%02x", char2nr(submatch(0)))',
+  \   'g'
+  \ )
+endfunction
+
+
+
+
+function! vspec#new_suite(subject)  "{{{2
+  let s = copy(s:suite)
+  let s.subject = a:subject
+  let s.example_list = []
+  let s.example_dict = {}
+  return s
+endfunction
+
+
+
+
+function! vspec#add_suite(suite)  "{{{2
+  call add(s:all_suites, a:suite)
+endfunction
+
+let s:all_suites = []
+
+
+
+
+function! vspec#get_current_suite()  "{{{2
+  return s:current_suites[0]
+endfunction
+
+let s:current_suites = []
+
+
+
+
+function! vspec#push_current_suite(suite)  "{{{2
+  call insert(s:current_suites, a:suite, 0)
+endfunction
+
+
+
+
+function! vspec#pop_current_suite()  "{{{2
+  return remove(s:current_suites, 0)
+endfunction
+
+
+
+
+
+
+
+
 " Misc.  "{{{1
 function! vspec#compile_specfile(specfile_path, result_path)  "{{{2
   let slines = readfile(a:specfile_path)
