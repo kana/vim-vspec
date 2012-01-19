@@ -22,6 +22,42 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 " Interface  "{{{1
+function! vspec#test(specfile_path)  "{{{2
+  let compiled_specfile_path = tempname()
+  call vspec#compile_specfile(a:specfile_path, compiled_specfile_path)
+
+  execute 'source' compiled_specfile_path
+
+  let example_count = 0
+  for suite in s:all_suites
+    call vspec#push_current_suite(suite)
+      for example in suite.example_list
+        let example_count += 1
+        try
+          call suite.example_dict[suite.generate_example_function_name(example)]()
+          " TODO: Support SKIP.
+          echo printf('%s %d - %s', 'ok', example_count, example)
+        catch /^vspec:/
+          echo printf('%s %d - %s', 'not ok', example_count, example)
+          " TODO: Show details about the failure.
+          " TODO: Support TODO.
+        endtry
+      endfor
+    call vspec#pop_current_suite()
+  endfor
+  echo printf('1..%d', example_count)
+  echo ''
+
+  call delete(compiled_specfile_path)
+endfunction
+
+
+
+
+
+
+
+
 " Suites  "{{{1
 " Prototype  "{{{2
 
