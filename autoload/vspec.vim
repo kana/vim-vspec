@@ -53,7 +53,6 @@ function! vspec#test(specfile_path)  "{{{2
         let example_count += 1
         try
           call suite.example_dict[suite.generate_example_function_name(example)]()
-          " TODO: Support SKIP.
           echo printf('%s %d - %s', 'ok', example_count, example)
         catch /^vspec:/
           if v:exception =~# '^vspec:ExpectationFailure:'
@@ -72,6 +71,13 @@ function! vspec#test(specfile_path)  "{{{2
               \   '%s %d - # TODO %s', 'not ok',
               \   example_count,
               \   example
+              \ )
+            elseif type ==# 'SKIP'
+              echo printf(
+              \   '%s %d - # SKIP %s - %s', 'ok',
+              \   example_count,
+              \   example,
+              \   i.message
               \ )
             else
               echo printf('%s %d - %s', 'not ok', example_count, example)
@@ -122,6 +128,9 @@ endfunction
 
 command! -bar -nargs=0 TODO
 \ throw 'vspec:ExpectationFailure:TODO:' . string({})
+
+command! -bar -nargs=+ SKIP
+\ throw 'vspec:ExpectationFailure:SKIP:' . string({'message': <q-args>})
 
 
 

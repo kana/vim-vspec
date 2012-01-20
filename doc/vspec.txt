@@ -191,6 +191,10 @@ COMMANDS					*vspec-commands*
 			Represent that the current example is not written yet.
 			The current example will be always failed.
 
+:SKIP						*:SKIP*
+			Skip the current example.
+			The current example will be always succeeded.
+
 
 ------------------------------------------------------------------------------
 FUNCTIONS					*vspec-functions*
