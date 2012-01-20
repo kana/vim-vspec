@@ -53,14 +53,26 @@ function! vspec#test(specfile_path)  "{{{2
         let example_count += 1
         try
           call suite.example_dict[suite.generate_example_function_name(example)]()
-          echo printf('%s %d - %s', 'ok', example_count, example)
+          echo printf(
+          \   '%s %d - %s %s',
+          \   'ok',
+          \   example_count,
+          \   suite.subject,
+          \   example
+          \ )
         catch /^vspec:/
           if v:exception =~# '^vspec:ExpectationFailure:'
             let xs = matchlist(v:exception, '^vspec:ExpectationFailure:\(\a\+\):\(.*\)$')
             let type = xs[1]
             let i = eval(xs[2])
             if type ==# 'MismatchedValues'
-              echo printf('%s %d - %s', 'not ok', example_count, example)
+              echo printf(
+              \   '%s %d - %s %s',
+              \   'not ok',
+              \   example_count,
+              \   suite.subject,
+              \   example
+              \ )
               echo '# Expected' i.expr_actual i.expr_matcher i.expr_expected
               echo '#       Actual value:' string(i.value_actual)
               if !vspec#is_custom_matcher(i.expr_matcher)
@@ -68,23 +80,39 @@ function! vspec#test(specfile_path)  "{{{2
               endif
             elseif type ==# 'TODO'
               echo printf(
-              \   '%s %d - # TODO %s', 'not ok',
+              \   '%s %d - # TODO %s %s',
+              \   'not ok',
               \   example_count,
+              \   suite.subject,
               \   example
               \ )
             elseif type ==# 'SKIP'
               echo printf(
-              \   '%s %d - # SKIP %s - %s', 'ok',
+              \   '%s %d - # SKIP %s %s - %s',
+              \   'ok',
               \   example_count,
+              \   suite.subject,
               \   example,
               \   i.message
               \ )
             else
-              echo printf('%s %d - %s', 'not ok', example_count, example)
+              echo printf(
+              \   '%s %d - %s %s',
+              \   'not ok',
+              \   example_count,
+              \   suite.subject,
+              \   example
+              \ )
               echo '#' substitute(v:exception, '^vspec:', '', '')
             endif
           else
-            echo printf('%s %d - %s', 'not ok', example_count, example)
+            echo printf(
+            \   '%s %d - %s %s',
+            \   'not ok',
+            \   example_count,
+            \   suite.subject,
+            \   example
+            \ )
             echo '#' substitute(v:exception, '^vspec:', '', '')
           endif
         endtry
