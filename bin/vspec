@@ -39,7 +39,8 @@ shift  # Now $@ is expanded to all {non-standard-runtimepath}s.
 cat <<END >"$driver_script"
   function s:main()
     let standard_paths = split(&runtimepath, ',')[1:-1]
-    let non_standard_paths = ['$(echo "$@" | sed "s/  */', '/g")']
+    let non_standard_paths = reverse(['$(echo "${args[@]}" |
+                                         sed "s/  */', '/g")'])
     let all_paths = copy(standard_paths)
     for i in non_standard_paths
       let all_paths = [i] + all_paths + [i . '/after']
