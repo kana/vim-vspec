@@ -25,13 +25,14 @@
 
 if [ "$#" = '0' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ]
 then
-  echo "Usage: $0 {input-script} [{non-standard-runtimepath} ...]"
+  echo "Usage: $0 [{non-standard-runtimepath} ...] {input-script}"
   exit
 fi
 
+args=("$@")
 driver_script=",,$$.vim"
-input_script="$1"
-shift  # Now $@ is expanded to all {non-standard-runtimepath}s.
+input_script="${args[$((${#args[@]}- 1))]}"
+unset args[$((${#args[@]}- 1))]  # Now holds all {non-standard-runtimepath}s.
 
 
 

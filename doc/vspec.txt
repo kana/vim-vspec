@@ -63,7 +63,7 @@ INTERFACE					*vspec-interface*
 EXTERNAL COMMANDS				*vspec-external-commands*
 
 						*bin/vspec*
-bin/vspec {input-script} [{non-standard-runtimepath} ...]
+bin/vspec [{non-standard-runtimepath} ...] {input-script}
 			Utility command to test Vim script with vspec.
 
 			{input-script} is the path to a file which is a test
@@ -75,7 +75,7 @@ bin/vspec {input-script} [{non-standard-runtimepath} ...]
 
 			Examples:
 >
-				$ ./bin/vspec test/context.input .
+				$ ./bin/vspec . test/context.input
 <
 
 ------------------------------------------------------------------------------
