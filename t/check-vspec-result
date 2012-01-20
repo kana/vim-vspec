@@ -1,0 +1,13 @@
+#!/bin/bash
+
+diff="$(diff --unified <(./bin/vspec "$PWD" "$1" | sed 's/\r//') "$2")"
+if [ $? = 0 ]
+then
+  echo 'ok 1'
+else
+  echo 'not ok 1'
+  echo "$diff" | sed 's/^/# /'
+fi
+echo '1..1'
+
+# __END__
