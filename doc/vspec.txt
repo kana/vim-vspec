@@ -182,6 +182,11 @@ COMMANDS					*vspec-commands*
 			"false"
 				Return true if {actual} value is false.
 
+:ShouldNot {actual} {matcher} {expected}	*:ShouldNot*
+			Like |:Should|, but test whether {actual} value does
+			NOT match with {expected} value, in a sense of
+			{matcher}.
+
 
 ------------------------------------------------------------------------------
 FUNCTIONS					*vspec-functions*

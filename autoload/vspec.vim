@@ -76,15 +76,23 @@ endfunction
 
 command! -bar -complete=expression -nargs=+ Should
 \ call vspec#cmd_Should(
+\   s:TRUE,
 \   vspec#parse_should_args(<q-args>, 'raw'),
 \   map(vspec#parse_should_args(<q-args>, 'eval'), 'eval(v:val)')
 \ )
 
-function! vspec#cmd_Should(exprs, values)
+command! -bar -complete=expression -nargs=+ ShouldNot
+\ call vspec#cmd_Should(
+\   s:FALSE,
+\   vspec#parse_should_args(<q-args>, 'raw'),
+\   map(vspec#parse_should_args(<q-args>, 'eval'), 'eval(v:val)')
+\ )
+
+function! vspec#cmd_Should(truth, exprs, values)
   let [expr_actual, expr_matcher, expr_expected] = a:exprs
   let [Value_actual, Value_matcher, Value_expected] = a:values
 
-  if !vspec#are_matched(Value_actual, Value_matcher, Value_expected)
+  if a:truth != vspec#are_matched(Value_actual, Value_matcher, Value_expected)
     " TODO: Pass details about the failure.
     throw 'vspec:ExpectationFailure:...'
   endif
@@ -260,7 +268,7 @@ function! vspec#are_matched(value_actual, expr_matcher, value_expected)  "{{{2
       \ 'vspec:InvalidOperation:Unknown custom matcher - '
       \ . string(custom_matcher_name)
     endif
-    return s:custom_matchers[custom_matcher_name](a:value_actual)
+    return !!s:custom_matchers[custom_matcher_name](a:value_actual)
   elseif vspec#is_equality_matcher(a:expr_matcher)
     let type_equality = type(a:value_actual) == type(a:value_expected)
     if vspec#is_negative_matcher(a:expr_matcher) && !type_equality
