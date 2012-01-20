@@ -57,8 +57,23 @@ function! vspec#test(specfile_path)  "{{{2
           echo printf('%s %d - %s', 'ok', example_count, example)
         catch /^vspec:/
           echo printf('%s %d - %s', 'not ok', example_count, example)
-          " TODO: Show details about the failure.
           " TODO: Support TODO.
+          if v:exception =~# '^vspec:ExpectationFailure:'
+            let xs = matchlist(v:exception, '^vspec:ExpectationFailure:\(\a\+\):\(.*\)$')
+            let type = xs[1]
+            let i = eval(xs[2])
+            if type ==# 'MismatchedValues'
+              echo '# Expected' i.expr_actual i.expr_matcher i.expr_expected
+              echo '#       Actual value:' string(i.value_actual)
+              if !vspec#is_custom_matcher(i.expr_matcher)
+                echo '#     Expected value:' string(i.value_expected)
+              endif
+            else
+              echo '#' substitute(v:exception, '^vspec:', '', '')
+            endif
+          else
+            echo '#' substitute(v:exception, '^vspec:', '', '')
+          endif
         endtry
       endfor
     call vspec#pop_current_suite()
@@ -89,12 +104,12 @@ command! -bar -complete=expression -nargs=+ ShouldNot
 \ )
 
 function! vspec#cmd_Should(truth, exprs, values)
-  let [expr_actual, expr_matcher, expr_expected] = a:exprs
-  let [Value_actual, Value_matcher, Value_expected] = a:values
+  let d = {}
+  let [d.expr_actual, d.expr_matcher, d.expr_expected] = a:exprs
+  let [d.value_actual, d.value_matcher, d.value_expected] = a:values
 
-  if a:truth != vspec#are_matched(Value_actual, Value_matcher, Value_expected)
-    " TODO: Pass details about the failure.
-    throw 'vspec:ExpectationFailure:...'
+  if a:truth != vspec#are_matched(d.value_actual, d.value_matcher, d.value_expected)
+    throw 'vspec:ExpectationFailure:MismatchedValues:' . string(d)
   endif
 endfunction
 
