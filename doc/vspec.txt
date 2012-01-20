@@ -187,6 +187,10 @@ COMMANDS					*vspec-commands*
 			NOT match with {expected} value, in a sense of
 			{matcher}.
 
+:TODO						*:TODO*
+			Represent that the current example is not written yet.
+			The current example will be always failed.
+
 
 ------------------------------------------------------------------------------
 FUNCTIONS					*vspec-functions*

@@ -56,22 +56,29 @@ function! vspec#test(specfile_path)  "{{{2
           " TODO: Support SKIP.
           echo printf('%s %d - %s', 'ok', example_count, example)
         catch /^vspec:/
-          echo printf('%s %d - %s', 'not ok', example_count, example)
-          " TODO: Support TODO.
           if v:exception =~# '^vspec:ExpectationFailure:'
             let xs = matchlist(v:exception, '^vspec:ExpectationFailure:\(\a\+\):\(.*\)$')
             let type = xs[1]
             let i = eval(xs[2])
             if type ==# 'MismatchedValues'
+              echo printf('%s %d - %s', 'not ok', example_count, example)
               echo '# Expected' i.expr_actual i.expr_matcher i.expr_expected
               echo '#       Actual value:' string(i.value_actual)
               if !vspec#is_custom_matcher(i.expr_matcher)
                 echo '#     Expected value:' string(i.value_expected)
               endif
+            elseif type ==# 'TODO'
+              echo printf(
+              \   '%s %d - # TODO %s', 'not ok',
+              \   example_count,
+              \   example
+              \ )
             else
+              echo printf('%s %d - %s', 'not ok', example_count, example)
               echo '#' substitute(v:exception, '^vspec:', '', '')
             endif
           else
+            echo printf('%s %d - %s', 'not ok', example_count, example)
             echo '#' substitute(v:exception, '^vspec:', '', '')
           endif
         endtry
@@ -112,6 +119,9 @@ function! vspec#cmd_Should(truth, exprs, values)
     throw 'vspec:ExpectationFailure:MismatchedValues:' . string(d)
   endif
 endfunction
+
+command! -bar -nargs=0 TODO
+\ throw 'vspec:ExpectationFailure:TODO:' . string({})
 
 
 
