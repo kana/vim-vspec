@@ -211,7 +211,13 @@ function! vspec#test(specfile_path)  "{{{2
   let compiled_specfile_path = tempname()
   call s:compile_specfile(a:specfile_path, compiled_specfile_path)
 
-  execute 'source' compiled_specfile_path
+  try
+    execute 'source' compiled_specfile_path
+  catch
+    echo '#' v:throwpoint
+    echo '#' v:exception
+    let s:all_suites = []
+  endtry
 
   let example_count = 0
   for suite in s:all_suites
