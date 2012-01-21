@@ -421,8 +421,8 @@ endfunction
 
 function! vspec#parse_should_args(s, mode)  "{{{2
   let tokens = s:split_at_matcher(a:s)
-  let [_actual, _matcher, _expected] = copy(tokens)
-  let [actual, matcher, expected] = copy(tokens)
+  let [_actual, _matcher, _expected] = tokens
+  let [actual, matcher, expected] = tokens
 
   if a:mode ==# 'eval'
     if vspec#is_matcher(_matcher)
