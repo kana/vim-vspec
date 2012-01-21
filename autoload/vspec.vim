@@ -22,8 +22,27 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 " Variables  "{{{1
+let s:all_suites = []  "{{{2
+" :: [Suite]
 
-let s:custom_matchers = {}  " MatcherName => Funcref
+
+
+
+let s:suite = {}  "{{{2
+" The prototype for suites.
+
+
+
+
+let s:current_suites = []  "{{{2
+" :: [Suite]
+" The stack to manage the currently active suite while running all suites.
+
+
+
+
+let s:custom_matchers = {}  "{{{2
+" :: MatcherNameString -> Funcref
 
 
 
@@ -183,19 +202,14 @@ call vspec#customize_matcher('false', function('vspec#_matcher_false'))
 
 
 " Suites  "{{{1
-" Prototype  "{{{2
-
-let s:suite = {}
-
-let s:suite.subject = ''
-let s:suite.example_list = []  " [Description]
-let s:suite.example_dict = {}  " Description -> Function
-
-function! s:suite.add_example(example)
+function! s:suite.add_example(example)  "{{{2
   call add(self.example_list, a:example)
 endfunction
 
-function! s:suite.generate_example_function_name(example)
+
+
+
+function! s:suite.generate_example_function_name(example)  "{{{2
   return substitute(
   \   a:example,
   \   '[^[:alnum:]]',
@@ -209,9 +223,11 @@ endfunction
 
 function! vspec#new_suite(subject)  "{{{2
   let s = copy(s:suite)
-  let s.subject = a:subject
-  let s.example_list = []
-  let s.example_dict = {}
+
+  let s.subject = a:subject  " :: SubjectString
+  let s.example_list = []  " :: [DescriptionString]
+  let s.example_dict = {}  " :: DescriptionString -> ExampleFuncref
+
   return s
 endfunction
 
@@ -222,16 +238,12 @@ function! vspec#add_suite(suite)  "{{{2
   call add(s:all_suites, a:suite)
 endfunction
 
-let s:all_suites = []
-
 
 
 
 function! vspec#get_current_suite()  "{{{2
   return s:current_suites[0]
 endfunction
-
-let s:current_suites = []
 
 
 
