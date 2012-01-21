@@ -52,6 +52,42 @@ let s:custom_matchers = {}  "{{{2
 
 
 " Interface  "{{{1
+" :Should  "{{{2
+command! -bar -complete=expression -nargs=+ Should
+\ call vspec#cmd_Should(
+\   s:TRUE,
+\   vspec#parse_should_args(<q-args>, 'raw'),
+\   map(vspec#parse_should_args(<q-args>, 'eval'), 'eval(v:val)')
+\ )
+
+
+
+
+" :ShouldNot  "{{{2
+command! -bar -complete=expression -nargs=+ ShouldNot
+\ call vspec#cmd_Should(
+\   s:FALSE,
+\   vspec#parse_should_args(<q-args>, 'raw'),
+\   map(vspec#parse_should_args(<q-args>, 'eval'), 'eval(v:val)')
+\ )
+
+
+
+
+" :SKIP  "{{{2
+command! -bar -nargs=+ SKIP
+\ throw 'vspec:ExpectationFailure:SKIP:' . string({'message': <q-args>})
+
+
+
+
+" :TODO  "{{{2
+command! -bar -nargs=0 TODO
+\ throw 'vspec:ExpectationFailure:TODO:' . string({})
+
+
+
+
 function! vspec#customize_matcher(matcher_name, funcref)  "{{{2
   let s:custom_matchers[a:matcher_name] = a:funcref
 endfunction
@@ -143,41 +179,6 @@ function! vspec#test(specfile_path)  "{{{2
 
   call delete(compiled_specfile_path)
 endfunction
-
-
-
-
-" Commands  "{{{2
-
-command! -bar -complete=expression -nargs=+ Should
-\ call vspec#cmd_Should(
-\   s:TRUE,
-\   vspec#parse_should_args(<q-args>, 'raw'),
-\   map(vspec#parse_should_args(<q-args>, 'eval'), 'eval(v:val)')
-\ )
-
-command! -bar -complete=expression -nargs=+ ShouldNot
-\ call vspec#cmd_Should(
-\   s:FALSE,
-\   vspec#parse_should_args(<q-args>, 'raw'),
-\   map(vspec#parse_should_args(<q-args>, 'eval'), 'eval(v:val)')
-\ )
-
-function! vspec#cmd_Should(truth, exprs, values)
-  let d = {}
-  let [d.expr_actual, d.expr_matcher, d.expr_expected] = a:exprs
-  let [d.value_actual, d.value_matcher, d.value_expected] = a:values
-
-  if a:truth != vspec#are_matched(d.value_actual, d.value_matcher, d.value_expected)
-    throw 'vspec:ExpectationFailure:MismatchedValues:' . string(d)
-  endif
-endfunction
-
-command! -bar -nargs=0 TODO
-\ throw 'vspec:ExpectationFailure:TODO:' . string({})
-
-command! -bar -nargs=+ SKIP
-\ throw 'vspec:ExpectationFailure:SKIP:' . string({'message': <q-args>})
 
 
 
@@ -321,6 +322,19 @@ let s:VALID_MATCHERS = (s:VALID_MATCHERS_CUSTOM
 \                       + s:VALID_MATCHERS_EQUALITY
 \                       + s:VALID_MATCHERS_ORDERING
 \                       + s:VALID_MATCHERS_REGEXP)
+
+
+
+
+function! vspec#cmd_Should(truth, exprs, values)  "{{{2
+  let d = {}
+  let [d.expr_actual, d.expr_matcher, d.expr_expected] = a:exprs
+  let [d.value_actual, d.value_matcher, d.value_expected] = a:values
+
+  if a:truth != vspec#are_matched(d.value_actual, d.value_matcher, d.value_expected)
+    throw 'vspec:ExpectationFailure:MismatchedValues:' . string(d)
+  endif
+endfunction
 
 
 
