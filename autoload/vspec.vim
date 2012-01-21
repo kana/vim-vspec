@@ -206,33 +206,20 @@ call vspec#customize_matcher('true', function('vspec#_matcher_true'))
 
 
 " Suites  "{{{1
-function! s:suite.add_example(example)  "{{{2
-  call add(self.example_list, a:example)
+function! s:suite.add_example(example_description)  "{{{2
+  call add(self.example_list, a:example_description)
 endfunction
 
 
 
 
-function! s:suite.generate_example_function_name(example)  "{{{2
+function! s:suite.generate_example_function_name(example_description)  "{{{2
   return substitute(
-  \   a:example,
+  \   a:example_description,
   \   '[^[:alnum:]]',
   \   '\="_" . printf("%02x", char2nr(submatch(0)))',
   \   'g'
   \ )
-endfunction
-
-
-
-
-function! vspec#new_suite(subject)  "{{{2
-  let s = copy(s:suite)
-
-  let s.subject = a:subject  " :: SubjectString
-  let s.example_list = []  " :: [DescriptionString]
-  let s.example_dict = {}  " :: DescriptionString -> ExampleFuncref
-
-  return s
 endfunction
 
 
@@ -252,8 +239,14 @@ endfunction
 
 
 
-function! vspec#push_current_suite(suite)  "{{{2
-  call insert(s:current_suites, a:suite, 0)
+function! vspec#new_suite(subject)  "{{{2
+  let s = copy(s:suite)
+
+  let s.subject = a:subject  " :: SubjectString
+  let s.example_list = []  " :: [DescriptionString]
+  let s.example_dict = {}  " :: DescriptionString -> ExampleFuncref
+
+  return s
 endfunction
 
 
@@ -261,6 +254,13 @@ endfunction
 
 function! vspec#pop_current_suite()  "{{{2
   return remove(s:current_suites, 0)
+endfunction
+
+
+
+
+function! vspec#push_current_suite(suite)  "{{{2
+  call insert(s:current_suites, a:suite, 0)
 endfunction
 
 
