@@ -183,17 +183,20 @@ endfunction
 
 
 
-" Predefined Custom Matchers  "{{{2
-
-function! vspec#_matcher_true(value)
-  return type(a:value) == type(0) ? !!(a:value) : s:FALSE
-endfunction
-call vspec#customize_matcher('true', function('vspec#_matcher_true'))
-
+" Predefined custom matchers - false "{{{2
 function! vspec#_matcher_false(value)
   return type(a:value) == type(0) ? !(a:value) : s:FALSE
 endfunction
 call vspec#customize_matcher('false', function('vspec#_matcher_false'))
+
+
+
+
+" Predefined custom matchers - true "{{{2
+function! vspec#_matcher_true(value)
+  return type(a:value) == type(0) ? !!(a:value) : s:FALSE
+endfunction
+call vspec#customize_matcher('true', function('vspec#_matcher_true'))
 
 
 
