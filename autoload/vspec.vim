@@ -342,6 +342,69 @@ endfunction
 
 
 
+" Compiler  "{{{1
+function! vspec#compile_specfile(specfile_path, result_path)  "{{{2
+  let slines = readfile(a:specfile_path)
+  let rlines = vspec#translate_script(slines)
+  call writefile(rlines, a:result_path)
+endfunction
+
+
+
+
+function! vspec#translate_script(slines)  "{{{2
+  let rlines = []
+  let stack = []
+
+  for sline in a:slines
+    let tokens = matchlist(sline, '^\s*describe\s*\(''.*''\)\s*$')
+    if !empty(tokens)
+      call insert(stack, 'describe', 0)
+      call extend(rlines, [
+      \   printf('let suite = vspec#new_suite(%s)', tokens[1]),
+      \   'call vspec#add_suite(suite)',
+      \ ])
+      continue
+    endif
+
+    let tokens = matchlist(sline, '^\s*it\s*\(''.*''\)\s*$')
+    if !empty(tokens)
+      call insert(stack, 'it', 0)
+      call extend(rlines, [
+      \   printf('call suite.add_example(%s)', tokens[1]),
+      \   printf('function! suite.example_dict[suite.generate_example_function_name(%s)]()', tokens[1]),
+      \ ])
+      continue
+    endif
+
+    let tokens = matchlist(sline, '^\s*end\s*$')
+    if !empty(tokens)
+      let type = remove(stack, 0)
+      if type ==# 'describe'
+        " Nothing to do.
+      elseif type ==# 'it'
+        call extend(rlines, [
+        \   'endfunction',
+        \ ])
+      else
+        " Nothing to do.
+      endif
+      continue
+    endif
+
+    call add(rlines, sline)
+  endfor
+
+  return rlines
+endfunction
+
+
+
+
+
+
+
+
 " Misc.  "{{{1
 function! vspec#cmd_Should(truth, exprs, values)  "{{{2
   let d = {}
@@ -351,15 +414,6 @@ function! vspec#cmd_Should(truth, exprs, values)  "{{{2
   if a:truth != vspec#are_matched(d.value_actual, d.value_matcher, d.value_expected)
     throw 'vspec:ExpectationFailure:MismatchedValues:' . string(d)
   endif
-endfunction
-
-
-
-
-function! vspec#compile_specfile(specfile_path, result_path)  "{{{2
-  let slines = readfile(a:specfile_path)
-  let rlines = vspec#translate_script(slines)
-  call writefile(rlines, a:result_path)
 endfunction
 
 
@@ -469,55 +523,6 @@ function! vspec#parse_should_args(s, mode)  "{{{2
   endif
 
   return [actual, matcher, expected]
-endfunction
-
-
-
-
-function! vspec#translate_script(slines)  "{{{2
-  let rlines = []
-  let stack = []
-
-  for sline in a:slines
-    let tokens = matchlist(sline, '^\s*describe\s*\(''.*''\)\s*$')
-    if !empty(tokens)
-      call insert(stack, 'describe', 0)
-      call extend(rlines, [
-      \   printf('let suite = vspec#new_suite(%s)', tokens[1]),
-      \   'call vspec#add_suite(suite)',
-      \ ])
-      continue
-    endif
-
-    let tokens = matchlist(sline, '^\s*it\s*\(''.*''\)\s*$')
-    if !empty(tokens)
-      call insert(stack, 'it', 0)
-      call extend(rlines, [
-      \   printf('call suite.add_example(%s)', tokens[1]),
-      \   printf('function! suite.example_dict[suite.generate_example_function_name(%s)]()', tokens[1]),
-      \ ])
-      continue
-    endif
-
-    let tokens = matchlist(sline, '^\s*end\s*$')
-    if !empty(tokens)
-      let type = remove(stack, 0)
-      if type ==# 'describe'
-        " Nothing to do.
-      elseif type ==# 'it'
-        call extend(rlines, [
-        \   'endfunction',
-        \ ])
-      else
-        " Nothing to do.
-      endif
-      continue
-    endif
-
-    call add(rlines, sline)
-  endfor
-
-  return rlines
 endfunction
 
 
