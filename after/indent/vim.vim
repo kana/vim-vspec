@@ -1,6 +1,6 @@
-" Vim additional syntax: vim/vspec - highlight vspec commands
+" Vim additional indent settings: vim/vspec - indent vspec commands
 " Version: @@VERSION@@
-" Copyright (C) 2010-2012 Kana Natsuno <http://whileimautomaton.net/>
+" Copyright (C) 2012 Kana Natsuno <http://whileimautomaton.net/>
 " License: So-called MIT/X license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -22,18 +22,27 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-syntax keyword vimVspecCommand describe skipwhite nextgroup=vimString
-syntax keyword vimVspecCommand end
-syntax keyword vimVspecCommand it skipwhite nextgroup=vimString
-syntax keyword vimVspecCommand ResetContext
-syntax keyword vimVspecCommand SaveContext
-syntax keyword vimVspecCommand Should skipwhite nextgroup=vimFunc,vimString
-syntax keyword vimVspecCommand ShouldNot skipwhite nextgroup=vimFunc,vimString
+" NB: This file should be named after/indent/vim/vspec.vim, but unlike
+" $VIMRUNTIME/ftplugin.vim, $VIMRUNTIME/indent.vim does not :runtime! neither
+" indent/{filetype}_*.vim nor indent/{filetype}/*.vim.
 
+let &l:indentexpr = 'GetVimVspecIndent(' . &l:indentexpr . ')'
 
+if exists('*GetVimVspecIndent')
+  finish
+endif
 
+function GetVimVspecIndent(base_indent)
+  let indent = a:base_indent
 
-highlight default link vimVspecCommand  vimCommand
+  let base_lnum = prevnonblank(v:lnum - 1)
+  let line = getline(base_lnum)
+  if 0 <= match(line, '\(^\||\)\s*\(describe\|it\)\>')
+    let indent += &l:shiftwidth
+  endif
+
+  return indent
+endfunction
 
 " __END__
 " vim: foldmethod=marker

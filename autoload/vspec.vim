@@ -1,6 +1,6 @@
-" vspec - Test framework for Vim script
+" vspec - Testing framework for Vim script
 " Version: @@VERSION@@
-" Copyright (C) 2009-2010 kana <http://whileimautomaton.net/>
+" Copyright (C) 2009-2012 Kana Natsuno <http://whileimautomaton.net/>
 " License: So-called MIT/X license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -21,69 +21,59 @@
 "     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
-" Variables  "{{{1
-
-let s:EXPR_HINT_SCOPE = '{}'
-let s:EXPR_HINT_SID = 's:'
+" Constants  "{{{1
+" Fundamentals  "{{{2
 
 let s:FALSE = 0
-let s:TRUE = !s:FALSE
+let s:TRUE = !0
 
-let s:VALID_MATCHERS_EQUALITY = [
-\   '!=',
-\   '==',
-\   'is',
-\   'isnot',
-\
-\   '!=?',
-\   '==?',
-\   'is?',
-\   'isnot?',
-\
-\   '!=#',
-\   '==#',
-\   'is#',
-\   'isnot#',
-\ ]
-let s:VALID_MATCHERS_REGEXP = [
-\   '!~',
-\   '=~',
-\
-\   '!~?',
-\   '=~?',
-\
-\   '!~#',
-\   '=~#',
-\ ]
-let s:VALID_MATCHERS_ORDERING = [
-\   '<',
-\   '<=',
-\   '>',
-\   '>=',
-\
-\   '<?',
-\   '<=?',
-\   '>?',
-\   '>=?',
-\
-\   '<#',
-\   '<=#',
-\   '>#',
-\   '>=#',
-\ ]
-let s:VALID_MATCHERS_CUSTOM = [
-\   'be',
-\ ]
-let s:VALID_MATCHERS = (s:VALID_MATCHERS_CUSTOM
-\                       + s:VALID_MATCHERS_EQUALITY
-\                       + s:VALID_MATCHERS_ORDERING
-\                       + s:VALID_MATCHERS_REGEXP)
 
-let s:context_stack = []
 
-let s:custom_matchers = {}  " alias => function
 
-let s:saved_scope = {}
+
+
+
+
+" Variables  "{{{1
+let s:all_suites = []  "{{{2
+" :: [Suite]
+
+
+
+
+let s:current_suites = []  "{{{2
+" :: [Suite]
+" The stack to manage the currently active suite while running all suites.
+
+
+
+
+let s:custom_matchers = {}  "{{{2
+" :: MatcherNameString -> Funcref
+
+
+
+
+let s:expr_hinted_scope = 's:fail("Scope hint is not given")'  "{{{2
+" An expression which is evaluated to a script-local scope for Ref()/Set().
+
+
+
+
+let s:expr_hinted_sid = 's:fail("SID hint is not given")'  "{{{2
+" An expression which is evaluated to a <SID> for Call().
+
+
+
+
+let s:saved_scope = {}  "{{{2
+" A snapshot of a script-local variables for :SaveContext/:ResetContext.
+
+
+
+
+let s:suite = {}  "{{{2
+" The prototype for suites.
 
 
 
@@ -93,6 +83,56 @@ let s:saved_scope = {}
 
 
 " Interface  "{{{1
+" :ResetContext  "{{{2
+command! -bar -nargs=0 ResetContext
+\ call s:cmd_ResetContext()
+
+
+
+
+" :SaveContext  "{{{2
+command! -bar -nargs=0 SaveContext
+\ call s:cmd_SaveContext()
+
+
+
+
+" :Should  "{{{2
+command! -bar -complete=expression -nargs=+ Should
+\ call s:cmd_Should(
+\   s:TRUE,
+\   s:parse_should_arguments(<q-args>, 'raw'),
+\   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
+\ )
+
+
+
+
+" :ShouldNot  "{{{2
+command! -bar -complete=expression -nargs=+ ShouldNot
+\ call s:cmd_Should(
+\   s:FALSE,
+\   s:parse_should_arguments(<q-args>, 'raw'),
+\   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
+\ )
+
+
+
+
+" :SKIP  "{{{2
+command! -bar -nargs=+ SKIP
+\ throw 'vspec:ExpectationFailure:SKIP:' . string({'message': <q-args>})
+
+
+
+
+" :TODO  "{{{2
+command! -bar -nargs=0 TODO
+\ throw 'vspec:ExpectationFailure:TODO:' . string({})
+
+
+
+
 function! Call(...)  "{{{2
   return call('vspec#call', a:000)
 endfunction
@@ -115,14 +155,14 @@ endfunction
 
 
 function! vspec#call(function_name, ...)  "{{{2
-  return call(substitute(a:function_name, '^s:', s:hint_sid(), ''), a:000)
+  return call(substitute(a:function_name, '^s:', s:get_hinted_sid(), ''), a:000)
 endfunction
 
 
 
 
-function! vspec#customize_matcher(alias, function)  "{{{2
-  let s:custom_matchers[a:alias] = a:function
+function! vspec#customize_matcher(matcher_name, funcref)  "{{{2
+  let s:custom_matchers[a:matcher_name] = a:funcref
 endfunction
 
 
@@ -130,15 +170,13 @@ endfunction
 
 function! vspec#hint(info)  "{{{2
   if has_key(a:info, 'scope')
-    let s:EXPR_HINT_SCOPE = a:info.scope
-    call vspec#cmd_SaveContext()
+    let s:expr_hinted_scope = a:info.scope
+    call s:cmd_SaveContext()
   endif
 
   if has_key(a:info, 'sid')
-    let s:EXPR_HINT_SID = a:info.sid
+    let s:expr_hinted_sid = a:info.sid
   endif
-
-  return
 endfunction
 
 
@@ -146,9 +184,10 @@ endfunction
 
 function! vspec#ref(variable_name)  "{{{2
   if a:variable_name =~# '^s:'
-    return s:hint_scope()[a:variable_name[2:]]
+    return s:get_hinted_scope()[a:variable_name[2:]]
   else
-    echoerr 'Invalid variable_name:' string(a:variable_name)
+    throw 'vspec:InvalidOperation:Invalid variable_name - '
+    \     . string(a:variable_name)
   endif
 endfunction
 
@@ -157,314 +196,295 @@ endfunction
 
 function! vspec#set(variable_name, value)  "{{{2
   if a:variable_name =~# '^s:'
-    let _ = s:hint_scope()
+    let _ = s:get_hinted_scope()
     let _[a:variable_name[2:]] = a:value
   else
-    echoerr 'Invalid variable_name:' string(a:variable_name)
+    throw 'vspec:InvalidOperation:Invalid variable_name - '
+    \     . string(a:variable_name)
   endif
-  return
 endfunction
 
 
 
 
-function! vspec#test(spec_file)  "{{{2
-  call s:push_context({
-  \   'total_expectations': 0,
-  \   'failures': [],
-  \ })
+function! vspec#test(specfile_path)  "{{{2
+  let compiled_specfile_path = tempname()
+  call s:compile_specfile(a:specfile_path, compiled_specfile_path)
 
-  source `=a:spec_file`
+  try
+    execute 'source' compiled_specfile_path
+  catch
+    echo '#' v:throwpoint
+    echo '#' v:exception
+    let s:all_suites = []
+  endtry
 
-  let current_context = s:current_context()
-  for describer in s:extract_describers()
-    let current_context.describer = describer
-
-    echo '====' s:description_from_describer(describer)
-    call {describer.function_name}()
-    echon "\n"
+  let example_count = 0
+  for suite in s:all_suites
+    call s:push_current_suite(suite)
+      for example in suite.example_list
+        let example_count += 1
+        try
+          call suite.example_dict[suite.generate_example_function_name(example)]()
+          echo printf(
+          \   '%s %d - %s %s',
+          \   'ok',
+          \   example_count,
+          \   suite.subject,
+          \   example
+          \ )
+        catch /^vspec:/
+          if v:exception =~# '^vspec:ExpectationFailure:'
+            let xs = matchlist(v:exception, '^vspec:ExpectationFailure:\(\a\+\):\(.*\)$')
+            let type = xs[1]
+            let i = eval(xs[2])
+            if type ==# 'MismatchedValues'
+              echo printf(
+              \   '%s %d - %s %s',
+              \   'not ok',
+              \   example_count,
+              \   suite.subject,
+              \   example
+              \ )
+              echo '# Expected' i.expr_actual i.expr_matcher i.expr_expected
+              echo '#       Actual value:' string(i.value_actual)
+              if !s:is_custom_matcher(i.expr_matcher)
+                echo '#     Expected value:' string(i.value_expected)
+              endif
+            elseif type ==# 'TODO'
+              echo printf(
+              \   '%s %d - # TODO %s %s',
+              \   'not ok',
+              \   example_count,
+              \   suite.subject,
+              \   example
+              \ )
+            elseif type ==# 'SKIP'
+              echo printf(
+              \   '%s %d - # SKIP %s %s - %s',
+              \   'ok',
+              \   example_count,
+              \   suite.subject,
+              \   example,
+              \   i.message
+              \ )
+            else
+              echo printf(
+              \   '%s %d - %s %s',
+              \   'not ok',
+              \   example_count,
+              \   suite.subject,
+              \   example
+              \ )
+              echo '#' substitute(v:exception, '^vspec:', '', '')
+            endif
+          else
+            echo printf(
+            \   '%s %d - %s %s',
+            \   'not ok',
+            \   example_count,
+            \   suite.subject,
+            \   example
+            \ )
+            echo '#' substitute(v:exception, '^vspec:', '', '')
+          endif
+        catch
+          echo printf(
+          \   '%s %d - %s %s',
+          \   'not ok',
+          \   example_count,
+          \   suite.subject,
+          \   example
+          \ )
+          echo '#' v:throwpoint
+          echo '#' v:exception
+        endtry
+      endfor
+    call s:pop_current_suite()
   endfor
+  echo printf('1..%d', example_count)
+  echo ''
 
-  call s:output_summary(s:pop_context())
-
-  return
+  call delete(compiled_specfile_path)
 endfunction
 
 
 
 
-function! vspec#_scope()  "{{{2
-  return s:
-endfunction
-
-
-
-
-function! vspec#_sid()  "{{{2
-  return maparg('<SID>', 'n')
-endfunction
-nnoremap <SID>  <SID>
-
-
-
-
-" Commands  "{{{2
-
-command! -nargs=+ It  call vspec#cmd_It(<q-args>)
-
-command! -nargs=0 ResetContext  call vspec#cmd_ResetContext()
-command! -nargs=0 SaveContext  call vspec#cmd_SaveContext()
-
-command! -complete=expression -nargs=+ Should
-\ call vspec#cmd_Should(s:parse_should_args(<q-args>, 'raw'),
-\                       map(s:parse_should_args(<q-args>, 'eval'),
-\                           'eval(v:val)'))
-
-
-
-
-" Predefined Custom Matchers  "{{{2
-
-function! vspec#_matcher_true(value)
-  return type(a:value) == type(0) ? !!(a:value) : !!0
-endfunction
-call vspec#customize_matcher('true', function('vspec#_matcher_true'))
-
+" Predefined custom matchers - false "{{{2
 function! vspec#_matcher_false(value)
-  return type(a:value) == type(0) ? !(a:value) : !!0
+  return type(a:value) == type(0) ? !(a:value) : s:FALSE
 endfunction
 call vspec#customize_matcher('false', function('vspec#_matcher_false'))
 
 
 
 
+" Predefined custom matchers - true "{{{2
+function! vspec#_matcher_true(value)
+  return type(a:value) == type(0) ? !!(a:value) : s:FALSE
+endfunction
+call vspec#customize_matcher('true', function('vspec#_matcher_true'))
 
 
 
 
-" Misc.  "{{{1
-function! vspec#cmd_It(message)  "{{{2
-  let _ = s:current_context()
-  let _.group = a:message
-  echo '---- It' a:message "\n"
-  return
+
+
+
+
+" Suites  "{{{1
+function! s:suite.add_example(example_description)  "{{{2
+  call add(self.example_list, a:example_description)
 endfunction
 
 
 
 
-function! vspec#cmd_ResetContext()  "{{{2
-  call extend(s:hint_scope(), deepcopy(s:saved_scope), 'force')
-  return
+function! s:suite.generate_example_function_name(example_description)  "{{{2
+  return substitute(
+  \   a:example_description,
+  \   '[^[:alnum:]]',
+  \   '\="_" . printf("%02x", char2nr(submatch(0)))',
+  \   'g'
+  \ )
 endfunction
 
 
 
 
-function! vspec#cmd_SaveContext()  "{{{2
-  let s:saved_scope = deepcopy(s:hint_scope())
-  return
+function! s:get_current_suite()  "{{{2
+  return s:current_suites[0]
 endfunction
 
 
 
 
-function! vspec#cmd_Should(exprs, values)  "{{{2
-  let [expr_actual, expr_matcher, expr_expected] = a:exprs
-  let [Value_actual, Value_matcher, Value_expected] = a:values
-  let current_context = s:current_context()
-
-  if s:matches_p(Value_actual, Value_matcher, Value_expected)
-    echon '.'
-  else
-    echon 'x'
-    call add(current_context.failures,
-    \        [current_context.describer,
-    \         current_context.group,
-    \         a:exprs,
-    \         a:values])
-  endif
-  let current_context.total_expectations += 1
-
-  return
+function! s:pop_current_suite()  "{{{2
+  return remove(s:current_suites, 0)
 endfunction
 
 
 
 
-" Context  "{{{2
-function! s:current_context()  "{{{3
-  return s:context_stack[-1]
-endfunction
-
-
-function! s:pop_context()  "{{{3
-  return remove(s:context_stack, -1)
-endfunction
-
-
-function! s:push_context(context)  "{{{3
-  call add(s:context_stack, a:context)
-  return
+function! s:push_current_suite(suite)  "{{{2
+  call insert(s:current_suites, a:suite, 0)
 endfunction
 
 
 
 
-function! s:description_from_describer(describer)  "{{{2
-  return join([a:describer.feature_name,
-  \            substitute(a:describer.case, '_', ' ', 'g')],
-  \           ' ')
+function! vspec#add_suite(suite)  "{{{2
+  call add(s:all_suites, a:suite)
 endfunction
 
 
 
 
-function! s:extract_describers()  "{{{2
-  let f = {}
-  function! f.normalize(function_name)
-    let _ = split(a:function_name, '__')
-    let describer = {}
-    let describer.function_name = a:function_name
-    let describer.feature_name = _[1]
-    let describer.case = join(_[2:], '__')
-    return describer
-  endfunction
+function! vspec#new_suite(subject)  "{{{2
+  let s = copy(s:suite)
 
-  redir => function_names
-  silent function /
-  redir END
+  let s.subject = a:subject  " :: SubjectString
+  let s.example_list = []  " :: [DescriptionString]
+  let s.example_dict = {}  " :: DescriptionString -> ExampleFuncref
 
-  let _ = split(function_names, '\n')
-  let PATTERN = '\v^function \zs(\<SNR\>\d+_describe__\w+)\ze\('
-  call map(_, 'matchstr(v:val, PATTERN)')
-  call filter(_, 'v:val != ""')
-  call map(_, 'substitute(v:val, "<SNR>", "\<SNR>", "")')
-  call map(_, 'f.normalize(v:val)')
-  call sort(_)
-
-  return _
+  return s
 endfunction
 
 
 
 
-function! s:hint_scope()  "{{{2
-  return eval(s:EXPR_HINT_SCOPE)
+
+
+
+
+" Compiler  "{{{1
+function! s:compile_specfile(specfile_path, result_path)  "{{{2
+  let slines = readfile(a:specfile_path)
+  let rlines = s:translate_script(slines)
+  call writefile(rlines, a:result_path)
 endfunction
 
 
 
 
-function! s:hint_sid()  "{{{2
-  return eval(s:EXPR_HINT_SID)
-endfunction
+function! s:translate_script(slines)  "{{{2
+  let rlines = []
+  let stack = []
 
-
-
-
-function! s:matches_p(value_actual, expr_matcher, value_expected)  "{{{2
-  if !s:valid_matcher_p(a:expr_matcher)
-    " FIXME: Useful message
-    echoerr 'Invalid a:expr_matcher:' string(a:expr_matcher)
-    return s:FALSE
-  endif
-
-  if s:valid_matcher_custom_p(a:expr_matcher)
-    let custom_matcher_name = a:value_expected
-    if !has_key(s:custom_matchers, custom_matcher_name)
-      echoerr 'Unknown custom matcher:' string(custom_matcher_name)
-      return s:FALSE
-    endif
-    let MatchesP = s:custom_matchers[custom_matcher_name]
-    return MatchesP(a:value_actual)
-  elseif s:valid_matcher_equality_p(a:expr_matcher)
-    let type_equality = type(a:value_actual) == type(a:value_expected)
-    if s:valid_matcher_negative_p(a:expr_matcher) && !type_equality
-      return s:TRUE
-    else
-      return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
-    endif
-  elseif s:valid_matcher_ordering_p(a:expr_matcher)
-    if type(a:value_actual) != type(a:value_expected)
-      return s:FALSE
-    endif
-    if !(s:orderable_type_p(a:value_actual)
-    \    && s:orderable_type_p(a:value_expected))
-      return s:FALSE
-    endif
-    return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
-  elseif s:valid_matcher_regexp_p(a:expr_matcher)
-    if type(a:value_actual) != type('') || type(a:value_expected) != type('')
-      return s:FALSE
-    endif
-    return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
-  else
-    return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
-  endif
-endfunction
-
-
-
-
-function! s:orderable_type_p(value)  "{{{2
-  " FIXME: +float
-  return type(a:value) == type(0) || type(a:value) == type('')
-endfunction
-
-
-
-
-function! s:output_summary(context)  "{{{2
-  echon "\n"
-  echon "\n"
-  echo '**** Result ****'
-
-  let previous_describer = {}
-  for [describer, group, exprs, values] in a:context.failures
-    if describer isnot previous_describer
-      echon "\n"
-      echon "\n"
-      echo 'In' s:description_from_describer(describer)
+  for sline in a:slines
+    let tokens = matchlist(sline, '^\s*describe\s*\(''.*''\)\s*$')
+    if !empty(tokens)
+      call insert(stack, 'describe', 0)
+      call extend(rlines, [
+      \   printf('let suite = vspec#new_suite(%s)', tokens[1]),
+      \   'call vspec#add_suite(suite)',
+      \ ])
+      continue
     endif
 
-    echon "\n"
-    echo 'It' group
-    echo 'FAILED:' join(exprs, ' ')
-    if s:valid_matcher_custom_p(values[1])
-      echo '       got:' string(values[0])
-    elseif s:valid_matcher_equality_p(values[1])
-      echo '  expected:' string(values[2])
-      echo '       got:' string(values[0])
-    else
-      echo '       lhs:' string(values[0])
-      echo '       rhs:' string(values[2])
+    let tokens = matchlist(sline, '^\s*it\s*\(''.*''\)\s*$')
+    if !empty(tokens)
+      call insert(stack, 'it', 0)
+      call extend(rlines, [
+      \   printf('call suite.add_example(%s)', tokens[1]),
+      \   printf('function! suite.example_dict[suite.generate_example_function_name(%s)]()', tokens[1]),
+      \ ])
+      continue
     endif
 
-    let previous_describer = describer
+    let tokens = matchlist(sline, '^\s*end\s*$')
+    if !empty(tokens)
+      let type = remove(stack, 0)
+      if type ==# 'describe'
+        " Nothing to do.
+      elseif type ==# 'it'
+        call extend(rlines, [
+        \   'endfunction',
+        \ ])
+      else
+        " Nothing to do.
+      endif
+      continue
+    endif
+
+    call add(rlines, sline)
   endfor
 
-  echo printf("\n\n%s examples, %s failures\n",
-  \           a:context.total_expectations,
-  \           len(a:context.failures))
-  return
+  return rlines
 endfunction
 
 
 
 
-function! s:parse_should_args(s, mode)  "{{{2
-  let CMPS = join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
-  let _ = matchlist(a:s, printf('\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$', CMPS))
-  let tokens =  _[1:3]
-  let [_actual, _matcher, _expected] = copy(tokens)
-  let [actual, matcher, expected] = copy(tokens)
+
+
+
+
+" :Should magic  "{{{1
+function! s:cmd_Should(truth, exprs, values)  "{{{2
+  let d = {}
+  let [d.expr_actual, d.expr_matcher, d.expr_expected] = a:exprs
+  let [d.value_actual, d.value_matcher, d.value_expected] = a:values
+
+  if a:truth != s:are_matched(d.value_actual, d.value_matcher, d.value_expected)
+    throw 'vspec:ExpectationFailure:MismatchedValues:' . string(d)
+  endif
+endfunction
+
+
+
+
+function! s:parse_should_arguments(s, mode)  "{{{2
+  let tokens = s:split_at_matcher(a:s)
+  let [_actual, _matcher, _expected] = tokens
+  let [actual, matcher, expected] = tokens
 
   if a:mode ==# 'eval'
-    if s:valid_matcher_p(_matcher)
+    if s:is_matcher(_matcher)
       let matcher = string(_matcher)
     endif
-    if s:valid_matcher_custom_p(_matcher)
+    if s:is_custom_matcher(_matcher)
       let expected = string(_expected)
     endif
   endif
@@ -475,45 +495,223 @@ endfunction
 
 
 
-function! s:valid_matcher_p(expr_matcher)  "{{{2
-  return 0 <= index(s:VALID_MATCHERS, a:expr_matcher)
+
+
+
+
+" Matchers  "{{{1
+" Constants  "{{{2
+
+let s:VALID_MATCHERS_EQUALITY = [
+\   '!=',
+\   '==',
+\   'is',
+\   'isnot',
+\
+\   '!=?',
+\   '==?',
+\   'is?',
+\   'isnot?',
+\
+\   '!=#',
+\   '==#',
+\   'is#',
+\   'isnot#',
+\ ]
+
+let s:VALID_MATCHERS_REGEXP = [
+\   '!~',
+\   '=~',
+\
+\   '!~?',
+\   '=~?',
+\
+\   '!~#',
+\   '=~#',
+\ ]
+
+let s:VALID_MATCHERS_ORDERING = [
+\   '<',
+\   '<=',
+\   '>',
+\   '>=',
+\
+\   '<?',
+\   '<=?',
+\   '>?',
+\   '>=?',
+\
+\   '<#',
+\   '<=#',
+\   '>#',
+\   '>=#',
+\ ]
+
+let s:VALID_MATCHERS_CUSTOM = [
+\   'be',
+\ ]
+
+let s:VALID_MATCHERS = (s:VALID_MATCHERS_CUSTOM
+\                       + s:VALID_MATCHERS_EQUALITY
+\                       + s:VALID_MATCHERS_ORDERING
+\                       + s:VALID_MATCHERS_REGEXP)
+
+
+
+
+function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
+  if s:is_custom_matcher(a:expr_matcher)
+    let custom_matcher_name = a:value_expected
+    if !has_key(s:custom_matchers, custom_matcher_name)
+      throw
+      \ 'vspec:InvalidOperation:Unknown custom matcher - '
+      \ . string(custom_matcher_name)
+    endif
+    return !!s:custom_matchers[custom_matcher_name](a:value_actual)
+  elseif s:is_equality_matcher(a:expr_matcher)
+    let type_equality = type(a:value_actual) == type(a:value_expected)
+    if s:is_negative_matcher(a:expr_matcher) && !type_equality
+      return s:TRUE
+    else
+      return type_equality && eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
+    endif
+  elseif s:is_ordering_matcher(a:expr_matcher)
+    if (type(a:value_actual) != type(a:value_expected)
+    \   || !s:is_orderable_type(a:value_actual)
+    \   || !s:is_orderable_type(a:value_expected))
+      return s:FALSE
+    endif
+    return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
+  elseif s:is_regexp_matcher(a:expr_matcher)
+    if type(a:value_actual) != type('') || type(a:value_expected) != type('')
+      return s:FALSE
+    endif
+    return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
+  else
+    throw 'vspec:InvalidOperation:Unknown matcher - ' . string(a:expr_matcher)
+  endif
 endfunction
 
 
 
 
-function! s:valid_matcher_custom_p(expr_matcher)  "{{{2
+function! s:is_custom_matcher(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_CUSTOM, a:expr_matcher)
 endfunction
 
 
 
 
-function! s:valid_matcher_equality_p(expr_matcher)  "{{{2
+function! s:is_equality_matcher(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_EQUALITY, a:expr_matcher)
 endfunction
 
 
 
 
-function! s:valid_matcher_negative_p(expr_matcher)  "{{{2
-  " FIXME: Ad hoc way.
-  return s:valid_matcher_p(a:expr_matcher) && a:expr_matcher =~# '\(!\|not\)'
+function! s:is_matcher(expr_matcher)  "{{{2
+  return 0 <= index(s:VALID_MATCHERS, a:expr_matcher)
 endfunction
 
 
 
 
-function! s:valid_matcher_ordering_p(expr_matcher)  "{{{2
+function! s:is_negative_matcher(expr_matcher)  "{{{2
+  " FIXME: Ad hoc way.
+  return s:is_matcher(a:expr_matcher) && a:expr_matcher =~# '\(!\|not\)'
+endfunction
+
+
+
+
+function! s:is_orderable_type(value)  "{{{2
+  " FIXME: +float
+  return type(a:value) == type(0) || type(a:value) == type('')
+endfunction
+
+
+
+
+function! s:is_ordering_matcher(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_ORDERING, a:expr_matcher)
 endfunction
 
 
 
 
-function! s:valid_matcher_regexp_p(expr_matcher)  "{{{2
+function! s:is_regexp_matcher(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_REGEXP, a:expr_matcher)
 endfunction
+
+
+
+
+function! s:split_at_matcher(s)  "{{{2
+  let tokens = matchlist(a:s, s:RE_SPLIT_AT_MATCHER)
+  return tokens[1:3]
+endfunction
+
+let s:RE_SPLIT_AT_MATCHER =
+\ printf(
+\   '\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$',
+\   join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
+\ )
+
+
+
+
+
+
+
+
+" Tools  "{{{1
+function! s:cmd_ResetContext()  "{{{2
+  call filter(s:get_hinted_scope(), string(s:FALSE))
+  call extend(s:get_hinted_scope(), deepcopy(s:saved_scope), 'force')
+endfunction
+
+
+
+
+function! s:cmd_SaveContext()  "{{{2
+  let s:saved_scope = deepcopy(s:get_hinted_scope())
+endfunction
+
+
+
+
+function! s:fail(message)  "{{{2
+  throw 'vspec:InvalidOperation:' . a:message
+endfunction
+
+
+
+
+function! s:get_hinted_scope()  "{{{2
+  return eval(s:expr_hinted_scope)
+endfunction
+
+
+
+
+function! s:get_hinted_sid()  "{{{2
+  return eval(s:expr_hinted_sid)
+endfunction
+
+
+
+
+function! vspec#scope()  "{{{2
+  return s:
+endfunction
+
+
+
+
+function! vspec#sid()  "{{{2
+  return maparg('<SID>', 'n')
+endfunction
+nnoremap <SID>  <SID>
 
 
 
