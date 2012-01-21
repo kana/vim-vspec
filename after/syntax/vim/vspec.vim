@@ -22,18 +22,18 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-syntax keyword vimVspecCommand It skipwhite nextgroup=vimVspecItArgument
+syntax keyword vimVspecCommand describe skipwhite nextgroup=vimString
+syntax keyword vimVspecCommand end
+syntax keyword vimVspecCommand it skipwhite nextgroup=vimString
 syntax keyword vimVspecCommand ResetContext
 syntax keyword vimVspecCommand SaveContext
 syntax keyword vimVspecCommand Should skipwhite nextgroup=vimFunc,vimString
-
-syntax match vimVspecItArgument /\S.*$/ contained
+syntax keyword vimVspecCommand ShouldNot skipwhite nextgroup=vimFunc,vimString
 
 
 
 
 highlight default link vimVspecCommand  vimCommand
-highlight default link vimVspecItArgument  String
 
 " __END__
 " vim: foldmethod=marker
