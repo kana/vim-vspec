@@ -21,6 +21,78 @@
 "     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
+" Constants  "{{{1
+" Fundamentals  "{{{2
+
+let s:FALSE = 0
+let s:TRUE = !0
+
+
+
+
+" Matcher names  "{{{2
+
+let s:VALID_MATCHERS_EQUALITY = [
+\   '!=',
+\   '==',
+\   'is',
+\   'isnot',
+\
+\   '!=?',
+\   '==?',
+\   'is?',
+\   'isnot?',
+\
+\   '!=#',
+\   '==#',
+\   'is#',
+\   'isnot#',
+\ ]
+
+let s:VALID_MATCHERS_REGEXP = [
+\   '!~',
+\   '=~',
+\
+\   '!~?',
+\   '=~?',
+\
+\   '!~#',
+\   '=~#',
+\ ]
+
+let s:VALID_MATCHERS_ORDERING = [
+\   '<',
+\   '<=',
+\   '>',
+\   '>=',
+\
+\   '<?',
+\   '<=?',
+\   '>?',
+\   '>=?',
+\
+\   '<#',
+\   '<=#',
+\   '>#',
+\   '>=#',
+\ ]
+
+let s:VALID_MATCHERS_CUSTOM = [
+\   'be',
+\ ]
+
+let s:VALID_MATCHERS = (s:VALID_MATCHERS_CUSTOM
+\                       + s:VALID_MATCHERS_EQUALITY
+\                       + s:VALID_MATCHERS_ORDERING
+\                       + s:VALID_MATCHERS_REGEXP)
+
+
+
+
+
+
+
+
 " Variables  "{{{1
 let s:all_suites = []  "{{{2
 " :: [Suite]
@@ -271,64 +343,6 @@ endfunction
 
 
 " Misc.  "{{{1
-" Constants  "{{{2
-
-let s:FALSE = 0
-let s:TRUE = !0
-
-let s:VALID_MATCHERS_EQUALITY = [
-\   '!=',
-\   '==',
-\   'is',
-\   'isnot',
-\
-\   '!=?',
-\   '==?',
-\   'is?',
-\   'isnot?',
-\
-\   '!=#',
-\   '==#',
-\   'is#',
-\   'isnot#',
-\ ]
-let s:VALID_MATCHERS_REGEXP = [
-\   '!~',
-\   '=~',
-\
-\   '!~?',
-\   '=~?',
-\
-\   '!~#',
-\   '=~#',
-\ ]
-let s:VALID_MATCHERS_ORDERING = [
-\   '<',
-\   '<=',
-\   '>',
-\   '>=',
-\
-\   '<?',
-\   '<=?',
-\   '>?',
-\   '>=?',
-\
-\   '<#',
-\   '<=#',
-\   '>#',
-\   '>=#',
-\ ]
-let s:VALID_MATCHERS_CUSTOM = [
-\   'be',
-\ ]
-let s:VALID_MATCHERS = (s:VALID_MATCHERS_CUSTOM
-\                       + s:VALID_MATCHERS_EQUALITY
-\                       + s:VALID_MATCHERS_ORDERING
-\                       + s:VALID_MATCHERS_REGEXP)
-
-
-
-
 function! vspec#cmd_Should(truth, exprs, values)  "{{{2
   let d = {}
   let [d.expr_actual, d.expr_matcher, d.expr_expected] = a:exprs
