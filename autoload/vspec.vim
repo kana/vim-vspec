@@ -288,6 +288,16 @@ function! vspec#test(specfile_path)  "{{{2
             \ )
             echo '#' substitute(v:exception, '^vspec:', '', '')
           endif
+        catch
+          echo printf(
+          \   '%s %d - %s %s',
+          \   'not ok',
+          \   example_count,
+          \   suite.subject,
+          \   example
+          \ )
+          echo '#' v:throwpoint
+          echo '#' v:exception
         endtry
       endfor
     call s:pop_current_suite()
