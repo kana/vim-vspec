@@ -41,12 +41,6 @@ let s:all_suites = []  "{{{2
 
 
 
-let s:suite = {}  "{{{2
-" The prototype for suites.
-
-
-
-
 let s:current_suites = []  "{{{2
 " :: [Suite]
 " The stack to manage the currently active suite while running all suites.
@@ -60,11 +54,49 @@ let s:custom_matchers = {}  "{{{2
 
 
 
+let s:expr_hinted_scope = 's:fail("Scope hint is not given")'  "{{{2
+" An expression which is evaluated to a script-local scope for Ref()/Set().
+
+
+
+
+let s:expr_hinted_sid = 's:fail("SID hint is not given")'  "{{{2
+" An expression which is evaluated to a <SID> for Call().
+
+
+
+
+let s:saved_scope = {}  "{{{2
+" A snapshot of a script-local variables for :SaveContext/:ResetContext.
+
+
+
+
+let s:suite = {}  "{{{2
+" The prototype for suites.
+
+
+
+
 
 
 
 
 " Interface  "{{{1
+" :ResetContext  "{{{2
+command! -bar -nargs=0 ResetContext
+\ call s:cmd_ResetContext()
+
+
+
+
+" :SaveContext  "{{{2
+command! -bar -nargs=0 SaveContext
+\ call s:cmd_SaveContext()
+
+
+
+
 " :Should  "{{{2
 command! -bar -complete=expression -nargs=+ Should
 \ call s:cmd_Should(
@@ -101,8 +133,75 @@ command! -bar -nargs=0 TODO
 
 
 
+function! Call(...)  "{{{2
+  return call('vspec#call', a:000)
+endfunction
+
+
+
+
+function! Ref(...)  "{{{2
+  return call('vspec#ref', a:000)
+endfunction
+
+
+
+
+function! Set(...)  "{{{2
+  return call('vspec#set', a:000)
+endfunction
+
+
+
+
+function! vspec#call(function_name, ...)  "{{{2
+  return call(substitute(a:function_name, '^s:', s:get_hinted_sid(), ''), a:000)
+endfunction
+
+
+
+
 function! vspec#customize_matcher(matcher_name, funcref)  "{{{2
   let s:custom_matchers[a:matcher_name] = a:funcref
+endfunction
+
+
+
+
+function! vspec#hint(info)  "{{{2
+  if has_key(a:info, 'scope')
+    let s:expr_hinted_scope = a:info.scope
+    call s:cmd_SaveContext()
+  endif
+
+  if has_key(a:info, 'sid')
+    let s:expr_hinted_sid = a:info.sid
+  endif
+endfunction
+
+
+
+
+function! vspec#ref(variable_name)  "{{{2
+  if a:variable_name =~# '^s:'
+    return s:get_hinted_scope()[a:variable_name[2:]]
+  else
+    throw 'vspec:InvalidOperation:Invalid variable_name - '
+    \     . string(a:variable_name)
+  endif
+endfunction
+
+
+
+
+function! vspec#set(variable_name, value)  "{{{2
+  if a:variable_name =~# '^s:'
+    let _ = s:get_hinted_scope()
+    let _[a:variable_name[2:]] = a:value
+  else
+    throw 'vspec:InvalidOperation:Invalid variable_name - '
+    \     . string(a:variable_name)
+  endif
 endfunction
 
 
@@ -541,6 +640,62 @@ let s:RE_SPLIT_AT_MATCHER =
 \   '\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$',
 \   join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
 \ )
+
+
+
+
+
+
+
+
+" Tools  "{{{1
+function! s:cmd_ResetContext()  "{{{2
+  call filter(s:get_hinted_scope(), string(s:FALSE))
+  call extend(s:get_hinted_scope(), deepcopy(s:saved_scope), 'force')
+endfunction
+
+
+
+
+function! s:cmd_SaveContext()  "{{{2
+  let s:saved_scope = deepcopy(s:get_hinted_scope())
+endfunction
+
+
+
+
+function! s:fail(message)  "{{{2
+  throw 'vspec:InvalidOperation:' . a:message
+endfunction
+
+
+
+
+function! s:get_hinted_scope()  "{{{2
+  return eval(s:expr_hinted_scope)
+endfunction
+
+
+
+
+function! s:get_hinted_sid()  "{{{2
+  return eval(s:expr_hinted_sid)
+endfunction
+
+
+
+
+function! vspec#scope()  "{{{2
+  return s:
+endfunction
+
+
+
+
+function! vspec#sid()  "{{{2
+  return maparg('<SID>', 'n')
+endfunction
+nnoremap <SID>  <SID>
 
 
 
