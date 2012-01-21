@@ -445,7 +445,7 @@ endfunction
 
 
 
-" Misc.  "{{{1
+" Matchers  "{{{1
 function! vspec#are_matched(value_actual, expr_matcher, value_expected)  "{{{2
   if vspec#is_custom_matcher(a:expr_matcher)
     let custom_matcher_name = a:value_expected
