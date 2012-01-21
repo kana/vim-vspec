@@ -532,10 +532,15 @@ endfunction
 
 
 function! s:split_at_matcher(s)  "{{{2
-  let CMPS = join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
-  let ts = matchlist(a:s, printf('\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$', CMPS))
-  return ts[1:3]
+  let tokens = matchlist(a:s, s:RE_SPLIT_AT_MATCHER)
+  return tokens[1:3]
 endfunction
+
+let s:RE_SPLIT_AT_MATCHER =
+\ printf(
+\   '\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$',
+\   join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
+\ )
 
 
 
