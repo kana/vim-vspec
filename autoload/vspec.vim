@@ -405,7 +405,7 @@ endfunction
 
 
 
-" Misc.  "{{{1
+" :Should magic  "{{{1
 function! vspec#cmd_Should(truth, exprs, values)  "{{{2
   let d = {}
   let [d.expr_actual, d.expr_matcher, d.expr_expected] = a:exprs
@@ -419,6 +419,33 @@ endfunction
 
 
 
+function! vspec#parse_should_args(s, mode)  "{{{2
+  let CMPS = join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
+  let _ = matchlist(a:s, printf('\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$', CMPS))
+  let tokens =  _[1:3]
+  let [_actual, _matcher, _expected] = copy(tokens)
+  let [actual, matcher, expected] = copy(tokens)
+
+  if a:mode ==# 'eval'
+    if vspec#is_matcher(_matcher)
+      let matcher = string(_matcher)
+    endif
+    if vspec#is_custom_matcher(_matcher)
+      let expected = string(_expected)
+    endif
+  endif
+
+  return [actual, matcher, expected]
+endfunction
+
+
+
+
+
+
+
+
+" Misc.  "{{{1
 function! vspec#are_matched(value_actual, expr_matcher, value_expected)  "{{{2
   if vspec#is_custom_matcher(a:expr_matcher)
     let custom_matcher_name = a:value_expected
@@ -501,28 +528,6 @@ endfunction
 
 function! vspec#is_regexp_matcher(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_REGEXP, a:expr_matcher)
-endfunction
-
-
-
-
-function! vspec#parse_should_args(s, mode)  "{{{2
-  let CMPS = join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
-  let _ = matchlist(a:s, printf('\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$', CMPS))
-  let tokens =  _[1:3]
-  let [_actual, _matcher, _expected] = copy(tokens)
-  let [actual, matcher, expected] = copy(tokens)
-
-  if a:mode ==# 'eval'
-    if vspec#is_matcher(_matcher)
-      let matcher = string(_matcher)
-    endif
-    if vspec#is_custom_matcher(_matcher)
-      let expected = string(_expected)
-    endif
-  endif
-
-  return [actual, matcher, expected]
 endfunction
 
 
