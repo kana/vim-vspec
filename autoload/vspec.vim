@@ -126,10 +126,10 @@ let s:custom_matchers = {}  "{{{2
 " Interface  "{{{1
 " :Should  "{{{2
 command! -bar -complete=expression -nargs=+ Should
-\ call vspec#cmd_Should(
+\ call s:cmd_Should(
 \   s:TRUE,
-\   vspec#parse_should_args(<q-args>, 'raw'),
-\   map(vspec#parse_should_args(<q-args>, 'eval'), 'eval(v:val)')
+\   s:parse_should_arguments(<q-args>, 'raw'),
+\   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
 \ )
 
 
@@ -137,10 +137,10 @@ command! -bar -complete=expression -nargs=+ Should
 
 " :ShouldNot  "{{{2
 command! -bar -complete=expression -nargs=+ ShouldNot
-\ call vspec#cmd_Should(
+\ call s:cmd_Should(
 \   s:FALSE,
-\   vspec#parse_should_args(<q-args>, 'raw'),
-\   map(vspec#parse_should_args(<q-args>, 'eval'), 'eval(v:val)')
+\   s:parse_should_arguments(<q-args>, 'raw'),
+\   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
 \ )
 
 
@@ -169,13 +169,13 @@ endfunction
 
 function! vspec#test(specfile_path)  "{{{2
   let compiled_specfile_path = tempname()
-  call vspec#compile_specfile(a:specfile_path, compiled_specfile_path)
+  call s:compile_specfile(a:specfile_path, compiled_specfile_path)
 
   execute 'source' compiled_specfile_path
 
   let example_count = 0
   for suite in s:all_suites
-    call vspec#push_current_suite(suite)
+    call s:push_current_suite(suite)
       for example in suite.example_list
         let example_count += 1
         try
@@ -202,7 +202,7 @@ function! vspec#test(specfile_path)  "{{{2
               \ )
               echo '# Expected' i.expr_actual i.expr_matcher i.expr_expected
               echo '#       Actual value:' string(i.value_actual)
-              if !vspec#is_custom_matcher(i.expr_matcher)
+              if !s:is_custom_matcher(i.expr_matcher)
                 echo '#     Expected value:' string(i.value_expected)
               endif
             elseif type ==# 'TODO'
@@ -244,7 +244,7 @@ function! vspec#test(specfile_path)  "{{{2
           endif
         endtry
       endfor
-    call vspec#pop_current_suite()
+    call s:pop_current_suite()
   endfor
   echo printf('1..%d', example_count)
   echo ''
@@ -297,15 +297,29 @@ endfunction
 
 
 
-function! vspec#add_suite(suite)  "{{{2
-  call add(s:all_suites, a:suite)
+function! s:get_current_suite()  "{{{2
+  return s:current_suites[0]
 endfunction
 
 
 
 
-function! vspec#get_current_suite()  "{{{2
-  return s:current_suites[0]
+function! s:pop_current_suite()  "{{{2
+  return remove(s:current_suites, 0)
+endfunction
+
+
+
+
+function! s:push_current_suite(suite)  "{{{2
+  call insert(s:current_suites, a:suite, 0)
+endfunction
+
+
+
+
+function! vspec#add_suite(suite)  "{{{2
+  call add(s:all_suites, a:suite)
 endfunction
 
 
@@ -324,35 +338,21 @@ endfunction
 
 
 
-function! vspec#pop_current_suite()  "{{{2
-  return remove(s:current_suites, 0)
-endfunction
-
-
-
-
-function! vspec#push_current_suite(suite)  "{{{2
-  call insert(s:current_suites, a:suite, 0)
-endfunction
-
-
-
-
 
 
 
 
 " Compiler  "{{{1
-function! vspec#compile_specfile(specfile_path, result_path)  "{{{2
+function! s:compile_specfile(specfile_path, result_path)  "{{{2
   let slines = readfile(a:specfile_path)
-  let rlines = vspec#translate_script(slines)
+  let rlines = s:translate_script(slines)
   call writefile(rlines, a:result_path)
 endfunction
 
 
 
 
-function! vspec#translate_script(slines)  "{{{2
+function! s:translate_script(slines)  "{{{2
   let rlines = []
   let stack = []
 
@@ -406,12 +406,12 @@ endfunction
 
 
 " :Should magic  "{{{1
-function! vspec#cmd_Should(truth, exprs, values)  "{{{2
+function! s:cmd_Should(truth, exprs, values)  "{{{2
   let d = {}
   let [d.expr_actual, d.expr_matcher, d.expr_expected] = a:exprs
   let [d.value_actual, d.value_matcher, d.value_expected] = a:values
 
-  if a:truth != vspec#are_matched(d.value_actual, d.value_matcher, d.value_expected)
+  if a:truth != s:are_matched(d.value_actual, d.value_matcher, d.value_expected)
     throw 'vspec:ExpectationFailure:MismatchedValues:' . string(d)
   endif
 endfunction
@@ -419,16 +419,16 @@ endfunction
 
 
 
-function! vspec#parse_should_args(s, mode)  "{{{2
+function! s:parse_should_arguments(s, mode)  "{{{2
   let tokens = s:split_at_matcher(a:s)
   let [_actual, _matcher, _expected] = tokens
   let [actual, matcher, expected] = tokens
 
   if a:mode ==# 'eval'
-    if vspec#is_matcher(_matcher)
+    if s:is_matcher(_matcher)
       let matcher = string(_matcher)
     endif
-    if vspec#is_custom_matcher(_matcher)
+    if s:is_custom_matcher(_matcher)
       let expected = string(_expected)
     endif
   endif
@@ -444,8 +444,8 @@ endfunction
 
 
 " Matchers  "{{{1
-function! vspec#are_matched(value_actual, expr_matcher, value_expected)  "{{{2
-  if vspec#is_custom_matcher(a:expr_matcher)
+function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
+  if s:is_custom_matcher(a:expr_matcher)
     let custom_matcher_name = a:value_expected
     if !has_key(s:custom_matchers, custom_matcher_name)
       throw
@@ -453,21 +453,21 @@ function! vspec#are_matched(value_actual, expr_matcher, value_expected)  "{{{2
       \ . string(custom_matcher_name)
     endif
     return !!s:custom_matchers[custom_matcher_name](a:value_actual)
-  elseif vspec#is_equality_matcher(a:expr_matcher)
+  elseif s:is_equality_matcher(a:expr_matcher)
     let type_equality = type(a:value_actual) == type(a:value_expected)
-    if vspec#is_negative_matcher(a:expr_matcher) && !type_equality
+    if s:is_negative_matcher(a:expr_matcher) && !type_equality
       return s:TRUE
     else
       return type_equality && eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
     endif
-  elseif vspec#is_ordering_matcher(a:expr_matcher)
+  elseif s:is_ordering_matcher(a:expr_matcher)
     if (type(a:value_actual) != type(a:value_expected)
-    \   || !vspec#is_orderable_type(a:value_actual)
-    \   || !vspec#is_orderable_type(a:value_expected))
+    \   || !s:is_orderable_type(a:value_actual)
+    \   || !s:is_orderable_type(a:value_expected))
       return s:FALSE
     endif
     return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
-  elseif vspec#is_regexp_matcher(a:expr_matcher)
+  elseif s:is_regexp_matcher(a:expr_matcher)
     if type(a:value_actual) != type('') || type(a:value_expected) != type('')
       return s:FALSE
     endif
@@ -480,36 +480,36 @@ endfunction
 
 
 
-function! vspec#is_custom_matcher(expr_matcher)  "{{{2
+function! s:is_custom_matcher(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_CUSTOM, a:expr_matcher)
 endfunction
 
 
 
 
-function! vspec#is_equality_matcher(expr_matcher)  "{{{2
+function! s:is_equality_matcher(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_EQUALITY, a:expr_matcher)
 endfunction
 
 
 
 
-function! vspec#is_matcher(expr_matcher)  "{{{2
+function! s:is_matcher(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS, a:expr_matcher)
 endfunction
 
 
 
 
-function! vspec#is_negative_matcher(expr_matcher)  "{{{2
+function! s:is_negative_matcher(expr_matcher)  "{{{2
   " FIXME: Ad hoc way.
-  return vspec#is_matcher(a:expr_matcher) && a:expr_matcher =~# '\(!\|not\)'
+  return s:is_matcher(a:expr_matcher) && a:expr_matcher =~# '\(!\|not\)'
 endfunction
 
 
 
 
-function! vspec#is_orderable_type(value)  "{{{2
+function! s:is_orderable_type(value)  "{{{2
   " FIXME: +float
   return type(a:value) == type(0) || type(a:value) == type('')
 endfunction
@@ -517,14 +517,14 @@ endfunction
 
 
 
-function! vspec#is_ordering_matcher(expr_matcher)  "{{{2
+function! s:is_ordering_matcher(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_ORDERING, a:expr_matcher)
 endfunction
 
 
 
 
-function! vspec#is_regexp_matcher(expr_matcher)  "{{{2
+function! s:is_regexp_matcher(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_REGEXP, a:expr_matcher)
 endfunction
 
