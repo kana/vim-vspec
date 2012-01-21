@@ -420,9 +420,7 @@ endfunction
 
 
 function! vspec#parse_should_args(s, mode)  "{{{2
-  let CMPS = join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
-  let _ = matchlist(a:s, printf('\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$', CMPS))
-  let tokens =  _[1:3]
+  let tokens = s:split_at_matcher(a:s)
   let [_actual, _matcher, _expected] = copy(tokens)
   let [actual, matcher, expected] = copy(tokens)
 
@@ -528,6 +526,15 @@ endfunction
 
 function! vspec#is_regexp_matcher(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_REGEXP, a:expr_matcher)
+endfunction
+
+
+
+
+function! s:split_at_matcher(s)  "{{{2
+  let CMPS = join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
+  let ts = matchlist(a:s, printf('\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$', CMPS))
+  return ts[1:3]
 endfunction
 
 
