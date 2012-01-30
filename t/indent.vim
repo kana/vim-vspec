@@ -28,7 +28,7 @@ describe 'Automatic indentation'
     \   'end',
     \ ], "\<Return>")
 
-    Should getline(1, '$') ==# [
+    Expect getline(1, '$') ==# [
     \   'describe ''foo''',
     \   '  bar',
     \   'end',
@@ -48,7 +48,7 @@ describe 'Automatic indentation'
     \   'end',
     \ ], "\<Return>")
 
-    Should getline(1, '$') ==# [
+    Expect getline(1, '$') ==# [
     \   'describe ''foo''',
     \   '  it ''bar''',
     \   '    baz',

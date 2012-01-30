@@ -96,31 +96,12 @@ COMMANDS					*vspec-commands*
 >
 				describe 'comparison operators'
 				  it 'should match case-sensitively'
-				    Should 'abc' =~# 'a'
-				    Should 'abc' !~# 'A'
+				    Expect 'abc' =~# 'a'
+				    Expect 'abc' !~# 'A'
 				  end
 				end
 <
-
-:ResetContext					*:ResetContext*
-			Reset the current context of a script with one saved
-			by |:SaveContext|.
-
-			To use this feature, you have to tell "scope" hint to
-			vspec with |vspec#hint()|.
-
-:SaveContext					*:SaveContext*
-			Save the current context of a script, i.e., an
-			snapshot of script-local variables defined in the
-			script.  See also |:ResetContext|.
-
-			:SaveContext is automatically executed whenever
-			|vspec#hint()| is called with "scope" hint.
-
-			To use this feature, you have to tell "scope" hint to
-			vspec with |vspec#hint()|.
-
-:Should {actual} {matcher} {expected}		*:Should*
+:Expect {actual} {matcher} {expected}		*:Expect*
 			Describe an expectation - test whether {actual} value
 			matches with {expected} value, in a sense of
 			{matcher}.
@@ -140,24 +121,25 @@ COMMANDS					*vspec-commands*
 
 			Examples:
 >
-				:Should 'abc' =~# 'A'
+				:Expect 'abc' =~# 'A'
 				" ==> good
-				:Should 'abc' =~? 'A'
+				:Expect 'abc' =~? 'A'
 				" ==> bad
 
-				:Should {} == {}
+				:Expect {} == {}
 				" ==> good
-				:Should {} isnot {}
+				:Expect {} isnot {}
 				" ==> bad
 <
-						*vspec-custom-matcher*
-			If {matcher} is "be", :Should acts in another mode.
-			{expected} is treated as an alias of a function which
-			is called "custom matcher".  The custom matcher
-			corresponding to {expected} is called with {actual}
-			value.  It must return true if {actual} value is
-			valid, otherwise it must return false.  See also
-			|vspec#customize_matcher()|.
+:Expect {actual} {custom-matcher} [{arg}, ...]	*vspec-custom-matcher*
+			If {custom-matcher} starts with "to", :Expect acts in
+			another mode.  {custom-matcher} is treated as an alias
+			of a function which is called "custom matcher".
+
+			The custom matcher will be called with {actual} and
+			{arg}s.  It must return true if {actual} value is
+			valid, otherwise it must return false.
+			See also |vspec#customize_matcher()|.
 
 			Examples:
 >
@@ -166,26 +148,45 @@ COMMANDS					*vspec-commands*
 				  \       ? a:actual_value
 				  \       : !!0)
 				endfunction
-				call vspec#customize_matcher('true',
+				call vspec#customize_matcher('toBeTrue',
 				\                            function('True'))
 
-				:Should 123 be true
+				:Expect 123 toBeTrue
 				" ===> good
-				:Should [123] be true
+				:Expect [123] toBeTrue
 				" ===> bad
 <
 					    *vspec-predefined-custom-matchers*
 			The following custom matcheres are predefined:
 
-			"true"
+			"toBeTrue"
 				Return true if {actual} value is true.
-			"false"
+			"toBeFalse"
 				Return true if {actual} value is false.
 
-:ShouldNot {actual} {matcher} {expected}	*:ShouldNot*
-			Like |:Should|, but test whether {actual} value does
+:Expect {actual} not {matcher} {expected}	*:Expect-not*
+:Expect {actual} not {custom-matcher} [{arg}, ...]
+			Like |:Expect|, but test whether {actual} value does
 			NOT match with {expected} value, in a sense of
-			{matcher}.
+			{matcher} or {custom-matcher}.
+
+:ResetContext					*:ResetContext*
+			Reset the current context of a script with one saved
+			by |:SaveContext|.
+
+			To use this feature, you have to tell "scope" hint to
+			vspec with |vspec#hint()|.
+
+:SaveContext					*:SaveContext*
+			Save the current context of a script, i.e., an
+			snapshot of script-local variables defined in the
+			script.  See also |:ResetContext|.
+
+			:SaveContext is automatically executed whenever
+			|vspec#hint()| is called with "scope" hint.
+
+			To use this feature, you have to tell "scope" hint to
+			vspec with |vspec#hint()|.
 
 :TODO						*:TODO*
 			Represent that the current example is not written yet.
@@ -310,7 +311,9 @@ CHANGELOG					*vspec-changelog*
 	  - The style to write examples is changed.
 	    See also |vspec-examples| for the details.
 	  - Change the order of arguments to |bin/vspec|.
-	  - Add |:ShouldNot| for some examples.
+	  - Change the syntax for |vspec-custom-matcher| to be extensible and
+	    readable.
+	  - Add |:Expect-not| for counter examples.
 	  - Add |:TODO| for incomplete examples.
 	  - Add |:SKIP| for environment-specific examples.
 

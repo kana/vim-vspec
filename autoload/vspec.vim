@@ -83,6 +83,16 @@ let s:suite = {}  "{{{2
 
 
 " Interface  "{{{1
+" :Expect  "{{{2
+command! -bar -complete=expression -nargs=+ Expect
+\ call s:cmd_Expect(
+\   s:parse_should_arguments(<q-args>, 'raw'),
+\   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
+\ )
+
+
+
+
 " :ResetContext  "{{{2
 command! -bar -nargs=0 ResetContext
 \ call s:cmd_ResetContext()
@@ -93,28 +103,6 @@ command! -bar -nargs=0 ResetContext
 " :SaveContext  "{{{2
 command! -bar -nargs=0 SaveContext
 \ call s:cmd_SaveContext()
-
-
-
-
-" :Should  "{{{2
-command! -bar -complete=expression -nargs=+ Should
-\ call s:cmd_Should(
-\   s:TRUE,
-\   s:parse_should_arguments(<q-args>, 'raw'),
-\   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
-\ )
-
-
-
-
-" :ShouldNot  "{{{2
-command! -bar -complete=expression -nargs=+ ShouldNot
-\ call s:cmd_Should(
-\   s:FALSE,
-\   s:parse_should_arguments(<q-args>, 'raw'),
-\   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
-\ )
 
 
 
@@ -311,20 +299,20 @@ endfunction
 
 
 
-" Predefined custom matchers - false "{{{2
+" Predefined custom matchers - toBeFalse "{{{2
 function! vspec#_matcher_false(value)
   return type(a:value) == type(0) ? !(a:value) : s:FALSE
 endfunction
-call vspec#customize_matcher('false', function('vspec#_matcher_false'))
+call vspec#customize_matcher('toBeFalse', function('vspec#_matcher_false'))
 
 
 
 
-" Predefined custom matchers - true "{{{2
+" Predefined custom matchers - toBeTrue "{{{2
 function! vspec#_matcher_true(value)
   return type(a:value) == type(0) ? !!(a:value) : s:FALSE
 endfunction
-call vspec#customize_matcher('true', function('vspec#_matcher_true'))
+call vspec#customize_matcher('toBeTrue', function('vspec#_matcher_true'))
 
 
 
@@ -461,13 +449,14 @@ endfunction
 
 
 
-" :Should magic  "{{{1
-function! s:cmd_Should(truth, exprs, values)  "{{{2
+" :Expect magic  "{{{1
+function! s:cmd_Expect(exprs, vals)  "{{{2
   let d = {}
-  let [d.expr_actual, d.expr_matcher, d.expr_expected] = a:exprs
-  let [d.value_actual, d.value_matcher, d.value_expected] = a:values
+  let [d.expr_actual, d.expr_not, d.expr_matcher, d.expr_expected] = a:exprs
+  let [d.value_actual, d.value_not, d.value_matcher, d.value_expected] = a:vals
 
-  if a:truth != s:are_matched(d.value_actual, d.value_matcher, d.value_expected)
+  let truth = d.value_not ==# ''
+  if truth != s:are_matched(d.value_actual, d.value_matcher, d.value_expected)
     throw 'vspec:ExpectationFailure:MismatchedValues:' . string(d)
   endif
 endfunction
@@ -477,8 +466,8 @@ endfunction
 
 function! s:parse_should_arguments(s, mode)  "{{{2
   let tokens = s:split_at_matcher(a:s)
-  let [_actual, _matcher, _expected] = tokens
-  let [actual, matcher, expected] = tokens
+  let [_actual, _not, _matcher, _expected] = tokens
+  let [actual, not, matcher, expected] = tokens
 
   if a:mode ==# 'eval'
     if s:is_matcher(_matcher)
@@ -487,9 +476,10 @@ function! s:parse_should_arguments(s, mode)  "{{{2
     if s:is_custom_matcher(_matcher)
       let expected = string(_expected)
     endif
+    let not = string(_not)
   endif
 
-  return [actual, matcher, expected]
+  return [actual, not, matcher, expected]
 endfunction
 
 
@@ -547,12 +537,7 @@ let s:VALID_MATCHERS_ORDERING = [
 \   '>=#',
 \ ]
 
-let s:VALID_MATCHERS_CUSTOM = [
-\   'be',
-\ ]
-
-let s:VALID_MATCHERS = (s:VALID_MATCHERS_CUSTOM
-\                       + s:VALID_MATCHERS_EQUALITY
+let s:VALID_MATCHERS = (s:VALID_MATCHERS_EQUALITY
 \                       + s:VALID_MATCHERS_ORDERING
 \                       + s:VALID_MATCHERS_REGEXP)
 
@@ -561,13 +546,16 @@ let s:VALID_MATCHERS = (s:VALID_MATCHERS_CUSTOM
 
 function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
   if s:is_custom_matcher(a:expr_matcher)
-    let custom_matcher_name = a:value_expected
+    let custom_matcher_name = a:expr_matcher
     if !has_key(s:custom_matchers, custom_matcher_name)
       throw
       \ 'vspec:InvalidOperation:Unknown custom matcher - '
       \ . string(custom_matcher_name)
     endif
-    return !!s:custom_matchers[custom_matcher_name](a:value_actual)
+    return !!call(
+    \   s:custom_matchers[custom_matcher_name],
+    \   [a:value_actual] + eval(printf('[%s]', a:value_expected))
+    \ )
   elseif s:is_equality_matcher(a:expr_matcher)
     let type_equality = type(a:value_actual) == type(a:value_expected)
     if s:is_negative_matcher(a:expr_matcher) && !type_equality
@@ -596,7 +584,7 @@ endfunction
 
 
 function! s:is_custom_matcher(expr_matcher)  "{{{2
-  return 0 <= index(s:VALID_MATCHERS_CUSTOM, a:expr_matcher)
+  return a:expr_matcher =~# '^to'
 endfunction
 
 
@@ -610,7 +598,7 @@ endfunction
 
 
 function! s:is_matcher(expr_matcher)  "{{{2
-  return 0 <= index(s:VALID_MATCHERS, a:expr_matcher)
+  return 0 <= index(s:VALID_MATCHERS, a:expr_matcher) || s:is_custom_matcher(a:expr_matcher)
 endfunction
 
 
@@ -648,13 +636,19 @@ endfunction
 
 function! s:split_at_matcher(s)  "{{{2
   let tokens = matchlist(a:s, s:RE_SPLIT_AT_MATCHER)
-  return tokens[1:3]
+  return tokens[1:4]
 endfunction
 
 let s:RE_SPLIT_AT_MATCHER =
 \ printf(
-\   '\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$',
-\   join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
+\   '\C\v^(.{-})\s+%%((not)\s+)?(%%(%%(%s)[#?]?)|to\w+>)(.*)$',
+\   join(
+\     map(
+\       reverse(sort(copy(s:VALID_MATCHERS))),
+\       'escape(v:val, "=!<>~#?")'
+\     ),
+\     '|'
+\   )
 \ )
 
 
