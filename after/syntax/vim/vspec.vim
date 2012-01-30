@@ -24,16 +24,17 @@
 
 syntax keyword vimVspecCommand describe skipwhite nextgroup=vimString
 syntax keyword vimVspecCommand end
+syntax keyword vimVspecCommand Expect skipwhite
 syntax keyword vimVspecCommand it skipwhite nextgroup=vimString
+syntax keyword vimVspecOperator not skipwhite
 syntax keyword vimVspecCommand ResetContext
 syntax keyword vimVspecCommand SaveContext
-syntax keyword vimVspecCommand Expect skipwhite nextgroup=vimFunc,vimString
-syntax keyword vimVspecCommand ExpectNot skipwhite nextgroup=vimFunc,vimString
 
 
 
 
 highlight default link vimVspecCommand  vimCommand
+highlight default link vimVspecOperator  vimOper
 
 " __END__
 " vim: foldmethod=marker

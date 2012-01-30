@@ -16,12 +16,12 @@ end
 
 describe ':ExpectNot'
   it 'should succeed if an actual value does not match to an expected value'
-    ExpectNot 'have to' != 'have to'
+    Expect 'have to' not != 'have to'
   end
   it 'should fail if an actual value matches to an expected value'
     let is_succeeded = !0
     try
-      ExpectNot 'should' !=# 'Expect'
+      Expect 'should' not !=# 'Expect'
       let is_succeeded = !0
     catch /^vspec:ExpectationFailure:/
       let is_succeeded = !!0

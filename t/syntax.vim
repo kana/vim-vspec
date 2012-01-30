@@ -14,7 +14,7 @@ describe 'Syntax highlighting'
     \   'describe ''Syntax highlighting''',
     \   '  it ''should highlight vspec-specific keywords''',
     \   '    Expect type(s) ==# type('''')',
-    \   '    ExpectNot type(s) ==# type(0)',
+    \   '    Expect type(s) not ==# type(0)',
     \   '  end',
     \   'end',
     \ ]
@@ -155,29 +155,30 @@ describe 'Syntax highlighting'
     Expect SynStack(4, 8) ==# ['vimVspecCommand']
     Expect SynStack(4, 9) ==# ['vimVspecCommand']
     Expect SynStack(4, 10) ==# ['vimVspecCommand']
-    Expect SynStack(4, 11) ==# ['vimVspecCommand']
-    Expect SynStack(4, 12) ==# ['vimVspecCommand']
-    Expect SynStack(4, 13) ==# ['vimVspecCommand']
-    Expect SynStack(4, 14) ==# []
+    Expect SynStack(4, 11) ==# []
+    Expect SynStack(4, 12) ==# ['vimFunc', 'vimFuncName']
+    Expect SynStack(4, 13) ==# ['vimFunc', 'vimFuncName']
+    Expect SynStack(4, 14) ==# ['vimFunc', 'vimFuncName']
     Expect SynStack(4, 15) ==# ['vimFunc', 'vimFuncName']
-    Expect SynStack(4, 16) ==# ['vimFunc', 'vimFuncName']
-    Expect SynStack(4, 17) ==# ['vimFunc', 'vimFuncName']
-    Expect SynStack(4, 18) ==# ['vimFunc', 'vimFuncName']
-    Expect SynStack(4, 19) ==# ['vimOperParen', 'vimParenSep']
-    Expect SynStack(4, 20) ==# ['vimOperParen']
-    Expect SynStack(4, 21) ==# ['vimParenSep']
-    Expect SynStack(4, 22) ==# []
-    Expect SynStack(4, 23) ==# ['vimOper']
+    Expect SynStack(4, 16) ==# ['vimOperParen', 'vimParenSep']
+    Expect SynStack(4, 17) ==# ['vimOperParen']
+    Expect SynStack(4, 18) ==# ['vimParenSep']
+    Expect SynStack(4, 19) ==# []
+    Expect SynStack(4, 20) ==# ['vimVspecOperator']
+    Expect SynStack(4, 21) ==# ['vimVspecOperator']
+    Expect SynStack(4, 22) ==# ['vimVspecOperator']
+    Expect SynStack(4, 23) ==# []
     Expect SynStack(4, 24) ==# ['vimOper']
     Expect SynStack(4, 25) ==# ['vimOper']
-    Expect SynStack(4, 26) ==# []
-    Expect SynStack(4, 27) ==# ['vimFunc', 'vimFuncName']
+    Expect SynStack(4, 26) ==# ['vimOper']
+    Expect SynStack(4, 27) ==# []
     Expect SynStack(4, 28) ==# ['vimFunc', 'vimFuncName']
     Expect SynStack(4, 29) ==# ['vimFunc', 'vimFuncName']
     Expect SynStack(4, 30) ==# ['vimFunc', 'vimFuncName']
-    Expect SynStack(4, 31) ==# ['vimOperParen', 'vimParenSep']
-    Expect SynStack(4, 32) ==# ['vimOperParen', 'vimNumber']
-    Expect SynStack(4, 33) ==# ['vimParenSep']
+    Expect SynStack(4, 31) ==# ['vimFunc', 'vimFuncName']
+    Expect SynStack(4, 32) ==# ['vimOperParen', 'vimParenSep']
+    Expect SynStack(4, 33) ==# ['vimOperParen', 'vimNumber']
+    Expect SynStack(4, 34) ==# ['vimParenSep']
   end
 
   it 'should highlight :end properly'

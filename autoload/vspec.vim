@@ -86,18 +86,6 @@ let s:suite = {}  "{{{2
 " :Expect  "{{{2
 command! -bar -complete=expression -nargs=+ Expect
 \ call s:cmd_Expect(
-\   s:TRUE,
-\   s:parse_should_arguments(<q-args>, 'raw'),
-\   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
-\ )
-
-
-
-
-" :ExpectNot  "{{{2
-command! -bar -complete=expression -nargs=+ ExpectNot
-\ call s:cmd_Expect(
-\   s:FALSE,
 \   s:parse_should_arguments(<q-args>, 'raw'),
 \   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
 \ )
@@ -462,12 +450,13 @@ endfunction
 
 
 " :Expect magic  "{{{1
-function! s:cmd_Expect(truth, exprs, values)  "{{{2
+function! s:cmd_Expect(exprs, vals)  "{{{2
   let d = {}
-  let [d.expr_actual, d.expr_matcher, d.expr_expected] = a:exprs
-  let [d.value_actual, d.value_matcher, d.value_expected] = a:values
+  let [d.expr_actual, d.expr_not, d.expr_matcher, d.expr_expected] = a:exprs
+  let [d.value_actual, d.value_not, d.value_matcher, d.value_expected] = a:vals
 
-  if a:truth != s:are_matched(d.value_actual, d.value_matcher, d.value_expected)
+  let truth = d.value_not ==# ''
+  if truth != s:are_matched(d.value_actual, d.value_matcher, d.value_expected)
     throw 'vspec:ExpectationFailure:MismatchedValues:' . string(d)
   endif
 endfunction
@@ -477,8 +466,8 @@ endfunction
 
 function! s:parse_should_arguments(s, mode)  "{{{2
   let tokens = s:split_at_matcher(a:s)
-  let [_actual, _matcher, _expected] = tokens
-  let [actual, matcher, expected] = tokens
+  let [_actual, _not, _matcher, _expected] = tokens
+  let [actual, not, matcher, expected] = tokens
 
   if a:mode ==# 'eval'
     if s:is_matcher(_matcher)
@@ -487,9 +476,10 @@ function! s:parse_should_arguments(s, mode)  "{{{2
     if s:is_custom_matcher(_matcher)
       let expected = string(_expected)
     endif
+    let not = string(_not)
   endif
 
-  return [actual, matcher, expected]
+  return [actual, not, matcher, expected]
 endfunction
 
 
@@ -646,12 +636,12 @@ endfunction
 
 function! s:split_at_matcher(s)  "{{{2
   let tokens = matchlist(a:s, s:RE_SPLIT_AT_MATCHER)
-  return tokens[1:3]
+  return tokens[1:4]
 endfunction
 
 let s:RE_SPLIT_AT_MATCHER =
 \ printf(
-\   '\C\v^(.{-})\s+(%%(%%(%s)[#?]?)|to\w+>)(.*)$',
+\   '\C\v^(.{-})\s+%%((not)\s+)?(%%(%%(%s)[#?]?)|to\w+>)(.*)$',
 \   join(
 \     map(
 \       reverse(sort(copy(s:VALID_MATCHERS))),

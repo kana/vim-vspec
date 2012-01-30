@@ -164,10 +164,11 @@ COMMANDS					*vspec-commands*
 			"toBeFalse"
 				Return true if {actual} value is false.
 
-:ExpectNot {actual} {matcher} {expected}	*:ExpectNot*
+:Expect {actual} not {matcher} {expected}	*:Expect-not*
+:Expect {actual} not {custom-matcher} [{arg}, ...]
 			Like |:Expect|, but test whether {actual} value does
 			NOT match with {expected} value, in a sense of
-			{matcher}.
+			{matcher} or {custom-matcher}.
 
 :ResetContext					*:ResetContext*
 			Reset the current context of a script with one saved
@@ -312,7 +313,7 @@ CHANGELOG					*vspec-changelog*
 	  - Change the order of arguments to |bin/vspec|.
 	  - Change the syntax for |vspec-custom-matcher| to be extensible and
 	    readable.
-	  - Add |:ExpectNot| for some examples.
+	  - Add |:Expect-not| for counter examples.
 	  - Add |:TODO| for incomplete examples.
 	  - Add |:SKIP| for environment-specific examples.
 
