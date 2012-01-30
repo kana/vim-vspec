@@ -2,15 +2,15 @@ describe 'vspec#customize_matcher'
   it 'should define a custom matcher'
     let caught = !!0
     try
-      Expect [] be empty
+      Expect [] toBeEmpty
       let caught = !!0
-    catch /^vspec:InvalidOperation:Unknown custom matcher - 'empty'$/
+    catch /^vspec:InvalidOperation:Unknown custom matcher - 'toBeEmpty'$/
       let caught = !0
     endtry
-    Expect caught be true
+    Expect caught toBeTrue
 
-    call vspec#customize_matcher('empty', function('empty'))
+    call vspec#customize_matcher('toBeEmpty', function('empty'))
 
-    Expect [] be empty
+    Expect [] toBeEmpty
   end
 end

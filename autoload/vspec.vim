@@ -311,20 +311,20 @@ endfunction
 
 
 
-" Predefined custom matchers - false "{{{2
+" Predefined custom matchers - toBeFalse "{{{2
 function! vspec#_matcher_false(value)
   return type(a:value) == type(0) ? !(a:value) : s:FALSE
 endfunction
-call vspec#customize_matcher('false', function('vspec#_matcher_false'))
+call vspec#customize_matcher('toBeFalse', function('vspec#_matcher_false'))
 
 
 
 
-" Predefined custom matchers - true "{{{2
+" Predefined custom matchers - toBeTrue "{{{2
 function! vspec#_matcher_true(value)
   return type(a:value) == type(0) ? !!(a:value) : s:FALSE
 endfunction
-call vspec#customize_matcher('true', function('vspec#_matcher_true'))
+call vspec#customize_matcher('toBeTrue', function('vspec#_matcher_true'))
 
 
 
@@ -547,12 +547,7 @@ let s:VALID_MATCHERS_ORDERING = [
 \   '>=#',
 \ ]
 
-let s:VALID_MATCHERS_CUSTOM = [
-\   'be',
-\ ]
-
-let s:VALID_MATCHERS = (s:VALID_MATCHERS_CUSTOM
-\                       + s:VALID_MATCHERS_EQUALITY
+let s:VALID_MATCHERS = (s:VALID_MATCHERS_EQUALITY
 \                       + s:VALID_MATCHERS_ORDERING
 \                       + s:VALID_MATCHERS_REGEXP)
 
@@ -561,13 +556,16 @@ let s:VALID_MATCHERS = (s:VALID_MATCHERS_CUSTOM
 
 function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
   if s:is_custom_matcher(a:expr_matcher)
-    let custom_matcher_name = a:value_expected
+    let custom_matcher_name = a:expr_matcher
     if !has_key(s:custom_matchers, custom_matcher_name)
       throw
       \ 'vspec:InvalidOperation:Unknown custom matcher - '
       \ . string(custom_matcher_name)
     endif
-    return !!s:custom_matchers[custom_matcher_name](a:value_actual)
+    return !!call(
+    \   s:custom_matchers[custom_matcher_name],
+    \   [a:value_actual] + eval(printf('[%s]', a:value_expected))
+    \ )
   elseif s:is_equality_matcher(a:expr_matcher)
     let type_equality = type(a:value_actual) == type(a:value_expected)
     if s:is_negative_matcher(a:expr_matcher) && !type_equality
@@ -596,7 +594,7 @@ endfunction
 
 
 function! s:is_custom_matcher(expr_matcher)  "{{{2
-  return 0 <= index(s:VALID_MATCHERS_CUSTOM, a:expr_matcher)
+  return a:expr_matcher =~# '^to'
 endfunction
 
 
@@ -610,7 +608,7 @@ endfunction
 
 
 function! s:is_matcher(expr_matcher)  "{{{2
-  return 0 <= index(s:VALID_MATCHERS, a:expr_matcher)
+  return 0 <= index(s:VALID_MATCHERS, a:expr_matcher) || s:is_custom_matcher(a:expr_matcher)
 endfunction
 
 
@@ -653,8 +651,14 @@ endfunction
 
 let s:RE_SPLIT_AT_MATCHER =
 \ printf(
-\   '\C\v^(.{-})\s+(%%(%s)[#?]?)\s+(.*)$',
-\   join(map(copy(s:VALID_MATCHERS), 'escape(v:val, "=!<>~#?")'), '|')
+\   '\C\v^(.{-})\s+(%%(%%(%s)[#?]?)|to\w+>)(.*)$',
+\   join(
+\     map(
+\       reverse(sort(copy(s:VALID_MATCHERS))),
+\       'escape(v:val, "=!<>~#?")'
+\     ),
+\     '|'
+\   )
 \ )
 
 

@@ -846,14 +846,14 @@ end
 
 describe 'be false'
   it 'should succeed if a given value is false'
-    Expect 0 be false
-    ExpectNot 1 be false
+    Expect 0 toBeFalse
+    ExpectNot 1 toBeFalse
   end
 end
 
 describe 'be true'
   it 'should succeed if a given value is true'
-    ExpectNot 0 be true
-    Expect 1 be true
+    ExpectNot 0 toBeTrue
+    Expect 1 toBeTrue
   end
 end

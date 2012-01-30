@@ -10,7 +10,7 @@ describe ':Expect'
     catch /^vspec:ExpectationFailure:/
       let is_succeeded = !!0
     endtry
-    Expect is_succeeded be false
+    Expect is_succeeded toBeFalse
   end
 end
 
@@ -26,6 +26,6 @@ describe ':ExpectNot'
     catch /^vspec:ExpectationFailure:/
       let is_succeeded = !!0
     endtry
-    Expect is_succeeded be false
+    Expect is_succeeded toBeFalse
   end
 end
