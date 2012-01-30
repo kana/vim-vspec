@@ -12,30 +12,30 @@ endfunction
 
 describe ':ResetContext'
   it 'should fail without vspec#hint()'
-    Should Do('ResetContext') == 101
+    Expect Do('ResetContext') == 101
   end
 end
 
 describe ':SaveContext'
   it 'should fail without vspec#hint()'
-    Should Do('SaveContext') == 101
+    Expect Do('SaveContext') == 101
   end
 end
 
 describe 'Call'
   it 'should fail without vspec#hint()'
-    Should Do('echo Call(''s:foo'')') == 101
+    Expect Do('echo Call(''s:foo'')') == 101
   end
 end
 
 describe 'Ref'
   it 'should fail without vspec#hint()'
-    Should Do('echo Ref(''s:foo'')') == 101
+    Expect Do('echo Ref(''s:foo'')') == 101
   end
 end
 
 describe 'Set'
   it 'should fail without vspec#hint()'
-    Should Do('echo Set(''s:foo'', ''bar'')') == 101
+    Expect Do('echo Set(''s:foo'', ''bar'')') == 101
   end
 end

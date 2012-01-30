@@ -1,30 +1,30 @@
 describe '=='
   it 'should compare equality of given values with &ignorecase'
     set noignorecase
-    Should 123 == 123
-    ShouldNot 123 == 789
-    Should 'abc' == 'abc'
-    ShouldNot 'abc' == 'ABC'
-    ShouldNot 'abc' == 'xyz'
-    Should ['abc'] == ['abc']
-    ShouldNot ['abc'] == ['ABC']
-    ShouldNot ['abc'] == ['xyz']
-    Should {'abc': 'def'} == {'abc': 'def'}
-    ShouldNot {'abc': 'def'} == {'abc': 'DEF'}
-    ShouldNot {'abc': 'def'} == {'abc': 'xyz'}
+    Expect 123 == 123
+    ExpectNot 123 == 789
+    Expect 'abc' == 'abc'
+    ExpectNot 'abc' == 'ABC'
+    ExpectNot 'abc' == 'xyz'
+    Expect ['abc'] == ['abc']
+    ExpectNot ['abc'] == ['ABC']
+    ExpectNot ['abc'] == ['xyz']
+    Expect {'abc': 'def'} == {'abc': 'def'}
+    ExpectNot {'abc': 'def'} == {'abc': 'DEF'}
+    ExpectNot {'abc': 'def'} == {'abc': 'xyz'}
 
     set ignorecase
-    Should 123 == 123
-    ShouldNot 123 == 789
-    Should 'abc' == 'abc'
-    Should 'abc' == 'ABC'
-    ShouldNot 'abc' == 'xyz'
-    Should ['abc'] == ['abc']
-    Should ['abc'] == ['ABC']
-    ShouldNot ['abc'] == ['xyz']
-    Should {'abc': 'def'} == {'abc': 'def'}
-    Should {'abc': 'def'} == {'abc': 'DEF'}
-    ShouldNot {'abc': 'def'} == {'abc': 'xyz'}
+    Expect 123 == 123
+    ExpectNot 123 == 789
+    Expect 'abc' == 'abc'
+    Expect 'abc' == 'ABC'
+    ExpectNot 'abc' == 'xyz'
+    Expect ['abc'] == ['abc']
+    Expect ['abc'] == ['ABC']
+    ExpectNot ['abc'] == ['xyz']
+    Expect {'abc': 'def'} == {'abc': 'def'}
+    Expect {'abc': 'def'} == {'abc': 'DEF'}
+    ExpectNot {'abc': 'def'} == {'abc': 'xyz'}
 
     set ignorecase&
   end
@@ -33,30 +33,30 @@ end
 describe '==#'
   it 'should compare equality of given values case-sensitively'
     set noignorecase
-    Should 123 ==# 123
-    ShouldNot 123 ==# 789
-    Should 'abc' ==# 'abc'
-    ShouldNot 'abc' ==# 'ABC'
-    ShouldNot 'abc' ==# 'xyz'
-    Should ['abc'] ==# ['abc']
-    ShouldNot ['abc'] ==# ['ABC']
-    ShouldNot ['abc'] ==# ['xyz']
-    Should {'abc': 'def'} ==# {'abc': 'def'}
-    ShouldNot {'abc': 'def'} ==# {'abc': 'DEF'}
-    ShouldNot {'abc': 'def'} ==# {'abc': 'xyz'}
+    Expect 123 ==# 123
+    ExpectNot 123 ==# 789
+    Expect 'abc' ==# 'abc'
+    ExpectNot 'abc' ==# 'ABC'
+    ExpectNot 'abc' ==# 'xyz'
+    Expect ['abc'] ==# ['abc']
+    ExpectNot ['abc'] ==# ['ABC']
+    ExpectNot ['abc'] ==# ['xyz']
+    Expect {'abc': 'def'} ==# {'abc': 'def'}
+    ExpectNot {'abc': 'def'} ==# {'abc': 'DEF'}
+    ExpectNot {'abc': 'def'} ==# {'abc': 'xyz'}
 
     set ignorecase
-    Should 123 ==# 123
-    ShouldNot 123 ==# 789
-    Should 'abc' ==# 'abc'
-    ShouldNot 'abc' ==# 'ABC'
-    ShouldNot 'abc' ==# 'xyz'
-    Should ['abc'] ==# ['abc']
-    ShouldNot ['abc'] ==# ['ABC']
-    ShouldNot ['abc'] ==# ['xyz']
-    Should {'abc': 'def'} ==# {'abc': 'def'}
-    ShouldNot {'abc': 'def'} ==# {'abc': 'DEF'}
-    ShouldNot {'abc': 'def'} ==# {'abc': 'xyz'}
+    Expect 123 ==# 123
+    ExpectNot 123 ==# 789
+    Expect 'abc' ==# 'abc'
+    ExpectNot 'abc' ==# 'ABC'
+    ExpectNot 'abc' ==# 'xyz'
+    Expect ['abc'] ==# ['abc']
+    ExpectNot ['abc'] ==# ['ABC']
+    ExpectNot ['abc'] ==# ['xyz']
+    Expect {'abc': 'def'} ==# {'abc': 'def'}
+    ExpectNot {'abc': 'def'} ==# {'abc': 'DEF'}
+    ExpectNot {'abc': 'def'} ==# {'abc': 'xyz'}
 
     set ignorecase&
   end
@@ -65,30 +65,30 @@ end
 describe '==?'
   it 'should compare equality of given values case-insensitively'
     set noignorecase
-    Should 123 ==? 123
-    ShouldNot 123 ==? 789
-    Should 'abc' ==? 'abc'
-    Should 'abc' ==? 'ABC'
-    ShouldNot 'abc' ==? 'xyz'
-    Should ['abc'] ==? ['abc']
-    Should ['abc'] ==? ['ABC']
-    ShouldNot ['abc'] ==? ['xyz']
-    Should {'abc': 'def'} ==? {'abc': 'def'}
-    Should {'abc': 'def'} ==? {'abc': 'DEF'}
-    ShouldNot {'abc': 'def'} ==? {'abc': 'xyz'}
+    Expect 123 ==? 123
+    ExpectNot 123 ==? 789
+    Expect 'abc' ==? 'abc'
+    Expect 'abc' ==? 'ABC'
+    ExpectNot 'abc' ==? 'xyz'
+    Expect ['abc'] ==? ['abc']
+    Expect ['abc'] ==? ['ABC']
+    ExpectNot ['abc'] ==? ['xyz']
+    Expect {'abc': 'def'} ==? {'abc': 'def'}
+    Expect {'abc': 'def'} ==? {'abc': 'DEF'}
+    ExpectNot {'abc': 'def'} ==? {'abc': 'xyz'}
 
     set ignorecase
-    Should 123 ==? 123
-    ShouldNot 123 ==? 789
-    Should 'abc' ==? 'abc'
-    Should 'abc' ==? 'ABC'
-    ShouldNot 'abc' ==? 'xyz'
-    Should ['abc'] ==? ['abc']
-    Should ['abc'] ==? ['ABC']
-    ShouldNot ['abc'] ==? ['xyz']
-    Should {'abc': 'def'} ==? {'abc': 'def'}
-    Should {'abc': 'def'} ==? {'abc': 'DEF'}
-    ShouldNot {'abc': 'def'} ==? {'abc': 'xyz'}
+    Expect 123 ==? 123
+    ExpectNot 123 ==? 789
+    Expect 'abc' ==? 'abc'
+    Expect 'abc' ==? 'ABC'
+    ExpectNot 'abc' ==? 'xyz'
+    Expect ['abc'] ==? ['abc']
+    Expect ['abc'] ==? ['ABC']
+    ExpectNot ['abc'] ==? ['xyz']
+    Expect {'abc': 'def'} ==? {'abc': 'def'}
+    Expect {'abc': 'def'} ==? {'abc': 'DEF'}
+    ExpectNot {'abc': 'def'} ==? {'abc': 'xyz'}
 
     set ignorecase&
   end
@@ -97,30 +97,30 @@ end
 describe '!='
   it 'should compare equality of given values with &ignorecase'
     set noignorecase
-    ShouldNot 123 != 123
-    Should 123 != 789
-    ShouldNot 'abc' != 'abc'
-    Should 'abc' != 'ABC'
-    Should 'abc' != 'xyz'
-    ShouldNot ['abc'] != ['abc']
-    Should ['abc'] != ['ABC']
-    Should ['abc'] != ['xyz']
-    ShouldNot {'abc': 'def'} != {'abc': 'def'}
-    Should {'abc': 'def'} != {'abc': 'DEF'}
-    Should {'abc': 'def'} != {'abc': 'xyz'}
+    ExpectNot 123 != 123
+    Expect 123 != 789
+    ExpectNot 'abc' != 'abc'
+    Expect 'abc' != 'ABC'
+    Expect 'abc' != 'xyz'
+    ExpectNot ['abc'] != ['abc']
+    Expect ['abc'] != ['ABC']
+    Expect ['abc'] != ['xyz']
+    ExpectNot {'abc': 'def'} != {'abc': 'def'}
+    Expect {'abc': 'def'} != {'abc': 'DEF'}
+    Expect {'abc': 'def'} != {'abc': 'xyz'}
 
     set ignorecase
-    ShouldNot 123 != 123
-    Should 123 != 789
-    ShouldNot 'abc' != 'abc'
-    ShouldNot 'abc' != 'ABC'
-    Should 'abc' != 'xyz'
-    ShouldNot ['abc'] != ['abc']
-    ShouldNot ['abc'] != ['ABC']
-    Should ['abc'] != ['xyz']
-    ShouldNot {'abc': 'def'} != {'abc': 'def'}
-    ShouldNot {'abc': 'def'} != {'abc': 'DEF'}
-    Should {'abc': 'def'} != {'abc': 'xyz'}
+    ExpectNot 123 != 123
+    Expect 123 != 789
+    ExpectNot 'abc' != 'abc'
+    ExpectNot 'abc' != 'ABC'
+    Expect 'abc' != 'xyz'
+    ExpectNot ['abc'] != ['abc']
+    ExpectNot ['abc'] != ['ABC']
+    Expect ['abc'] != ['xyz']
+    ExpectNot {'abc': 'def'} != {'abc': 'def'}
+    ExpectNot {'abc': 'def'} != {'abc': 'DEF'}
+    Expect {'abc': 'def'} != {'abc': 'xyz'}
 
     set ignorecase&
   end
@@ -129,30 +129,30 @@ end
 describe '!=#'
   it 'should compare equality of given values case-sensitively'
     set noignorecase
-    ShouldNot 123 !=# 123
-    Should 123 !=# 789
-    ShouldNot 'abc' !=# 'abc'
-    Should 'abc' !=# 'ABC'
-    Should 'abc' !=# 'xyz'
-    ShouldNot ['abc'] !=# ['abc']
-    Should ['abc'] !=# ['ABC']
-    Should ['abc'] !=# ['xyz']
-    ShouldNot {'abc': 'def'} !=# {'abc': 'def'}
-    Should {'abc': 'def'} !=# {'abc': 'DEF'}
-    Should {'abc': 'def'} !=# {'abc': 'xyz'}
+    ExpectNot 123 !=# 123
+    Expect 123 !=# 789
+    ExpectNot 'abc' !=# 'abc'
+    Expect 'abc' !=# 'ABC'
+    Expect 'abc' !=# 'xyz'
+    ExpectNot ['abc'] !=# ['abc']
+    Expect ['abc'] !=# ['ABC']
+    Expect ['abc'] !=# ['xyz']
+    ExpectNot {'abc': 'def'} !=# {'abc': 'def'}
+    Expect {'abc': 'def'} !=# {'abc': 'DEF'}
+    Expect {'abc': 'def'} !=# {'abc': 'xyz'}
 
     set ignorecase
-    ShouldNot 123 !=# 123
-    Should 123 !=# 789
-    ShouldNot 'abc' !=# 'abc'
-    Should 'abc' !=# 'ABC'
-    Should 'abc' !=# 'xyz'
-    ShouldNot ['abc'] !=# ['abc']
-    Should ['abc'] !=# ['ABC']
-    Should ['abc'] !=# ['xyz']
-    ShouldNot {'abc': 'def'} !=# {'abc': 'def'}
-    Should {'abc': 'def'} !=# {'abc': 'DEF'}
-    Should {'abc': 'def'} !=# {'abc': 'xyz'}
+    ExpectNot 123 !=# 123
+    Expect 123 !=# 789
+    ExpectNot 'abc' !=# 'abc'
+    Expect 'abc' !=# 'ABC'
+    Expect 'abc' !=# 'xyz'
+    ExpectNot ['abc'] !=# ['abc']
+    Expect ['abc'] !=# ['ABC']
+    Expect ['abc'] !=# ['xyz']
+    ExpectNot {'abc': 'def'} !=# {'abc': 'def'}
+    Expect {'abc': 'def'} !=# {'abc': 'DEF'}
+    Expect {'abc': 'def'} !=# {'abc': 'xyz'}
 
     set ignorecase&
   end
@@ -161,30 +161,30 @@ end
 describe '!=?'
   it 'should compare equality of given values case-insensitively'
     set noignorecase
-    ShouldNot 123 !=? 123
-    Should 123 !=? 789
-    ShouldNot 'abc' !=? 'abc'
-    ShouldNot 'abc' !=? 'ABC'
-    Should 'abc' !=? 'xyz'
-    ShouldNot ['abc'] !=? ['abc']
-    ShouldNot ['abc'] !=? ['ABC']
-    Should ['abc'] !=? ['xyz']
-    ShouldNot {'abc': 'def'} !=? {'abc': 'def'}
-    ShouldNot {'abc': 'def'} !=? {'abc': 'DEF'}
-    Should {'abc': 'def'} !=? {'abc': 'xyz'}
+    ExpectNot 123 !=? 123
+    Expect 123 !=? 789
+    ExpectNot 'abc' !=? 'abc'
+    ExpectNot 'abc' !=? 'ABC'
+    Expect 'abc' !=? 'xyz'
+    ExpectNot ['abc'] !=? ['abc']
+    ExpectNot ['abc'] !=? ['ABC']
+    Expect ['abc'] !=? ['xyz']
+    ExpectNot {'abc': 'def'} !=? {'abc': 'def'}
+    ExpectNot {'abc': 'def'} !=? {'abc': 'DEF'}
+    Expect {'abc': 'def'} !=? {'abc': 'xyz'}
 
     set ignorecase
-    ShouldNot 123 !=? 123
-    Should 123 !=? 789
-    ShouldNot 'abc' !=? 'abc'
-    ShouldNot 'abc' !=? 'ABC'
-    Should 'abc' !=? 'xyz'
-    ShouldNot ['abc'] !=? ['abc']
-    ShouldNot ['abc'] !=? ['ABC']
-    Should ['abc'] !=? ['xyz']
-    ShouldNot {'abc': 'def'} !=? {'abc': 'def'}
-    ShouldNot {'abc': 'def'} !=? {'abc': 'DEF'}
-    Should {'abc': 'def'} !=? {'abc': 'xyz'}
+    ExpectNot 123 !=? 123
+    Expect 123 !=? 789
+    ExpectNot 'abc' !=? 'abc'
+    ExpectNot 'abc' !=? 'ABC'
+    Expect 'abc' !=? 'xyz'
+    ExpectNot ['abc'] !=? ['abc']
+    ExpectNot ['abc'] !=? ['ABC']
+    Expect ['abc'] !=? ['xyz']
+    ExpectNot {'abc': 'def'} !=? {'abc': 'def'}
+    ExpectNot {'abc': 'def'} !=? {'abc': 'DEF'}
+    Expect {'abc': 'def'} !=? {'abc': 'xyz'}
 
     set ignorecase&
   end
@@ -193,24 +193,24 @@ end
 describe '<'
   it 'should compare order of given values with &ignorecase'
     set noignorecase
-    Should 123 < 456
-    ShouldNot 123 < 123
-    ShouldNot 456 < 123
-    Should 'abc' < 'xyz'
-    ShouldNot 'abc' < 'XYZ'
-    ShouldNot 'abc' < 'abc'
-    ShouldNot 'abc' < 'ABC'
-    ShouldNot 'xyz' < 'abc'
+    Expect 123 < 456
+    ExpectNot 123 < 123
+    ExpectNot 456 < 123
+    Expect 'abc' < 'xyz'
+    ExpectNot 'abc' < 'XYZ'
+    ExpectNot 'abc' < 'abc'
+    ExpectNot 'abc' < 'ABC'
+    ExpectNot 'xyz' < 'abc'
 
     set ignorecase
-    Should 123 < 456
-    ShouldNot 123 < 123
-    ShouldNot 456 < 123
-    Should 'abc' < 'xyz'
-    Should 'abc' < 'XYZ'
-    ShouldNot 'abc' < 'abc'
-    ShouldNot 'abc' < 'ABC'
-    ShouldNot 'xyz' < 'abc'
+    Expect 123 < 456
+    ExpectNot 123 < 123
+    ExpectNot 456 < 123
+    Expect 'abc' < 'xyz'
+    Expect 'abc' < 'XYZ'
+    ExpectNot 'abc' < 'abc'
+    ExpectNot 'abc' < 'ABC'
+    ExpectNot 'xyz' < 'abc'
 
     set ignorecase&
   end
@@ -219,24 +219,24 @@ end
 describe '<#'
   it 'should compare order of given values case-sensitively'
     set noignorecase
-    Should 123 <# 456
-    ShouldNot 123 <# 123
-    ShouldNot 456 <# 123
-    Should 'abc' <# 'xyz'
-    ShouldNot 'abc' <# 'XYZ'
-    ShouldNot 'abc' <# 'abc'
-    ShouldNot 'abc' <# 'ABC'
-    ShouldNot 'xyz' <# 'abc'
+    Expect 123 <# 456
+    ExpectNot 123 <# 123
+    ExpectNot 456 <# 123
+    Expect 'abc' <# 'xyz'
+    ExpectNot 'abc' <# 'XYZ'
+    ExpectNot 'abc' <# 'abc'
+    ExpectNot 'abc' <# 'ABC'
+    ExpectNot 'xyz' <# 'abc'
 
     set ignorecase
-    Should 123 <# 456
-    ShouldNot 123 <# 123
-    ShouldNot 456 <# 123
-    Should 'abc' <# 'xyz'
-    ShouldNot 'abc' <# 'XYZ'
-    ShouldNot 'abc' <# 'abc'
-    ShouldNot 'abc' <# 'ABC'
-    ShouldNot 'xyz' <# 'abc'
+    Expect 123 <# 456
+    ExpectNot 123 <# 123
+    ExpectNot 456 <# 123
+    Expect 'abc' <# 'xyz'
+    ExpectNot 'abc' <# 'XYZ'
+    ExpectNot 'abc' <# 'abc'
+    ExpectNot 'abc' <# 'ABC'
+    ExpectNot 'xyz' <# 'abc'
 
     set ignorecase&
   end
@@ -245,24 +245,24 @@ end
 describe '<?'
   it 'should compare order of given values case-insensitively'
     set noignorecase
-    Should 123 <? 456
-    ShouldNot 123 <? 123
-    ShouldNot 456 <? 123
-    Should 'abc' <? 'xyz'
-    Should 'abc' <? 'XYZ'
-    ShouldNot 'abc' <? 'abc'
-    ShouldNot 'abc' <? 'ABC'
-    ShouldNot 'xyz' <? 'abc'
+    Expect 123 <? 456
+    ExpectNot 123 <? 123
+    ExpectNot 456 <? 123
+    Expect 'abc' <? 'xyz'
+    Expect 'abc' <? 'XYZ'
+    ExpectNot 'abc' <? 'abc'
+    ExpectNot 'abc' <? 'ABC'
+    ExpectNot 'xyz' <? 'abc'
 
     set ignorecase
-    Should 123 <? 456
-    ShouldNot 123 <? 123
-    ShouldNot 456 <? 123
-    Should 'abc' <? 'xyz'
-    Should 'abc' <? 'XYZ'
-    ShouldNot 'abc' <? 'abc'
-    ShouldNot 'abc' <? 'ABC'
-    ShouldNot 'xyz' <? 'abc'
+    Expect 123 <? 456
+    ExpectNot 123 <? 123
+    ExpectNot 456 <? 123
+    Expect 'abc' <? 'xyz'
+    Expect 'abc' <? 'XYZ'
+    ExpectNot 'abc' <? 'abc'
+    ExpectNot 'abc' <? 'ABC'
+    ExpectNot 'xyz' <? 'abc'
 
     set ignorecase&
   end
@@ -271,24 +271,24 @@ end
 describe '<='
   it 'should compare order of given values with &ignorecase'
     set noignorecase
-    Should 123 <= 456
-    Should 123 <= 123
-    ShouldNot 456 <= 123
-    Should 'abc' <= 'xyz'
-    ShouldNot 'abc' <= 'XYZ'
-    Should 'abc' <= 'abc'
-    ShouldNot 'abc' <= 'ABC'
-    ShouldNot 'xyz' <= 'abc'
+    Expect 123 <= 456
+    Expect 123 <= 123
+    ExpectNot 456 <= 123
+    Expect 'abc' <= 'xyz'
+    ExpectNot 'abc' <= 'XYZ'
+    Expect 'abc' <= 'abc'
+    ExpectNot 'abc' <= 'ABC'
+    ExpectNot 'xyz' <= 'abc'
 
     set ignorecase
-    Should 123 <= 456
-    Should 123 <= 123
-    ShouldNot 456 <= 123
-    Should 'abc' <= 'xyz'
-    Should 'abc' <= 'XYZ'
-    Should 'abc' <= 'abc'
-    Should 'abc' <= 'ABC'
-    ShouldNot 'xyz' <= 'abc'
+    Expect 123 <= 456
+    Expect 123 <= 123
+    ExpectNot 456 <= 123
+    Expect 'abc' <= 'xyz'
+    Expect 'abc' <= 'XYZ'
+    Expect 'abc' <= 'abc'
+    Expect 'abc' <= 'ABC'
+    ExpectNot 'xyz' <= 'abc'
 
     set ignorecase&
   end
@@ -297,24 +297,24 @@ end
 describe '<=#'
   it 'should compare order of given values case-sensitively'
     set noignorecase
-    Should 123 <=# 456
-    Should 123 <=# 123
-    ShouldNot 456 <=# 123
-    Should 'abc' <=# 'xyz'
-    ShouldNot 'abc' <=# 'XYZ'
-    Should 'abc' <=# 'abc'
-    ShouldNot 'abc' <=# 'ABC'
-    ShouldNot 'xyz' <=# 'abc'
+    Expect 123 <=# 456
+    Expect 123 <=# 123
+    ExpectNot 456 <=# 123
+    Expect 'abc' <=# 'xyz'
+    ExpectNot 'abc' <=# 'XYZ'
+    Expect 'abc' <=# 'abc'
+    ExpectNot 'abc' <=# 'ABC'
+    ExpectNot 'xyz' <=# 'abc'
 
     set ignorecase
-    Should 123 <=# 456
-    Should 123 <=# 123
-    ShouldNot 456 <=# 123
-    Should 'abc' <=# 'xyz'
-    ShouldNot 'abc' <=# 'XYZ'
-    Should 'abc' <=# 'abc'
-    ShouldNot 'abc' <=# 'ABC'
-    ShouldNot 'xyz' <=# 'abc'
+    Expect 123 <=# 456
+    Expect 123 <=# 123
+    ExpectNot 456 <=# 123
+    Expect 'abc' <=# 'xyz'
+    ExpectNot 'abc' <=# 'XYZ'
+    Expect 'abc' <=# 'abc'
+    ExpectNot 'abc' <=# 'ABC'
+    ExpectNot 'xyz' <=# 'abc'
 
     set ignorecase&
   end
@@ -323,24 +323,24 @@ end
 describe '<=?'
   it 'should compare order of given values case-insensitively'
     set noignorecase
-    Should 123 <=? 456
-    Should 123 <=? 123
-    ShouldNot 456 <=? 123
-    Should 'abc' <=? 'xyz'
-    Should 'abc' <=? 'XYZ'
-    Should 'abc' <=? 'abc'
-    Should 'abc' <=? 'ABC'
-    ShouldNot 'xyz' <=? 'abc'
+    Expect 123 <=? 456
+    Expect 123 <=? 123
+    ExpectNot 456 <=? 123
+    Expect 'abc' <=? 'xyz'
+    Expect 'abc' <=? 'XYZ'
+    Expect 'abc' <=? 'abc'
+    Expect 'abc' <=? 'ABC'
+    ExpectNot 'xyz' <=? 'abc'
 
     set ignorecase
-    Should 123 <=? 456
-    Should 123 <=? 123
-    ShouldNot 456 <=? 123
-    Should 'abc' <=? 'xyz'
-    Should 'abc' <=? 'XYZ'
-    Should 'abc' <=? 'abc'
-    Should 'abc' <=? 'ABC'
-    ShouldNot 'xyz' <=? 'abc'
+    Expect 123 <=? 456
+    Expect 123 <=? 123
+    ExpectNot 456 <=? 123
+    Expect 'abc' <=? 'xyz'
+    Expect 'abc' <=? 'XYZ'
+    Expect 'abc' <=? 'abc'
+    Expect 'abc' <=? 'ABC'
+    ExpectNot 'xyz' <=? 'abc'
 
     set ignorecase&
   end
@@ -349,24 +349,24 @@ end
 describe '>'
   it 'should compare order of given values with &ignorecase'
     set noignorecase
-    ShouldNot 123 > 456
-    ShouldNot 123 > 123
-    Should 456 > 123
-    ShouldNot 'abc' > 'xyz'
-    Should 'abc' > 'XYZ'
-    ShouldNot 'abc' > 'abc'
-    Should 'abc' > 'ABC'
-    Should 'xyz' > 'abc'
+    ExpectNot 123 > 456
+    ExpectNot 123 > 123
+    Expect 456 > 123
+    ExpectNot 'abc' > 'xyz'
+    Expect 'abc' > 'XYZ'
+    ExpectNot 'abc' > 'abc'
+    Expect 'abc' > 'ABC'
+    Expect 'xyz' > 'abc'
 
     set ignorecase
-    ShouldNot 123 > 456
-    ShouldNot 123 > 123
-    Should 456 > 123
-    ShouldNot 'abc' > 'xyz'
-    ShouldNot 'abc' > 'XYZ'
-    ShouldNot 'abc' > 'abc'
-    ShouldNot 'abc' > 'ABC'
-    Should 'xyz' > 'abc'
+    ExpectNot 123 > 456
+    ExpectNot 123 > 123
+    Expect 456 > 123
+    ExpectNot 'abc' > 'xyz'
+    ExpectNot 'abc' > 'XYZ'
+    ExpectNot 'abc' > 'abc'
+    ExpectNot 'abc' > 'ABC'
+    Expect 'xyz' > 'abc'
 
     set ignorecase&
   end
@@ -375,24 +375,24 @@ end
 describe '>#'
   it 'should compare order of given values case-sensitively'
     set noignorecase
-    ShouldNot 123 ># 456
-    ShouldNot 123 ># 123
-    Should 456 ># 123
-    ShouldNot 'abc' ># 'xyz'
-    Should 'abc' ># 'XYZ'
-    ShouldNot 'abc' ># 'abc'
-    Should 'abc' ># 'ABC'
-    Should 'xyz' ># 'abc'
+    ExpectNot 123 ># 456
+    ExpectNot 123 ># 123
+    Expect 456 ># 123
+    ExpectNot 'abc' ># 'xyz'
+    Expect 'abc' ># 'XYZ'
+    ExpectNot 'abc' ># 'abc'
+    Expect 'abc' ># 'ABC'
+    Expect 'xyz' ># 'abc'
 
     set ignorecase
-    ShouldNot 123 ># 456
-    ShouldNot 123 ># 123
-    Should 456 ># 123
-    ShouldNot 'abc' ># 'xyz'
-    Should 'abc' ># 'XYZ'
-    ShouldNot 'abc' ># 'abc'
-    Should 'abc' ># 'ABC'
-    Should 'xyz' ># 'abc'
+    ExpectNot 123 ># 456
+    ExpectNot 123 ># 123
+    Expect 456 ># 123
+    ExpectNot 'abc' ># 'xyz'
+    Expect 'abc' ># 'XYZ'
+    ExpectNot 'abc' ># 'abc'
+    Expect 'abc' ># 'ABC'
+    Expect 'xyz' ># 'abc'
 
     set ignorecase&
   end
@@ -401,24 +401,24 @@ end
 describe '>?'
   it 'should compare order of given values case-insensitively'
     set noignorecase
-    ShouldNot 123 >? 456
-    ShouldNot 123 >? 123
-    Should 456 >? 123
-    ShouldNot 'abc' >? 'xyz'
-    ShouldNot 'abc' >? 'XYZ'
-    ShouldNot 'abc' >? 'abc'
-    ShouldNot 'abc' >? 'ABC'
-    Should 'xyz' >? 'abc'
+    ExpectNot 123 >? 456
+    ExpectNot 123 >? 123
+    Expect 456 >? 123
+    ExpectNot 'abc' >? 'xyz'
+    ExpectNot 'abc' >? 'XYZ'
+    ExpectNot 'abc' >? 'abc'
+    ExpectNot 'abc' >? 'ABC'
+    Expect 'xyz' >? 'abc'
 
     set ignorecase
-    ShouldNot 123 >? 456
-    ShouldNot 123 >? 123
-    Should 456 >? 123
-    ShouldNot 'abc' >? 'xyz'
-    ShouldNot 'abc' >? 'XYZ'
-    ShouldNot 'abc' >? 'abc'
-    ShouldNot 'abc' >? 'ABC'
-    Should 'xyz' >? 'abc'
+    ExpectNot 123 >? 456
+    ExpectNot 123 >? 123
+    Expect 456 >? 123
+    ExpectNot 'abc' >? 'xyz'
+    ExpectNot 'abc' >? 'XYZ'
+    ExpectNot 'abc' >? 'abc'
+    ExpectNot 'abc' >? 'ABC'
+    Expect 'xyz' >? 'abc'
 
     set ignorecase&
   end
@@ -427,24 +427,24 @@ end
 describe '>='
   it 'should compare order of given values with &ignorecase'
     set noignorecase
-    ShouldNot 123 >= 456
-    Should 123 >= 123
-    Should 456 >= 123
-    ShouldNot 'abc' >= 'xyz'
-    Should 'abc' >= 'XYZ'
-    Should 'abc' >= 'abc'
-    Should 'abc' >= 'ABC'
-    Should 'xyz' >= 'abc'
+    ExpectNot 123 >= 456
+    Expect 123 >= 123
+    Expect 456 >= 123
+    ExpectNot 'abc' >= 'xyz'
+    Expect 'abc' >= 'XYZ'
+    Expect 'abc' >= 'abc'
+    Expect 'abc' >= 'ABC'
+    Expect 'xyz' >= 'abc'
 
     set ignorecase
-    ShouldNot 123 >= 456
-    Should 123 >= 123
-    Should 456 >= 123
-    ShouldNot 'abc' >= 'xyz'
-    ShouldNot 'abc' >= 'XYZ'
-    Should 'abc' >= 'abc'
-    Should 'abc' >= 'ABC'
-    Should 'xyz' >= 'abc'
+    ExpectNot 123 >= 456
+    Expect 123 >= 123
+    Expect 456 >= 123
+    ExpectNot 'abc' >= 'xyz'
+    ExpectNot 'abc' >= 'XYZ'
+    Expect 'abc' >= 'abc'
+    Expect 'abc' >= 'ABC'
+    Expect 'xyz' >= 'abc'
 
     set ignorecase&
   end
@@ -453,24 +453,24 @@ end
 describe '>=#'
   it 'should compare order of given values case-sensitively'
     set noignorecase
-    ShouldNot 123 >=# 456
-    Should 123 >=# 123
-    Should 456 >=# 123
-    ShouldNot 'abc' >=# 'xyz'
-    Should 'abc' >=# 'XYZ'
-    Should 'abc' >=# 'abc'
-    Should 'abc' >=# 'ABC'
-    Should 'xyz' >=# 'abc'
+    ExpectNot 123 >=# 456
+    Expect 123 >=# 123
+    Expect 456 >=# 123
+    ExpectNot 'abc' >=# 'xyz'
+    Expect 'abc' >=# 'XYZ'
+    Expect 'abc' >=# 'abc'
+    Expect 'abc' >=# 'ABC'
+    Expect 'xyz' >=# 'abc'
 
     set ignorecase
-    ShouldNot 123 >=# 456
-    Should 123 >=# 123
-    Should 456 >=# 123
-    ShouldNot 'abc' >=# 'xyz'
-    Should 'abc' >=# 'XYZ'
-    Should 'abc' >=# 'abc'
-    Should 'abc' >=# 'ABC'
-    Should 'xyz' >=# 'abc'
+    ExpectNot 123 >=# 456
+    Expect 123 >=# 123
+    Expect 456 >=# 123
+    ExpectNot 'abc' >=# 'xyz'
+    Expect 'abc' >=# 'XYZ'
+    Expect 'abc' >=# 'abc'
+    Expect 'abc' >=# 'ABC'
+    Expect 'xyz' >=# 'abc'
 
     set ignorecase&
   end
@@ -479,24 +479,24 @@ end
 describe '>=?'
   it 'should compare order of given values case-insensitively'
     set noignorecase
-    ShouldNot 123 >=? 456
-    Should 123 >=? 123
-    Should 456 >=? 123
-    ShouldNot 'abc' >=? 'xyz'
-    ShouldNot 'abc' >=? 'XYZ'
-    Should 'abc' >=? 'abc'
-    Should 'abc' >=? 'ABC'
-    Should 'xyz' >=? 'abc'
+    ExpectNot 123 >=? 456
+    Expect 123 >=? 123
+    Expect 456 >=? 123
+    ExpectNot 'abc' >=? 'xyz'
+    ExpectNot 'abc' >=? 'XYZ'
+    Expect 'abc' >=? 'abc'
+    Expect 'abc' >=? 'ABC'
+    Expect 'xyz' >=? 'abc'
 
     set ignorecase
-    ShouldNot 123 >=? 456
-    Should 123 >=? 123
-    Should 456 >=? 123
-    ShouldNot 'abc' >=? 'xyz'
-    ShouldNot 'abc' >=? 'XYZ'
-    Should 'abc' >=? 'abc'
-    Should 'abc' >=? 'ABC'
-    Should 'xyz' >=? 'abc'
+    ExpectNot 123 >=? 456
+    Expect 123 >=? 123
+    Expect 456 >=? 123
+    ExpectNot 'abc' >=? 'xyz'
+    ExpectNot 'abc' >=? 'XYZ'
+    Expect 'abc' >=? 'abc'
+    Expect 'abc' >=? 'ABC'
+    Expect 'xyz' >=? 'abc'
 
     set ignorecase&
   end
@@ -505,14 +505,14 @@ end
 describe '=~'
   it 'should perform regexp matching with &ignorecase'
     set noignorecase
-    Should 'abc' =~ '^a'
-    ShouldNot 'abc' =~ '^A'
-    ShouldNot 'abc' =~ '^x'
+    Expect 'abc' =~ '^a'
+    ExpectNot 'abc' =~ '^A'
+    ExpectNot 'abc' =~ '^x'
 
     set ignorecase
-    Should 'abc' =~ '^a'
-    Should 'abc' =~ '^A'
-    ShouldNot 'abc' =~ '^x'
+    Expect 'abc' =~ '^a'
+    Expect 'abc' =~ '^A'
+    ExpectNot 'abc' =~ '^x'
 
     set ignorecase&
   end
@@ -521,14 +521,14 @@ end
 describe '=~#'
   it 'should perform regexp matching case-sensitively'
     set noignorecase
-    Should 'abc' =~# '^a'
-    ShouldNot 'abc' =~# '^A'
-    ShouldNot 'abc' =~# '^x'
+    Expect 'abc' =~# '^a'
+    ExpectNot 'abc' =~# '^A'
+    ExpectNot 'abc' =~# '^x'
 
     set ignorecase
-    Should 'abc' =~# '^a'
-    ShouldNot 'abc' =~# '^A'
-    ShouldNot 'abc' =~# '^x'
+    Expect 'abc' =~# '^a'
+    ExpectNot 'abc' =~# '^A'
+    ExpectNot 'abc' =~# '^x'
 
     set ignorecase&
   end
@@ -537,14 +537,14 @@ end
 describe '=~?'
   it 'should perform regexp matching case-insensitively'
     set noignorecase
-    Should 'abc' =~? '^a'
-    Should 'abc' =~? '^A'
-    ShouldNot 'abc' =~? '^x'
+    Expect 'abc' =~? '^a'
+    Expect 'abc' =~? '^A'
+    ExpectNot 'abc' =~? '^x'
 
     set ignorecase
-    Should 'abc' =~? '^a'
-    Should 'abc' =~? '^A'
-    ShouldNot 'abc' =~? '^x'
+    Expect 'abc' =~? '^a'
+    Expect 'abc' =~? '^A'
+    ExpectNot 'abc' =~? '^x'
 
     set ignorecase&
   end
@@ -553,14 +553,14 @@ end
 describe '!~'
   it 'should perform regexp matching with &ignorecase'
     set noignorecase
-    ShouldNot 'abc' !~ '^a'
-    Should 'abc' !~ '^A'
-    Should 'abc' !~ '^x'
+    ExpectNot 'abc' !~ '^a'
+    Expect 'abc' !~ '^A'
+    Expect 'abc' !~ '^x'
 
     set ignorecase
-    ShouldNot 'abc' !~ '^a'
-    ShouldNot 'abc' !~ '^A'
-    Should 'abc' !~ '^x'
+    ExpectNot 'abc' !~ '^a'
+    ExpectNot 'abc' !~ '^A'
+    Expect 'abc' !~ '^x'
 
     set ignorecase&
   end
@@ -569,14 +569,14 @@ end
 describe '!~#'
   it 'should perform regexp matching case-sensitively'
     set noignorecase
-    ShouldNot 'abc' !~# '^a'
-    Should 'abc' !~# '^A'
-    Should 'abc' !~# '^x'
+    ExpectNot 'abc' !~# '^a'
+    Expect 'abc' !~# '^A'
+    Expect 'abc' !~# '^x'
 
     set ignorecase
-    ShouldNot 'abc' !~# '^a'
-    Should 'abc' !~# '^A'
-    Should 'abc' !~# '^x'
+    ExpectNot 'abc' !~# '^a'
+    Expect 'abc' !~# '^A'
+    Expect 'abc' !~# '^x'
 
     set ignorecase&
   end
@@ -585,14 +585,14 @@ end
 describe '!~?'
   it 'should perform regexp matching case-insensitively'
     set noignorecase
-    ShouldNot 'abc' !~? '^a'
-    ShouldNot 'abc' !~? '^A'
-    Should 'abc' !~? '^x'
+    ExpectNot 'abc' !~? '^a'
+    ExpectNot 'abc' !~? '^A'
+    Expect 'abc' !~? '^x'
 
     set ignorecase
-    ShouldNot 'abc' !~? '^a'
-    ShouldNot 'abc' !~? '^A'
-    Should 'abc' !~? '^x'
+    ExpectNot 'abc' !~? '^a'
+    ExpectNot 'abc' !~? '^A'
+    Expect 'abc' !~? '^x'
 
     set ignorecase&
   end
@@ -606,34 +606,34 @@ describe 'is'
     let d2 = {}
 
     set noignorecase
-    Should l1 is l1
-    ShouldNot l1 is l2
-    Should d1 is d1
-    ShouldNot d1 is d2
+    Expect l1 is l1
+    ExpectNot l1 is l2
+    Expect d1 is d1
+    ExpectNot d1 is d2
 
     set ignorecase
-    Should l1 is l1
-    ShouldNot l1 is l2
-    Should d1 is d1
-    ShouldNot d1 is d2
+    Expect l1 is l1
+    ExpectNot l1 is l2
+    Expect d1 is d1
+    ExpectNot d1 is d2
 
     set ignorecase&
   end
 
   it 'should compare equality of given values with &ignorecase'
     set noignorecase
-    Should 123 is 123
-    ShouldNot 123 is 789
-    Should 'abc' is 'abc'
-    ShouldNot 'abc' is 'ABC'
-    ShouldNot 'abc' is 'xyz'
+    Expect 123 is 123
+    ExpectNot 123 is 789
+    Expect 'abc' is 'abc'
+    ExpectNot 'abc' is 'ABC'
+    ExpectNot 'abc' is 'xyz'
 
     set ignorecase
-    Should 123 is 123
-    ShouldNot 123 is 789
-    Should 'abc' is 'abc'
-    Should 'abc' is 'ABC'
-    ShouldNot 'abc' is 'xyz'
+    Expect 123 is 123
+    ExpectNot 123 is 789
+    Expect 'abc' is 'abc'
+    Expect 'abc' is 'ABC'
+    ExpectNot 'abc' is 'xyz'
 
     set ignorecase&
   end
@@ -647,34 +647,34 @@ describe 'is#'
     let d2 = {}
 
     set noignorecase
-    Should l1 is# l1
-    ShouldNot l1 is# l2
-    Should d1 is# d1
-    ShouldNot d1 is# d2
+    Expect l1 is# l1
+    ExpectNot l1 is# l2
+    Expect d1 is# d1
+    ExpectNot d1 is# d2
 
     set ignorecase
-    Should l1 is# l1
-    ShouldNot l1 is# l2
-    Should d1 is# d1
-    ShouldNot d1 is# d2
+    Expect l1 is# l1
+    ExpectNot l1 is# l2
+    Expect d1 is# d1
+    ExpectNot d1 is# d2
 
     set ignorecase&
   end
 
   it 'should compare equality of given values case-sensitively'
     set noignorecase
-    Should 123 is# 123
-    ShouldNot 123 is# 789
-    Should 'abc' is# 'abc'
-    ShouldNot 'abc' is# 'ABC'
-    ShouldNot 'abc' is# 'xyz'
+    Expect 123 is# 123
+    ExpectNot 123 is# 789
+    Expect 'abc' is# 'abc'
+    ExpectNot 'abc' is# 'ABC'
+    ExpectNot 'abc' is# 'xyz'
 
     set ignorecase
-    Should 123 is# 123
-    ShouldNot 123 is# 789
-    Should 'abc' is# 'abc'
-    ShouldNot 'abc' is# 'ABC'
-    ShouldNot 'abc' is# 'xyz'
+    Expect 123 is# 123
+    ExpectNot 123 is# 789
+    Expect 'abc' is# 'abc'
+    ExpectNot 'abc' is# 'ABC'
+    ExpectNot 'abc' is# 'xyz'
 
     set ignorecase&
   end
@@ -688,34 +688,34 @@ describe 'is?'
     let d2 = {}
 
     set noignorecase
-    Should l1 is? l1
-    ShouldNot l1 is? l2
-    Should d1 is? d1
-    ShouldNot d1 is? d2
+    Expect l1 is? l1
+    ExpectNot l1 is? l2
+    Expect d1 is? d1
+    ExpectNot d1 is? d2
 
     set ignorecase
-    Should l1 is? l1
-    ShouldNot l1 is? l2
-    Should d1 is? d1
-    ShouldNot d1 is? d2
+    Expect l1 is? l1
+    ExpectNot l1 is? l2
+    Expect d1 is? d1
+    ExpectNot d1 is? d2
 
     set ignorecase&
   end
 
   it 'should compare equality of given values case-insensitively'
     set noignorecase
-    Should 123 is? 123
-    ShouldNot 123 is? 789
-    Should 'abc' is? 'abc'
-    Should 'abc' is? 'ABC'
-    ShouldNot 'abc' is? 'xyz'
+    Expect 123 is? 123
+    ExpectNot 123 is? 789
+    Expect 'abc' is? 'abc'
+    Expect 'abc' is? 'ABC'
+    ExpectNot 'abc' is? 'xyz'
 
     set ignorecase
-    Should 123 is? 123
-    ShouldNot 123 is? 789
-    Should 'abc' is? 'abc'
-    Should 'abc' is? 'ABC'
-    ShouldNot 'abc' is? 'xyz'
+    Expect 123 is? 123
+    ExpectNot 123 is? 789
+    Expect 'abc' is? 'abc'
+    Expect 'abc' is? 'ABC'
+    ExpectNot 'abc' is? 'xyz'
 
     set ignorecase&
   end
@@ -729,34 +729,34 @@ describe 'isnot'
     let d2 = {}
 
     set noignorecase
-    ShouldNot l1 isnot l1
-    Should l1 isnot l2
-    ShouldNot d1 isnot d1
-    Should d1 isnot d2
+    ExpectNot l1 isnot l1
+    Expect l1 isnot l2
+    ExpectNot d1 isnot d1
+    Expect d1 isnot d2
 
     set ignorecase
-    ShouldNot l1 isnot l1
-    Should l1 isnot l2
-    ShouldNot d1 isnot d1
-    Should d1 isnot d2
+    ExpectNot l1 isnot l1
+    Expect l1 isnot l2
+    ExpectNot d1 isnot d1
+    Expect d1 isnot d2
 
     set ignorecase&
   end
 
   it 'should compare equality of given values with &ignorecase'
     set noignorecase
-    ShouldNot 123 isnot 123
-    Should 123 isnot 789
-    ShouldNot 'abc' isnot 'abc'
-    Should 'abc' isnot 'ABC'
-    Should 'abc' isnot 'xyz'
+    ExpectNot 123 isnot 123
+    Expect 123 isnot 789
+    ExpectNot 'abc' isnot 'abc'
+    Expect 'abc' isnot 'ABC'
+    Expect 'abc' isnot 'xyz'
 
     set ignorecase
-    ShouldNot 123 isnot 123
-    Should 123 isnot 789
-    ShouldNot 'abc' isnot 'abc'
-    ShouldNot 'abc' isnot 'ABC'
-    Should 'abc' isnot 'xyz'
+    ExpectNot 123 isnot 123
+    Expect 123 isnot 789
+    ExpectNot 'abc' isnot 'abc'
+    ExpectNot 'abc' isnot 'ABC'
+    Expect 'abc' isnot 'xyz'
 
     set ignorecase&
   end
@@ -770,34 +770,34 @@ describe 'isnot#'
     let d2 = {}
 
     set noignorecase
-    ShouldNot l1 isnot# l1
-    Should l1 isnot# l2
-    ShouldNot d1 isnot# d1
-    Should d1 isnot# d2
+    ExpectNot l1 isnot# l1
+    Expect l1 isnot# l2
+    ExpectNot d1 isnot# d1
+    Expect d1 isnot# d2
 
     set ignorecase
-    ShouldNot l1 isnot# l1
-    Should l1 isnot# l2
-    ShouldNot d1 isnot# d1
-    Should d1 isnot# d2
+    ExpectNot l1 isnot# l1
+    Expect l1 isnot# l2
+    ExpectNot d1 isnot# d1
+    Expect d1 isnot# d2
 
     set ignorecase&
   end
 
   it 'should compare equality of given values case-sensitively'
     set noignorecase
-    ShouldNot 123 isnot# 123
-    Should 123 isnot# 789
-    ShouldNot 'abc' isnot# 'abc'
-    Should 'abc' isnot# 'ABC'
-    Should 'abc' isnot# 'xyz'
+    ExpectNot 123 isnot# 123
+    Expect 123 isnot# 789
+    ExpectNot 'abc' isnot# 'abc'
+    Expect 'abc' isnot# 'ABC'
+    Expect 'abc' isnot# 'xyz'
 
     set ignorecase
-    ShouldNot 123 isnot# 123
-    Should 123 isnot# 789
-    ShouldNot 'abc' isnot# 'abc'
-    Should 'abc' isnot# 'ABC'
-    Should 'abc' isnot# 'xyz'
+    ExpectNot 123 isnot# 123
+    Expect 123 isnot# 789
+    ExpectNot 'abc' isnot# 'abc'
+    Expect 'abc' isnot# 'ABC'
+    Expect 'abc' isnot# 'xyz'
 
     set ignorecase&
   end
@@ -811,34 +811,34 @@ describe 'isnot?'
     let d2 = {}
 
     set noignorecase
-    ShouldNot l1 isnot? l1
-    Should l1 isnot? l2
-    ShouldNot d1 isnot? d1
-    Should d1 isnot? d2
+    ExpectNot l1 isnot? l1
+    Expect l1 isnot? l2
+    ExpectNot d1 isnot? d1
+    Expect d1 isnot? d2
 
     set ignorecase
-    ShouldNot l1 isnot? l1
-    Should l1 isnot? l2
-    ShouldNot d1 isnot? d1
-    Should d1 isnot? d2
+    ExpectNot l1 isnot? l1
+    Expect l1 isnot? l2
+    ExpectNot d1 isnot? d1
+    Expect d1 isnot? d2
 
     set ignorecase&
   end
 
   it 'should compare equality of given values case-insensitively'
     set noignorecase
-    ShouldNot 123 isnot? 123
-    Should 123 isnot? 789
-    ShouldNot 'abc' isnot? 'abc'
-    ShouldNot 'abc' isnot? 'ABC'
-    Should 'abc' isnot? 'xyz'
+    ExpectNot 123 isnot? 123
+    Expect 123 isnot? 789
+    ExpectNot 'abc' isnot? 'abc'
+    ExpectNot 'abc' isnot? 'ABC'
+    Expect 'abc' isnot? 'xyz'
 
     set ignorecase
-    ShouldNot 123 isnot? 123
-    Should 123 isnot? 789
-    ShouldNot 'abc' isnot? 'abc'
-    ShouldNot 'abc' isnot? 'ABC'
-    Should 'abc' isnot? 'xyz'
+    ExpectNot 123 isnot? 123
+    Expect 123 isnot? 789
+    ExpectNot 'abc' isnot? 'abc'
+    ExpectNot 'abc' isnot? 'ABC'
+    Expect 'abc' isnot? 'xyz'
 
     set ignorecase&
   end
@@ -846,14 +846,14 @@ end
 
 describe 'be false'
   it 'should succeed if a given value is false'
-    Should 0 be false
-    ShouldNot 1 be false
+    Expect 0 be false
+    ExpectNot 1 be false
   end
 end
 
 describe 'be true'
   it 'should succeed if a given value is true'
-    ShouldNot 0 be true
-    Should 1 be true
+    ExpectNot 0 be true
+    Expect 1 be true
   end
 end

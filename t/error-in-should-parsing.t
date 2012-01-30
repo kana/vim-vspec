@@ -8,7 +8,7 @@ end
 
 describe 'Suite 2'
   it 'should be executed and fail'
-    Should foo bar baz
+    Expect foo bar baz
   end
 end
 

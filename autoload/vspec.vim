@@ -83,6 +83,28 @@ let s:suite = {}  "{{{2
 
 
 " Interface  "{{{1
+" :Expect  "{{{2
+command! -bar -complete=expression -nargs=+ Expect
+\ call s:cmd_Expect(
+\   s:TRUE,
+\   s:parse_should_arguments(<q-args>, 'raw'),
+\   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
+\ )
+
+
+
+
+" :ExpectNot  "{{{2
+command! -bar -complete=expression -nargs=+ ExpectNot
+\ call s:cmd_Expect(
+\   s:FALSE,
+\   s:parse_should_arguments(<q-args>, 'raw'),
+\   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
+\ )
+
+
+
+
 " :ResetContext  "{{{2
 command! -bar -nargs=0 ResetContext
 \ call s:cmd_ResetContext()
@@ -93,28 +115,6 @@ command! -bar -nargs=0 ResetContext
 " :SaveContext  "{{{2
 command! -bar -nargs=0 SaveContext
 \ call s:cmd_SaveContext()
-
-
-
-
-" :Should  "{{{2
-command! -bar -complete=expression -nargs=+ Should
-\ call s:cmd_Should(
-\   s:TRUE,
-\   s:parse_should_arguments(<q-args>, 'raw'),
-\   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
-\ )
-
-
-
-
-" :ShouldNot  "{{{2
-command! -bar -complete=expression -nargs=+ ShouldNot
-\ call s:cmd_Should(
-\   s:FALSE,
-\   s:parse_should_arguments(<q-args>, 'raw'),
-\   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
-\ )
 
 
 
@@ -461,8 +461,8 @@ endfunction
 
 
 
-" :Should magic  "{{{1
-function! s:cmd_Should(truth, exprs, values)  "{{{2
+" :Expect magic  "{{{1
+function! s:cmd_Expect(truth, exprs, values)  "{{{2
   let d = {}
   let [d.expr_actual, d.expr_matcher, d.expr_expected] = a:exprs
   let [d.value_actual, d.value_matcher, d.value_expected] = a:values

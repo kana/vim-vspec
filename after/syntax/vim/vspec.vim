@@ -27,8 +27,8 @@ syntax keyword vimVspecCommand end
 syntax keyword vimVspecCommand it skipwhite nextgroup=vimString
 syntax keyword vimVspecCommand ResetContext
 syntax keyword vimVspecCommand SaveContext
-syntax keyword vimVspecCommand Should skipwhite nextgroup=vimFunc,vimString
-syntax keyword vimVspecCommand ShouldNot skipwhite nextgroup=vimFunc,vimString
+syntax keyword vimVspecCommand Expect skipwhite nextgroup=vimFunc,vimString
+syntax keyword vimVspecCommand ExpectNot skipwhite nextgroup=vimFunc,vimString
 
 
 
