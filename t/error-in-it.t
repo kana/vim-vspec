@@ -29,7 +29,7 @@ END
 ) <(cat <<'END'
 ok 1 - Suite 1 should be executed
 not ok 2 - Suite 2 should be executed and fail
-# function <SNR>1_main..vspec#test..5..A..B..C, line 1
+# function <SNR>1_main..vspec#test..6..A..B..C, line 1
 # Vim:E492: Not an editor command:       ThisLineIsNotAValidVimScriptStatement
 ok 3 - Suite 3 should be executed
 1..3

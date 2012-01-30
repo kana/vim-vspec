@@ -288,6 +288,7 @@ function! vspec#test(specfile_path)  "{{{2
           echo '#' v:throwpoint
           echo '#' v:exception
         endtry
+        call suite.after_block()
       endfor
     call s:pop_current_suite()
   endfor
@@ -325,6 +326,13 @@ call vspec#customize_matcher('toBeTrue', function('vspec#_matcher_true'))
 " Suites  "{{{1
 function! s:suite.add_example(example_description)  "{{{2
   call add(self.example_list, a:example_description)
+endfunction
+
+
+
+
+function! s:suite.after_block()  "{{{2
+  " No-op to avoid null checks.
 endfunction
 
 
@@ -438,6 +446,15 @@ function! s:translate_script(slines)  "{{{2
       continue
     endif
 
+    let tokens = matchlist(sline, '^\s*after\s*$')
+    if !empty(tokens)
+      call insert(stack, 'after', 0)
+      call extend(rlines, [
+      \   'function! suite.after_block()',
+      \ ])
+      continue
+    endif
+
     let tokens = matchlist(sline, '^\s*end\s*$')
     if !empty(tokens)
       let type = remove(stack, 0)
@@ -448,6 +465,10 @@ function! s:translate_script(slines)  "{{{2
         \   'endfunction',
         \ ])
       elseif type ==# 'before'
+        call extend(rlines, [
+        \   'endfunction',
+        \ ])
+      elseif type ==# 'after'
         call extend(rlines, [
         \   'endfunction',
         \ ])

@@ -22,6 +22,7 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
+syntax keyword vimVspecCommand after
 syntax keyword vimVspecCommand before
 syntax keyword vimVspecCommand describe skipwhite nextgroup=vimString
 syntax keyword vimVspecCommand end
