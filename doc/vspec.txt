@@ -321,7 +321,7 @@ ETC ~
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
-1.0.0	2012-01-19T00:28:00+09:00		*vspec-changelog-1.0.0*
+1.0.0	2012-01-31T00:32:15+09:00		*vspec-changelog-1.0.0*
 	- Completely rewritten.  No compatibility with old versions.
 	  - Output format is changed to Test Anything Protocol version 12.
 	  - The style to write examples is changed.
@@ -332,6 +332,7 @@ CHANGELOG					*vspec-changelog*
 	  - Add |:Expect-not| for counter examples.
 	  - Add |:TODO| for incomplete examples.
 	  - Add |:SKIP| for environment-specific examples.
+	  - Add |:before| blocks and |:after| blocks.
 
 0.0.4	2010-04-04T20:59:35+09:00		*vspec-changelog-0.0.4*
 	- Add additional syntax file for |vspec-commands|.
