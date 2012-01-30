@@ -212,6 +212,7 @@ function! vspec#test(specfile_path)  "{{{2
     call s:push_current_suite(suite)
       for example in suite.example_list
         let example_count += 1
+        call suite.before_block()
         try
           call suite.example_dict[suite.generate_example_function_name(example)]()
           echo printf(
@@ -329,6 +330,13 @@ endfunction
 
 
 
+function! s:suite.before_block()  "{{{2
+  " No-op to avoid null checks.
+endfunction
+
+
+
+
 function! s:suite.generate_example_function_name(example_description)  "{{{2
   return substitute(
   \   a:example_description,
@@ -421,12 +429,25 @@ function! s:translate_script(slines)  "{{{2
       continue
     endif
 
+    let tokens = matchlist(sline, '^\s*before\s*$')
+    if !empty(tokens)
+      call insert(stack, 'before', 0)
+      call extend(rlines, [
+      \   'function! suite.before_block()',
+      \ ])
+      continue
+    endif
+
     let tokens = matchlist(sline, '^\s*end\s*$')
     if !empty(tokens)
       let type = remove(stack, 0)
       if type ==# 'describe'
         " Nothing to do.
       elseif type ==# 'it'
+        call extend(rlines, [
+        \   'endfunction',
+        \ ])
+      elseif type ==# 'before'
         call extend(rlines, [
         \   'endfunction',
         \ ])

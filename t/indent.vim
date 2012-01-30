@@ -58,4 +58,32 @@ describe 'Automatic indentation'
 
     call s:after()
   end
+
+  it 'should indent lines after :before'
+    call s:before()
+
+    execute 'normal!' 'i' . join([
+    \   'describe ''foo''',
+    \   'before',
+    \   'qux',
+    \   'end',
+    \   'it ''bar''',
+    \   'baz',
+    \   'end',
+    \   'end',
+    \ ], "\<Return>")
+
+    Expect getline(1, '$') ==# [
+    \   'describe ''foo''',
+    \   '  before',
+    \   '    qux',
+    \   '  end',
+    \   '  it ''bar''',
+    \   '    baz',
+    \   '  end',
+    \   'end',
+    \ ]
+
+    call s:after()
+  end
 end
