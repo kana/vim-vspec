@@ -306,6 +306,13 @@ CHANGELOG					*vspec-changelog*
 
 1.0.0	2012-01-19T00:28:00+09:00		*vspec-changelog-1.0.0*
 	- Completely rewritten.  No compatibility with old versions.
+	  - Output format is changed to Test Anything Protocol version 12.
+	  - The style to write examples is changed.
+	    See also |vspec-examples| for the details.
+	  - Change the order of arguments to |bin/vspec|.
+	  - Add |:ShouldNot| for some examples.
+	  - Add |:TODO| for incomplete examples.
+	  - Add |:SKIP| for environment-specific examples.
 
 0.0.4	2010-04-04T20:59:35+09:00		*vspec-changelog-0.0.4*
 	- Add additional syntax file for |vspec-commands|.
