@@ -264,10 +264,10 @@ vspec#set({varname}, {value})			*vspec#set()*
 
 vspec#test({specfile-path})			*vspec#test()*
 			|:source| {specfile-path}, test examples described in
-			the file, then output a result of the exmaples.
+			the file, then output results of the exmaples.
 
-			Output is written in Test Anythin Protocol version 12.
-			See also: http://testanything.org/
+			Output format is Test Anything Protocol version 12.
+			See also http://testanything.org/ for the details.
 
 
 
