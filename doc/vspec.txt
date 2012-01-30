@@ -170,6 +170,22 @@ COMMANDS					*vspec-commands*
 			NOT match with {expected} value, in a sense of
 			{matcher} or {custom-matcher}.
 
+:before						*:before*
+:end
+:after						*:after*
+:end
+			Define a code block which is run before/after each
+			example defined by |:it|.
+
+			Note that:
+			- Only one :before/:after block can be written in each
+			  |:describe| block.
+			- :before/:after blocks cannot be defined for
+			  |:describe| blocks.
+			- :before/:after blocks cannot be defined for
+			  a specific |:it| block.
+			These limitations might be resolved later.
+
 :ResetContext					*:ResetContext*
 			Reset the current context of a script with one saved
 			by |:SaveContext|.

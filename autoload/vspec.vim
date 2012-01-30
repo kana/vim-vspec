@@ -212,6 +212,7 @@ function! vspec#test(specfile_path)  "{{{2
     call s:push_current_suite(suite)
       for example in suite.example_list
         let example_count += 1
+        call suite.before_block()
         try
           call suite.example_dict[suite.generate_example_function_name(example)]()
           echo printf(
@@ -287,6 +288,7 @@ function! vspec#test(specfile_path)  "{{{2
           echo '#' v:throwpoint
           echo '#' v:exception
         endtry
+        call suite.after_block()
       endfor
     call s:pop_current_suite()
   endfor
@@ -324,6 +326,20 @@ call vspec#customize_matcher('toBeTrue', function('vspec#_matcher_true'))
 " Suites  "{{{1
 function! s:suite.add_example(example_description)  "{{{2
   call add(self.example_list, a:example_description)
+endfunction
+
+
+
+
+function! s:suite.after_block()  "{{{2
+  " No-op to avoid null checks.
+endfunction
+
+
+
+
+function! s:suite.before_block()  "{{{2
+  " No-op to avoid null checks.
 endfunction
 
 
@@ -421,12 +437,38 @@ function! s:translate_script(slines)  "{{{2
       continue
     endif
 
+    let tokens = matchlist(sline, '^\s*before\s*$')
+    if !empty(tokens)
+      call insert(stack, 'before', 0)
+      call extend(rlines, [
+      \   'function! suite.before_block()',
+      \ ])
+      continue
+    endif
+
+    let tokens = matchlist(sline, '^\s*after\s*$')
+    if !empty(tokens)
+      call insert(stack, 'after', 0)
+      call extend(rlines, [
+      \   'function! suite.after_block()',
+      \ ])
+      continue
+    endif
+
     let tokens = matchlist(sline, '^\s*end\s*$')
     if !empty(tokens)
       let type = remove(stack, 0)
       if type ==# 'describe'
         " Nothing to do.
       elseif type ==# 'it'
+        call extend(rlines, [
+        \   'endfunction',
+        \ ])
+      elseif type ==# 'before'
+        call extend(rlines, [
+        \   'endfunction',
+        \ ])
+      elseif type ==# 'after'
         call extend(rlines, [
         \   'endfunction',
         \ ])
