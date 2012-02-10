@@ -321,6 +321,9 @@ ETC ~
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.0.1	2012-02-10T23:00:35+09:00		*vspec-changelog-1.0.1*
+	- Fix not to install test scripts.
+
 1.0.0	2012-01-31T00:32:15+09:00		*vspec-changelog-1.0.0*
 	- Completely rewritten.  No compatibility with old versions.
 	  - Output format is changed to Test Anything Protocol version 12.
