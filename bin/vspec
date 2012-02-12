@@ -39,7 +39,7 @@ unset args[$((${#args[@]}- 1))]  # Now holds all {non-standard-runtimepath}s.
 
 cat <<END >"$driver_script"
   function s:main()
-    let standard_paths = split(&runtimepath, ',')[1:-1]
+    let standard_paths = split(&runtimepath, ',')[1:-2]
     let non_standard_paths = reverse(['$(echo "${args[@]}" |
                                          sed "s/  */', '/g")'])
     let all_paths = copy(standard_paths)
