@@ -15,4 +15,9 @@ describe 'bin/vspec'
     Expect stridx(ds[0], $HOME) != -1
     Expect stridx(ds[-1], $HOME) != -1
   end
+
+  it 'should not use relative paths for &runtimepath'
+    let p = '\v(^|\,)\.(\/|\\|\,|$)'
+    Expect &runtimepath !~# p
+  end
 end
