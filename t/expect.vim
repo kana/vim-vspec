@@ -13,6 +13,14 @@ describe ':Expect'
     endtry
     Expect is_succeeded toBeFalse
   end
+
+  it 'should parse "string" without errors'
+    Expect 'foo' ==# "foo"
+  end
+
+  it 'should parse ''|'' without errors'
+    Expect '|' ==# "|"
+  end
 end
 
 describe ':ExpectNot'
