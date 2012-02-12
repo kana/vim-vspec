@@ -54,7 +54,7 @@ cat <<END >"$driver_script"
   call s:main()
 END
 
-vim -u NONE -i NONE -N -e -s -S "$driver_script" 2>&1 | sed "s|$(pwd)|.|g"
+vim -u NONE -i NONE -N -e -s -S "$driver_script" 2>&1
 
 
 
