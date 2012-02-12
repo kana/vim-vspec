@@ -31,6 +31,8 @@ syntax keyword vimVspecCommand it skipwhite nextgroup=vimString
 syntax keyword vimVspecOperator not skipwhite
 syntax keyword vimVspecCommand ResetContext
 syntax keyword vimVspecCommand SaveContext
+syntax keyword vimVspecCommand SKIP
+syntax keyword vimVspecCommand TODO
 
 
 

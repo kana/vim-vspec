@@ -21,6 +21,8 @@ describe 'Syntax highlighting'
     \   '  it ''should highlight vspec-specific keywords''',
     \   '    Expect type(s) ==# type('''')',
     \   '    Expect type(s) not ==# type(0)',
+    \   '    SKIP',
+    \   '    TODO',
     \   '  end',
     \   'end',
     \ ]
@@ -212,17 +214,39 @@ describe 'Syntax highlighting'
     Expect SynStack(10, 34) ==# ['vimParenSep']
   end
 
-  it 'should highlight :end properly'
+  it 'should highlight :SKIP and :TODO properly'
     call s:before()
 
     Expect SynStack(11, 1) ==# []
     Expect SynStack(11, 2) ==# []
-    Expect SynStack(11, 3) ==# ['vimVspecCommand']
-    Expect SynStack(11, 4) ==# ['vimVspecCommand']
+    Expect SynStack(11, 3) ==# []
+    Expect SynStack(11, 4) ==# []
     Expect SynStack(11, 5) ==# ['vimVspecCommand']
+    Expect SynStack(11, 6) ==# ['vimVspecCommand']
+    Expect SynStack(11, 7) ==# ['vimVspecCommand']
+    Expect SynStack(11, 8) ==# ['vimVspecCommand']
 
-    Expect SynStack(12, 1) ==# ['vimVspecCommand']
-    Expect SynStack(12, 2) ==# ['vimVspecCommand']
-    Expect SynStack(12, 3) ==# ['vimVspecCommand']
+    Expect SynStack(12, 1) ==# []
+    Expect SynStack(12, 2) ==# []
+    Expect SynStack(12, 3) ==# []
+    Expect SynStack(12, 4) ==# []
+    Expect SynStack(12, 5) ==# ['vimVspecCommand']
+    Expect SynStack(12, 6) ==# ['vimVspecCommand']
+    Expect SynStack(12, 7) ==# ['vimVspecCommand']
+    Expect SynStack(12, 8) ==# ['vimVspecCommand']
+  end
+
+  it 'should highlight :end properly'
+    call s:before()
+
+    Expect SynStack(13, 1) ==# []
+    Expect SynStack(13, 2) ==# []
+    Expect SynStack(13, 3) ==# ['vimVspecCommand']
+    Expect SynStack(13, 4) ==# ['vimVspecCommand']
+    Expect SynStack(13, 5) ==# ['vimVspecCommand']
+
+    Expect SynStack(14, 1) ==# ['vimVspecCommand']
+    Expect SynStack(14, 2) ==# ['vimVspecCommand']
+    Expect SynStack(14, 3) ==# ['vimVspecCommand']
   end
 end
