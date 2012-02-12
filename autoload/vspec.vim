@@ -84,7 +84,7 @@ let s:suite = {}  "{{{2
 
 " Interface  "{{{1
 " :Expect  "{{{2
-command! -bar -complete=expression -nargs=+ Expect
+command! -complete=expression -nargs=+ Expect
 \ call s:cmd_Expect(
 \   s:parse_should_arguments(<q-args>, 'raw'),
 \   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
