@@ -321,6 +321,14 @@ ETC ~
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.0.2	2012-02-12T21:02:50+09:00		*vspec-changelog-1.0.2*
+	- |bin/vspec|:
+	  - Remove user's |after-directory| from 'runtimepath' to avoid
+	    unexpected interference to run tests.
+	  - Remove the output adjustment for the current directory.
+	- |:Expect|: Fix to parse expressions including '"' and '|' correctly.
+	- Add missing syntax highlighting for |:SKIP| and |:TODO|.
+
 1.0.1	2012-02-10T23:00:35+09:00		*vspec-changelog-1.0.1*
 	- Fix not to install test scripts.
 
