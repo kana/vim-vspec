@@ -49,7 +49,7 @@ let s:current_suites = []  "{{{2
 
 
 let s:custom_matchers = {}  "{{{2
-" :: MatcherNameString -> Funcref
+" :: MatcherNameString -> Matcher
 
 
 
@@ -149,8 +149,13 @@ endfunction
 
 
 
-function! vspec#customize_matcher(matcher_name, funcref)  "{{{2
-  let s:custom_matchers[a:matcher_name] = a:funcref
+function! vspec#customize_matcher(matcher_name, maybe_matcher)  "{{{2
+  if type(a:maybe_matcher) == type({})
+    let matcher = a:maybe_matcher
+  else
+    let matcher = {'match': a:maybe_matcher}
+  endif
+  let s:custom_matchers[a:matcher_name] = matcher
 endfunction
 
 
@@ -591,14 +596,22 @@ let s:VALID_MATCHERS = (s:VALID_MATCHERS_EQUALITY
 function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
   if s:is_custom_matcher(a:expr_matcher)
     let custom_matcher_name = a:expr_matcher
-    if !has_key(s:custom_matchers, custom_matcher_name)
+    let matcher = get(s:custom_matchers, custom_matcher_name, 0)
+    if matcher is 0
       throw
       \ 'vspec:InvalidOperation:Unknown custom matcher - '
       \ . string(custom_matcher_name)
     endif
+    let Match = get(matcher, 'match', 0)
+    if Match is 0
+      throw
+      \ 'vspec:InvalidOperation:Custom matcher does not have match function - '
+      \ . string(custom_matcher_name)
+    endif
     return !!call(
-    \   s:custom_matchers[custom_matcher_name],
-    \   [a:value_actual] + a:value_expected
+    \   Match,
+    \   [a:value_actual] + a:value_expected,
+    \   matcher
     \ )
   elseif s:is_equality_matcher(a:expr_matcher)
     let type_equality = type(a:value_actual) == type(a:value_expected)
