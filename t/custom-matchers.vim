@@ -1,5 +1,5 @@
 describe 'vspec#customize_matcher'
-  it 'should define a custom matcher'
+  it 'still supports old style usage'
     let caught = !!0
     try
       Expect [] to_be_empty
