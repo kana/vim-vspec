@@ -246,9 +246,37 @@ vspec#call({funcname}, [{arg}, ...])		*vspec#call()*
 			{arg} is an arbitrary value which is given to the
 			function corresponding to o{funcname}.
 
-vspec#customize_matcher({alias}, {function})	*vspec#customize_matcher()*
-			Register {function} as a |vspec-custom-matcher| which
-			alias is {alias}.  {alias} should be snake_case.
+vspec#customize_matcher({alias}, {matcher})	*vspec#customize_matcher()*
+			Register {matcher} as a |vspec-custom-matcher| with
+			a given {alias}.  {alias} should be snake_case.
+
+			{matcher} is a dictionary with the following items:
+
+			"match" (required)
+				A |Funcref| to determine whether {actual}
+				value matches to {expected} value.  It takes
+				1 or more arguments.  The first argument is
+				{actual} value given to |:Expect|, and the
+				rest of arguments are arbitrary {expected}
+				values.  It returns true if {actual} value is
+				matched to {expected} value, or false
+				otherwise.
+
+			"failure_message_for_should" (optional)
+				A |Funcref| to generate user friendly message
+				for failed match with |:Expect|.  It takes
+				arguments the same as "match", and it returns
+				a string or a list of strings to describe
+				a failure.
+
+			"failure_message_for_should_not" (optional)
+				Like "failure_message_for_should", but it is
+				used to generate failure message for
+				|:Expect-not|.
+
+vspec#customize_matcher({alias}, {function})   *vspec#customize_matcher()-old*
+			Deprecated.  Use |vspec#customize_matcher()| instead.
+			This style is remiained for backward compatibility.
 
 vspec#hint({info})				*vspec#hint()*
 			Tell vspec "hint" information to use useful API to
