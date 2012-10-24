@@ -1,4 +1,14 @@
+call vspec#hint({'scope': 'vspec#scope()'})
+
 describe 'vspec#customize_matcher'
+  before
+    let b:custom_matchers = copy(Ref('s:custom_matchers'))
+  end
+
+  after
+    call Set('s:custom_matchers', b:custom_matchers)
+  end
+
   it 'still supports old style usage'
     let caught = !!0
     try
