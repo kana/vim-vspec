@@ -240,7 +240,12 @@ function! vspec#test(specfile_path)  "{{{2
               \   suite.subject,
               \   example
               \ )
-              echo '# Expected' i.expr_actual i.expr_matcher i.expr_expected
+              echo '# Expected' join(filter([
+              \   i.expr_actual,
+              \   i.expr_not,
+              \   i.expr_matcher,
+              \   i.expr_expected,
+              \ ], 'v:val != ""'))
               for line in s:generate_failure_message(i)
                 echo '#     ' . line
               endfor
