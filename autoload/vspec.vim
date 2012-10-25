@@ -301,19 +301,21 @@ endfunction
 
 
 
-" Predefined custom matchers - toBeFalse "{{{2
+" Predefined custom matchers - to_be_false  "{{{2
 function! vspec#_matcher_false(value)
   return type(a:value) == type(0) ? !(a:value) : s:FALSE
 endfunction
+call vspec#customize_matcher('to_be_false', function('vspec#_matcher_false'))
 call vspec#customize_matcher('toBeFalse', function('vspec#_matcher_false'))
 
 
 
 
-" Predefined custom matchers - toBeTrue "{{{2
+" Predefined custom matchers - to_be_true  "{{{2
 function! vspec#_matcher_true(value)
   return type(a:value) == type(0) ? !!(a:value) : s:FALSE
 endfunction
+call vspec#customize_matcher('to_be_true', function('vspec#_matcher_true'))
 call vspec#customize_matcher('toBeTrue', function('vspec#_matcher_true'))
 
 
