@@ -143,26 +143,32 @@ COMMANDS					*vspec-commands*
 
 			Examples:
 >
-				function! True(actual_value)
+				function! ToBeTrue(actual_value)
 				  return (type(a:actual_value) == type(0)
 				  \       ? a:actual_value
 				  \       : !!0)
 				endfunction
-				call vspec#customize_matcher('toBeTrue',
-				\                            function('True'))
+				call vspec#customize_matcher(
+				\   'to_be_true',
+				\   function('ToBeTrue')
+				\ )
 
-				:Expect 123 toBeTrue
+				:Expect 123 to_be_true
 				" ===> good
-				:Expect [123] toBeTrue
+				:Expect [123] to_be_true
 				" ===> bad
 <
 					    *vspec-predefined-custom-matchers*
 			The following custom matcheres are predefined:
 
-			"toBeTrue"
+			"to_be_true"
 				Return true if {actual} value is true.
-			"toBeFalse"
+			"to_be_false"
 				Return true if {actual} value is false.
+			"toBeTrue"
+				Same as "to_be_true".  Deprecated.
+			"toBeFalse"
+				Same as "to_be_false".  Deprecated.
 
 :Expect {actual} not {matcher} {expected}	*:Expect-not*
 :Expect {actual} not {custom-matcher} [{arg}, ...]
@@ -242,7 +248,7 @@ vspec#call({funcname}, [{arg}, ...])		*vspec#call()*
 
 vspec#customize_matcher({alias}, {function})	*vspec#customize_matcher()*
 			Register {function} as a |vspec-custom-matcher| which
-			alias is {alias}.
+			alias is {alias}.  {alias} should be snake_case.
 
 vspec#hint({info})				*vspec#hint()*
 			Tell vspec "hint" information to use useful API to
