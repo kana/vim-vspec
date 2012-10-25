@@ -241,10 +241,9 @@ function! vspec#test(specfile_path)  "{{{2
               \   example
               \ )
               echo '# Expected' i.expr_actual i.expr_matcher i.expr_expected
-              echo '#       Actual value:' string(i.value_actual)
-              if !s:is_custom_matcher(i.expr_matcher)
-                echo '#     Expected value:' string(i.value_expected)
-              endif
+              for line in s:generate_failure_message(i)
+                echo '#     ' . line
+              endfor
             elseif type ==# 'TODO'
               echo printf(
               \   '%s %d - # TODO %s %s',
@@ -635,6 +634,16 @@ function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
   else
     throw 'vspec:InvalidOperation:Unknown matcher - ' . string(a:expr_matcher)
   endif
+endfunction
+
+
+
+
+function! s:generate_failure_message(i)  "{{{2
+  return [
+  \   '  Actual value: ' . string(a:i.value_actual),
+  \   'Expected value: ' . string(a:i.value_expected),
+  \ ]
 endfunction
 
 
