@@ -24,8 +24,8 @@ end
 
 describe 'Call'
   it 'should call a script-local function'
-    Expect Call('s:is_matcher', '==') toBeTrue
-    Expect Call('s:is_matcher', '=?') toBeFalse
+    Expect Call('s:is_matcher', '==') to_be_true
+    Expect Call('s:is_matcher', '=?') to_be_false
   end
 
   it 'should call a non-script-local function'

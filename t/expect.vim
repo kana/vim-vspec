@@ -11,7 +11,7 @@ describe ':Expect'
     catch /^vspec:ExpectationFailure:/
       let is_succeeded = !!0
     endtry
-    Expect is_succeeded toBeFalse
+    Expect is_succeeded to_be_false
   end
 
   it 'should parse "string" without errors'
@@ -36,6 +36,6 @@ describe ':ExpectNot'
     catch /^vspec:ExpectationFailure:/
       let is_succeeded = !!0
     endtry
-    Expect is_succeeded toBeFalse
+    Expect is_succeeded to_be_false
   end
 end
