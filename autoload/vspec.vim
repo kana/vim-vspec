@@ -685,7 +685,7 @@ endfunction
 
 let s:RE_SPLIT_AT_MATCHER =
 \ printf(
-\   '\C\v^(.{-})\s+%%((not)\s+)?(%%(%%(%s)[#?]?)|to\w+>)(.*)$',
+\   '\C\v^(.{-})\s+%%((not)\s+)?(%%(%%(%s)[#?]?)|to\w+>)\s*(.*)$',
 \   join(
 \     map(
 \       reverse(sort(copy(s:VALID_MATCHERS))),
