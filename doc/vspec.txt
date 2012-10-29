@@ -355,6 +355,22 @@ ETC ~
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.1.0	2012-10-29T22:19:45+09:00		*vspec-changelog-1.1.0*
+	- |:Expect-not|:
+	  - Show proper messages for failed expectations.
+	- |vspec-custom-matcher|:
+	  - Change the naming guideline.
+	    - Use snake_case instead of camelCase.
+	    - Add new aliases for predefined custom matcheres.
+	    - Old aliases are still supported, but deprecated.
+	  - Support custom failure message.
+	    - See |vspec#customize_matcher()| for the details.
+	    - It was not possible to show meaningful messages for failed
+	      expectations using custom mathcers with old versions.
+	    - Change the syntax to register new matcher.
+	    - Old syntax is still supported, but deprecated.
+	  - Fix to properly support custom matchers with 2 or more arguments.
+
 1.0.2	2012-02-12T21:02:50+09:00		*vspec-changelog-1.0.2*
 	- |bin/vspec|:
 	  - Remove user's |after-directory| from 'runtimepath' to avoid
