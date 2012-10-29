@@ -518,7 +518,7 @@ function! s:parse_should_arguments(s, mode)  "{{{2
       let matcher = string(_matcher)
     endif
     if s:is_custom_matcher(_matcher)
-      let expected = string(_expected)
+      let expected = '[' . _expected . ']'
     endif
     let not = string(_not)
   endif
@@ -598,7 +598,7 @@ function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
     endif
     return !!call(
     \   s:custom_matchers[custom_matcher_name],
-    \   [a:value_actual] + eval(printf('[%s]', a:value_expected))
+    \   [a:value_actual] + a:value_expected
     \ )
   elseif s:is_equality_matcher(a:expr_matcher)
     let type_equality = type(a:value_actual) == type(a:value_expected)
