@@ -143,26 +143,32 @@ COMMANDS					*vspec-commands*
 
 			Examples:
 >
-				function! True(actual_value)
+				function! ToBeTrue(actual_value)
 				  return (type(a:actual_value) == type(0)
 				  \       ? a:actual_value
 				  \       : !!0)
 				endfunction
-				call vspec#customize_matcher('toBeTrue',
-				\                            function('True'))
+				call vspec#customize_matcher(
+				\   'to_be_true',
+				\   function('ToBeTrue')
+				\ )
 
-				:Expect 123 toBeTrue
+				:Expect 123 to_be_true
 				" ===> good
-				:Expect [123] toBeTrue
+				:Expect [123] to_be_true
 				" ===> bad
 <
 					    *vspec-predefined-custom-matchers*
 			The following custom matcheres are predefined:
 
-			"toBeTrue"
+			"to_be_true"
 				Return true if {actual} value is true.
-			"toBeFalse"
+			"to_be_false"
 				Return true if {actual} value is false.
+			"toBeTrue"
+				Same as "to_be_true".  Deprecated.
+			"toBeFalse"
+				Same as "to_be_false".  Deprecated.
 
 :Expect {actual} not {matcher} {expected}	*:Expect-not*
 :Expect {actual} not {custom-matcher} [{arg}, ...]
@@ -240,9 +246,37 @@ vspec#call({funcname}, [{arg}, ...])		*vspec#call()*
 			{arg} is an arbitrary value which is given to the
 			function corresponding to o{funcname}.
 
-vspec#customize_matcher({alias}, {function})	*vspec#customize_matcher()*
-			Register {function} as a |vspec-custom-matcher| which
-			alias is {alias}.
+vspec#customize_matcher({alias}, {matcher})	*vspec#customize_matcher()*
+			Register {matcher} as a |vspec-custom-matcher| with
+			a given {alias}.  {alias} should be snake_case.
+
+			{matcher} is a dictionary with the following items:
+
+			"match" (required)
+				A |Funcref| to determine whether {actual}
+				value matches to {expected} value.  It takes
+				1 or more arguments.  The first argument is
+				{actual} value given to |:Expect|, and the
+				rest of arguments are arbitrary {expected}
+				values.  It returns true if {actual} value is
+				matched to {expected} value, or false
+				otherwise.
+
+			"failure_message_for_should" (optional)
+				A |Funcref| to generate user friendly message
+				for failed match with |:Expect|.  It takes
+				arguments the same as "match", and it returns
+				a string or a list of strings to describe
+				a failure.
+
+			"failure_message_for_should_not" (optional)
+				Like "failure_message_for_should", but it is
+				used to generate failure message for
+				|:Expect-not|.
+
+vspec#customize_matcher({alias}, {function})   *vspec#customize_matcher()-old*
+			Deprecated.  Use |vspec#customize_matcher()| instead.
+			This style is remiained for backward compatibility.
 
 vspec#hint({info})				*vspec#hint()*
 			Tell vspec "hint" information to use useful API to

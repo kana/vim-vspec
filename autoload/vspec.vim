@@ -49,7 +49,7 @@ let s:current_suites = []  "{{{2
 
 
 let s:custom_matchers = {}  "{{{2
-" :: MatcherNameString -> Funcref
+" :: MatcherNameString -> Matcher
 
 
 
@@ -149,8 +149,13 @@ endfunction
 
 
 
-function! vspec#customize_matcher(matcher_name, funcref)  "{{{2
-  let s:custom_matchers[a:matcher_name] = a:funcref
+function! vspec#customize_matcher(matcher_name, maybe_matcher)  "{{{2
+  if type(a:maybe_matcher) == type({})
+    let matcher = a:maybe_matcher
+  else
+    let matcher = {'match': a:maybe_matcher}
+  endif
+  let s:custom_matchers[a:matcher_name] = matcher
 endfunction
 
 
@@ -235,11 +240,15 @@ function! vspec#test(specfile_path)  "{{{2
               \   suite.subject,
               \   example
               \ )
-              echo '# Expected' i.expr_actual i.expr_matcher i.expr_expected
-              echo '#       Actual value:' string(i.value_actual)
-              if !s:is_custom_matcher(i.expr_matcher)
-                echo '#     Expected value:' string(i.value_expected)
-              endif
+              echo '# Expected' join(filter([
+              \   i.expr_actual,
+              \   i.expr_not,
+              \   i.expr_matcher,
+              \   i.expr_expected,
+              \ ], 'v:val != ""'))
+              for line in s:generate_failure_message(i)
+                echo '#     ' . line
+              endfor
             elseif type ==# 'TODO'
               echo printf(
               \   '%s %d - # TODO %s %s',
@@ -301,19 +310,21 @@ endfunction
 
 
 
-" Predefined custom matchers - toBeFalse "{{{2
+" Predefined custom matchers - to_be_false  "{{{2
 function! vspec#_matcher_false(value)
   return type(a:value) == type(0) ? !(a:value) : s:FALSE
 endfunction
+call vspec#customize_matcher('to_be_false', function('vspec#_matcher_false'))
 call vspec#customize_matcher('toBeFalse', function('vspec#_matcher_false'))
 
 
 
 
-" Predefined custom matchers - toBeTrue "{{{2
+" Predefined custom matchers - to_be_true  "{{{2
 function! vspec#_matcher_true(value)
   return type(a:value) == type(0) ? !!(a:value) : s:FALSE
 endfunction
+call vspec#customize_matcher('to_be_true', function('vspec#_matcher_true'))
 call vspec#customize_matcher('toBeTrue', function('vspec#_matcher_true'))
 
 
@@ -516,7 +527,7 @@ function! s:parse_should_arguments(s, mode)  "{{{2
       let matcher = string(_matcher)
     endif
     if s:is_custom_matcher(_matcher)
-      let expected = string(_expected)
+      let expected = '[' . _expected . ']'
     endif
     let not = string(_not)
   endif
@@ -589,14 +600,22 @@ let s:VALID_MATCHERS = (s:VALID_MATCHERS_EQUALITY
 function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
   if s:is_custom_matcher(a:expr_matcher)
     let custom_matcher_name = a:expr_matcher
-    if !has_key(s:custom_matchers, custom_matcher_name)
+    let matcher = get(s:custom_matchers, custom_matcher_name, 0)
+    if matcher is 0
       throw
       \ 'vspec:InvalidOperation:Unknown custom matcher - '
       \ . string(custom_matcher_name)
     endif
+    let Match = get(matcher, 'match', 0)
+    if Match is 0
+      throw
+      \ 'vspec:InvalidOperation:Custom matcher does not have match function - '
+      \ . string(custom_matcher_name)
+    endif
     return !!call(
-    \   s:custom_matchers[custom_matcher_name],
-    \   [a:value_actual] + eval(printf('[%s]', a:value_expected))
+    \   Match,
+    \   [a:value_actual] + a:value_expected,
+    \   matcher
     \ )
   elseif s:is_equality_matcher(a:expr_matcher)
     let type_equality = type(a:value_actual) == type(a:value_expected)
@@ -619,6 +638,49 @@ function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
     return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
   else
     throw 'vspec:InvalidOperation:Unknown matcher - ' . string(a:expr_matcher)
+  endif
+endfunction
+
+
+
+
+function! s:generate_default_failure_message(i)  "{{{2
+  return [
+  \   '  Actual value: ' . string(a:i.value_actual),
+  \   'Expected value: ' . string(a:i.value_expected),
+  \ ]
+endfunction
+
+
+
+
+function! s:generate_failure_message(i)  "{{{2
+  let matcher = get(s:custom_matchers, a:i.value_matcher, 0)
+  if matcher is 0
+    return s:generate_default_failure_message(a:i)
+  else
+    let method_name =
+    \ a:i.value_not == ''
+    \ ? 'failure_message_for_should'
+    \ : 'failure_message_for_should_not'
+    let Generate = get(
+    \   matcher,
+    \   method_name,
+    \   0
+    \ )
+    if Generate is 0
+      return s:generate_default_failure_message(a:i)
+    else
+      let values = [a:i.value_actual]
+      if a:i.expr_expected != ''
+        call extend(values, a:i.value_expected)
+      endif
+      let maybe_message = call(Generate, values, matcher)
+      return
+      \ type(maybe_message) == type('')
+      \ ? [maybe_message]
+      \ : maybe_message
+    endif
   endif
 endfunction
 
@@ -683,7 +745,7 @@ endfunction
 
 let s:RE_SPLIT_AT_MATCHER =
 \ printf(
-\   '\C\v^(.{-})\s+%%((not)\s+)?(%%(%%(%s)[#?]?)|to\w+>)(.*)$',
+\   '\C\v^(.{-})\s+%%((not)\s+)?(%%(%%(%s)[#?]?)|to\w+>)\s*(.*)$',
 \   join(
 \     map(
 \       reverse(sort(copy(s:VALID_MATCHERS))),
