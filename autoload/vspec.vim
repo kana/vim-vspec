@@ -428,7 +428,7 @@ function! s:translate_script(slines)  "{{{2
   let stack = []
 
   for sline in a:slines
-    let tokens = matchlist(sline, '^\s*describe\s*\(''.*''\)\s*$')
+    let tokens = matchlist(sline, '^\s*describe\s*\(\(["'']\).*\2\)\s*$')
     if !empty(tokens)
       call insert(stack, 'describe', 0)
       call extend(rlines, [
