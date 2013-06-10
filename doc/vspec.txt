@@ -355,6 +355,11 @@ ETC ~
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.1.1	2013-06-10T22:30:31+09:00		*vspec-changelog-1.1.1*
+	- Fix |bin/vspec| to work properly when
+	  - No {non-standard-runtimepath} is given.
+	  - Any {non-standard-runtimepath} contains spaces.
+
 1.1.0	2012-10-29T22:19:45+09:00		*vspec-changelog-1.1.0*
 	- |:Expect-not|:
 	  - Show proper messages for failed expectations.
