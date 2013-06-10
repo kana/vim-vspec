@@ -51,7 +51,7 @@ Latest version:
 http://github.com/kana/vim-vspec
 
 Document in HTML format:
-http://kana.github.com/config/vim/vspec.html
+http://vim-doc.heroku.com/view?https://raw.github.com/kana/vim-vspec/master/doc/vspec.txt
 
 
 
