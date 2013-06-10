@@ -1,2 +1,4 @@
-language: c
-script: bash --version; vim --version; make test
+language: ruby
+rvm:
+  - 2.0.0
+script: rake ci

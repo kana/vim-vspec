@@ -1,7 +1,13 @@
-" Not to use vim-vspec fetched by mduem.
+" Remove paths for vim-vspec fetched by vim-flavor from &runtimepath to
+" * Avoid applying after/indent/vim.vim twice.
+" * Apply only after/indent/vim.vim of the current version,
+"   not one of the fetched version.
 let &runtimepath =
 \ join(
-\   filter(split(&runtimepath, ','), 'v:val !~# ''\.mduem/deps/vim-vspec'''),
+\   filter(
+\     split(&runtimepath, ','),
+\     'v:val !~# ''\.vim-flavor/deps/kana_vim-vspec'''
+\   ),
 \   ','
 \ )
 
