@@ -1,9 +1,9 @@
 *vspec.txt*	Testing framework for Vim script
 
-Version @@VERSION@@
+Version 1.1.1
 Script ID: 3012
-Copyright (C) 2009-2012 Kana Natsuno <http://whileimautomaton.net/>
-License: So-called MIT/X license  {{{
+Copyright (C) 2009-2013 Kana Natsuno <http://whileimautomaton.net/>
+License: MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
     "Software"), to deal in the Software without restriction, including
@@ -51,7 +51,7 @@ Latest version:
 http://github.com/kana/vim-vspec
 
 Document in HTML format:
-http://kana.github.com/config/vim/vspec.html
+http://vim-doc.heroku.com/view?https://raw.github.com/kana/vim-vspec/master/doc/vspec.txt
 
 
 
@@ -354,6 +354,11 @@ ETC ~
 
 ==============================================================================
 CHANGELOG					*vspec-changelog*
+
+1.1.1	2013-06-10T22:30:31+09:00		*vspec-changelog-1.1.1*
+	- Fix |bin/vspec| to work properly when
+	  - No {non-standard-runtimepath} is given.
+	  - Any {non-standard-runtimepath} contains spaces.
 
 1.1.0	2012-10-29T22:19:45+09:00		*vspec-changelog-1.1.0*
 	- |:Expect-not|:
