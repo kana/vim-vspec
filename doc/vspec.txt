@@ -377,6 +377,10 @@ ETC ~
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.1.2	2013-06-11T22:30:06+09:00		*vspec-changelog-1.1.2*
+	- Fix |bin/vspec| to output lines with LF, not CR LF.
+	- Add |vspec-custom-matcher-examples|.
+
 1.1.1	2013-06-10T22:30:31+09:00		*vspec-changelog-1.1.1*
 	- Fix |bin/vspec| to work properly when
 	  - No {non-standard-runtimepath} is given.
