@@ -335,6 +335,22 @@ CUSTOM MATCHERS				       *vspec-custom-matcher-examples*
 	" ===> bad
 <
 
+(b) A matcher which takes arguments about an expected value:
+>
+	function! ToBeBetween(actual, expected_min, expected_max)
+	  return a:expected_min <= a:actual && a:actual <= a:expected_max
+	endfunction
+	call vspec#customize_matcher(
+	\   'to_be_between',
+	\   function('ToBeBetween')
+	\ )
+
+	:Expect 15 to_be_between 10, 20
+	" ===> good
+	:Expect 42 to_be_between 10, 20
+	" ===> bad
+<
+
 
 
 
