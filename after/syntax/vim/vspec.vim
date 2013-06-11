@@ -1,5 +1,5 @@
 " Vim additional syntax: vim/vspec - highlight vspec commands
-" Version: 1.1.1
+" Version: 1.1.2
 " Copyright (C) 2010-2013 Kana Natsuno <http://whileimautomaton.net/>
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
