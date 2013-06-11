@@ -3,7 +3,7 @@
 function f
 {
   # FIXME: Almost same as t/check-vspec-result
-  diff="$(diff --unified "$2" <(./bin/vspec "$PWD" 'foo bar' "$1" | sed 's/\r//'))"
+  diff="$(diff --unified "$2" <(./bin/vspec "$PWD" 'foo bar' "$1"))"
   if [ $? = 0 ]
   then
     echo 'ok 1'
