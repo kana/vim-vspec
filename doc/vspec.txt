@@ -139,25 +139,9 @@ COMMANDS					*vspec-commands*
 			The custom matcher will be called with {actual} and
 			{arg}s.  It must return true if {actual} value is
 			valid, otherwise it must return false.
-			See also |vspec#customize_matcher()|.
+			See also |vspec-custom-matcher-examples| and
+			|vspec#customize_matcher()|.
 
-			Examples:
->
-				function! ToBeTrue(actual_value)
-				  return (type(a:actual_value) == type(0)
-				  \       ? a:actual_value
-				  \       : !!0)
-				endfunction
-				call vspec#customize_matcher(
-				\   'to_be_true',
-				\   function('ToBeTrue')
-				\ )
-
-				:Expect 123 to_be_true
-				" ===> good
-				:Expect [123] to_be_true
-				" ===> bad
-<
 					    *vspec-predefined-custom-matchers*
 			The following custom matcheres are predefined:
 
@@ -249,6 +233,7 @@ vspec#call({funcname}, [{arg}, ...])		*vspec#call()*
 vspec#customize_matcher({alias}, {matcher})	*vspec#customize_matcher()*
 			Register {matcher} as a |vspec-custom-matcher| with
 			a given {alias}.  {alias} should be snake_case.
+			See also |vspec-custom-matcher-examples|.
 
 			{matcher} is a dictionary with the following items:
 
@@ -326,8 +311,29 @@ vspec#test({specfile-path})			*vspec#test()*
 ==============================================================================
 EXAMPLES					*vspec-examples*
 
-See files in the "t" directory in a source tree of this plugin:
+See also files in the "t" directory in a source tree of this plugin:
 https://github.com/kana/vim-vspec/tree/master/t
+
+
+CUSTOM MATCHERS				       *vspec-custom-matcher-examples*
+
+(a) A simple matcher which checks only an actual value:
+>
+	function! ToBeTrue(actual_value)
+	  return (type(a:actual_value) == type(0)
+	  \       ? a:actual_value
+	  \       : !!0)
+	endfunction
+	call vspec#customize_matcher(
+	\   'to_be_true',
+	\   function('ToBeTrue')
+	\ )
+
+	:Expect 123 to_be_true
+	" ===> good
+	:Expect [123] to_be_true
+	" ===> bad
+<
 
 
 
