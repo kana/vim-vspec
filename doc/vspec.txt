@@ -198,9 +198,14 @@ COMMANDS					*vspec-commands*
 			Represent that the current example is not written yet.
 			The current example will be always failed.
 
-:SKIP						*:SKIP*
+:SKIP {message}					*:SKIP*
 			Skip the current example.
 			The current example will be always succeeded.
+
+			{message} is a string which will be displayed as an
+			additional message to provide a hint about the skipped
+			example.  Note that single-quoted strings are only
+			supported at the moment.
 
 
 ------------------------------------------------------------------------------
