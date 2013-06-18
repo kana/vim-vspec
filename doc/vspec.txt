@@ -41,7 +41,15 @@ Changelog               |vspec-changelog|
 ==============================================================================
 INTRODUCTION					*vspec-introduction*
 
-*vspec* is a Vim library plugin to test Vim script.
+*vspec* is a testing framework for Vim script.  It consists of:
+
+* A driver script to run a test suite,
+* A Vim plugin to write tests in a format which resembles RSpec,
+* Additional syntax/indent files for Vim script to write tests.
+
+Since vspec is a part of a system to automated tests for Vim script,
+it requires several steps to set up an environment to easily run tests.
+See the following article: http://whileimautomaton.net/2013/02/13211500
 
 
 Requirements:
