@@ -428,7 +428,7 @@ function! s:translate_script(slines)  "{{{2
   let stack = []
 
   for sline in a:slines
-    let tokens = matchlist(sline, '^\s*describe\s*\(\(["'']\).*\2\)\s*$')
+    let tokens = matchlist(sline, '^\s*describe\s*\(\(["'']\).*\2\)\s*\%("[^"]*\)\=$')
     if !empty(tokens)
       call insert(stack, 'describe', 0)
       call extend(rlines, [
@@ -438,7 +438,7 @@ function! s:translate_script(slines)  "{{{2
       continue
     endif
 
-    let tokens = matchlist(sline, '^\s*it\s*\(\(["'']\).*\2\)\s*$')
+    let tokens = matchlist(sline, '^\s*it\s*\(\(["'']\).*\2\)\s*\%("[^"]*\)\=$')
     if !empty(tokens)
       call insert(stack, 'it', 0)
       call extend(rlines, [
@@ -448,7 +448,7 @@ function! s:translate_script(slines)  "{{{2
       continue
     endif
 
-    let tokens = matchlist(sline, '^\s*before\s*$')
+    let tokens = matchlist(sline, '^\s*before\s*\%("[^"]*\)\=$')
     if !empty(tokens)
       call insert(stack, 'before', 0)
       call extend(rlines, [
@@ -457,7 +457,7 @@ function! s:translate_script(slines)  "{{{2
       continue
     endif
 
-    let tokens = matchlist(sline, '^\s*after\s*$')
+    let tokens = matchlist(sline, '^\s*after\s*\%("[^"]*\)\=$')
     if !empty(tokens)
       call insert(stack, 'after', 0)
       call extend(rlines, [
@@ -466,7 +466,7 @@ function! s:translate_script(slines)  "{{{2
       continue
     endif
 
-    let tokens = matchlist(sline, '^\s*end\s*$')
+    let tokens = matchlist(sline, '^\s*end\s*\%("[^"]*\)\=$')
     if !empty(tokens)
       let type = remove(stack, 0)
       if type ==# 'describe'
