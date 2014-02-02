@@ -394,6 +394,10 @@ ETC ~
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.1.3	2014-02-02T20:18:47+09:00		*vspec-changelog-1.1.3*
+	- Accept double-quoted strings in |:describe| and |:it|.
+	- Add a known issue on |:read|.  See |vspec-bugs|.
+
 1.1.2	2013-06-11T22:30:06+09:00		*vspec-changelog-1.1.2*
 	- Fix |bin/vspec| to output lines with LF, not CR LF.
 	- Add |vspec-custom-matcher-examples|.
