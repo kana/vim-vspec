@@ -372,7 +372,11 @@ BUGS						*vspec-bugs*
 
 KNOWN ISSUES ~
 
-- Currently there is no known issue.
+- |bin/vspec| invokes a Vim process in |Ex-mode| to automate running a test
+  script.  Most commands works the same as interactive, non-Ex mode Vim.
+  However, some commands may work differently for POSIX compatibility.
+  Especially, ":read file" doesn't keep an empty line for an empty buffer.
+  See |new-posix| for the details.
 
 
 PLANNED FEATURES ~
