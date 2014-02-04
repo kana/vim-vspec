@@ -32,6 +32,7 @@ Interface               |vspec-interface|
   Commands                |vspec-commands|
   Functions               |vspec-functions|
 Examples                |vspec-examples|
+FAQ                     |vspec-faq|
 Bugs                    |vspec-bugs|
 Changelog               |vspec-changelog|
 
@@ -368,9 +369,7 @@ CUSTOM MATCHERS				       *vspec-custom-matcher-examples*
 
 
 ==============================================================================
-BUGS						*vspec-bugs*
-
-KNOWN ISSUES ~
+FAQ						*vspec-faq*
 
 (a) ":read file" in an empty buffer doesn't keep an empty line.
 	|bin/vspec| invokes a Vim process in |Ex-mode| to automate running
@@ -427,6 +426,11 @@ KNOWN ISSUES ~
 	complicated.
 
 
+
+
+==============================================================================
+BUGS						*vspec-bugs*
+
 PLANNED FEATURES ~
 
 - Currently there is no planned feature.
@@ -444,7 +448,7 @@ CHANGELOG					*vspec-changelog*
 
 1.1.3	2014-02-02T20:18:47+09:00		*vspec-changelog-1.1.3*
 	- Accept double-quoted strings in |:describe| and |:it|.
-	- Add a known issue on |:read|.  See |vspec-bugs|.
+	- Add a known issue on |:read|.  See |vspec-faq|.
 
 1.1.2	2013-06-11T22:30:06+09:00		*vspec-changelog-1.1.2*
 	- Fix |bin/vspec| to output lines with LF, not CR LF.
