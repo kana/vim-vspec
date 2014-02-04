@@ -402,6 +402,17 @@ KNOWN ISSUES ~
 	a test script, because Vim is always busy to execute each line in the
 	test script.
 
+(d) To respond to |input()|, use |:normal|.
+	Suppose that you define <Plug>InteractiveCommand which calls input(),
+	and you want to write a test for it.  Use :normal as follows to queue
+	a response to the input() from <Plug>InteractiveCommand:
+>
+		execute "normal \<Plug>InteractiveCommand{response}\<CR>"
+<
+	Technically you can use also feedkeys() to queue a response.
+	But resulting code is hard read, because the order of code is
+	scrambled -- you have to feedkeys() before :normal.
+
 
 PLANNED FEATURES ~
 
