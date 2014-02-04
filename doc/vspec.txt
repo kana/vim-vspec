@@ -413,6 +413,19 @@ KNOWN ISSUES ~
 	But resulting code is hard read, because the order of code is
 	scrambled -- you have to feedkeys() before :normal.
 
+(e) plugin/*.vim must be explicitly |:source|d.
+	This is an intentional behavior to set up configuration variables, key
+	mappings, etc before loading plugin/*.vim.
+
+	Several plugins behave differently depending on the current
+	configuration.  Some plugins define key mappings based on their
+	configuration variables.  Some plugins try not to override
+	user-defined key mappings.
+
+	If plugin/*.vim are automatically :source'd, we have to provide a way
+	to emulate user's vimrc to reproduce such situations.  It makes things
+	complicated.
+
 
 PLANNED FEATURES ~
 
