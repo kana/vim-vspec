@@ -379,6 +379,13 @@ KNOWN ISSUES ~
 	compatibility.  ":read file" is the most notable example.  See
 	|new-posix| for the details.
 
+(b) Autoload variables must be prefixed with g: in :it/:before/:after blocks.
+	Code in |:it|, |:before| and |:after| blocks are evaluated the same as
+	code in functions.  Inside functions, variables without any scope
+	prefix are treated as local variables.  Since |autoload| variables are
+	just global variables which have special characters in their names,
+	the |g:| scope prefix is required to refer autoload variables.
+
 
 PLANNED FEATURES ~
 
