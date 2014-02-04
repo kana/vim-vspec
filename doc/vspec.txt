@@ -386,6 +386,22 @@ KNOWN ISSUES ~
 	just global variables which have special characters in their names,
 	the |g:| scope prefix is required to refer autoload variables.
 
+(c) To emulate user input, use |:normal| instead of |feedkeys()|.
+	For example, omni completion can be activated by:
+>
+		execute "normal! a\<C-x>\<C-o>"
+<
+	But
+>
+		call feedkeys("a\<C-x>\<C-o")
+<
+	does nothing.  Because feedkeys() only pushes characters into the
+	input queue. When Vim becomes idle and the input queue is not empty,
+	Vim will take a character from the input queue and processes it as if
+	user typed the character. But Vim will never be idle while running
+	a test script, because Vim is always busy to execute each line in the
+	test script.
+
 
 PLANNED FEATURES ~
 
