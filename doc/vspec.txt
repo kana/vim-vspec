@@ -431,14 +431,8 @@ FAQ						*vspec-faq*
 ==============================================================================
 BUGS						*vspec-bugs*
 
-PLANNED FEATURES ~
-
-- Currently there is no planned feature.
-
-
-ETC ~
-
-- Welcome your feedback at: http://github.com/kana/vim-vspec/issues
+- See http://github.com/kana/vim-vspec/issues for known issues and planned
+  features.
 
 
 
