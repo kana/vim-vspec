@@ -32,6 +32,7 @@ Interface               |vspec-interface|
   Commands                |vspec-commands|
   Functions               |vspec-functions|
 Examples                |vspec-examples|
+FAQ                     |vspec-faq|
 Bugs                    |vspec-bugs|
 Changelog               |vspec-changelog|
 
@@ -368,25 +369,70 @@ CUSTOM MATCHERS				       *vspec-custom-matcher-examples*
 
 
 ==============================================================================
+FAQ						*vspec-faq*
+
+(a) ":read file" in an empty buffer doesn't keep an empty line.
+	|bin/vspec| invokes a Vim process in |Ex-mode| to automate running
+	a test script.  Most commands works the same as interactive, non-Ex
+	mode Vim.  However, a few commands work differently for POSIX
+	compatibility.  ":read file" is the most notable example.  See
+	|new-posix| for the details.
+
+(b) Autoload variables must be prefixed with g: in :it/:before/:after blocks.
+	Code in |:it|, |:before| and |:after| blocks are evaluated the same as
+	code in functions.  Inside functions, variables without any scope
+	prefix are treated as local variables.  Since |autoload| variables are
+	just global variables which have special characters in their names,
+	the |g:| scope prefix is required to refer autoload variables.
+
+(c) To emulate user input, use |:normal| instead of |feedkeys()|.
+	For example, omni completion can be activated by:
+>
+		execute "normal! a\<C-x>\<C-o>"
+<
+	But
+>
+		call feedkeys("a\<C-x>\<C-o")
+<
+	does nothing.  Because feedkeys() only pushes characters into the
+	input queue. When Vim becomes idle and the input queue is not empty,
+	Vim will take a character from the input queue and processes it as if
+	user typed the character. But Vim will never be idle while running
+	a test script, because Vim is always busy to execute each line in the
+	test script.
+
+(d) To respond to |input()|, use |:normal|.
+	Suppose that you define <Plug>InteractiveCommand which calls input(),
+	and you want to write a test for it.  Use :normal as follows to queue
+	a response to the input() from <Plug>InteractiveCommand:
+>
+		execute "normal \<Plug>InteractiveCommand{response}\<CR>"
+<
+	Technically you can use also feedkeys() to queue a response.
+	But resulting code is hard read, because the order of code is
+	scrambled -- you have to feedkeys() before :normal.
+
+(e) plugin/*.vim must be explicitly |:source|d.
+	This is an intentional behavior to set up configuration variables, key
+	mappings, etc before loading plugin/*.vim.
+
+	Several plugins behave differently depending on the current
+	configuration.  Some plugins define key mappings based on their
+	configuration variables.  Some plugins try not to override
+	user-defined key mappings.
+
+	If plugin/*.vim are automatically :source'd, we have to provide a way
+	to emulate user's vimrc to reproduce such situations.  It makes things
+	complicated.
+
+
+
+
+==============================================================================
 BUGS						*vspec-bugs*
 
-KNOWN ISSUES ~
-
-- |bin/vspec| invokes a Vim process in |Ex-mode| to automate running a test
-  script.  Most commands works the same as interactive, non-Ex mode Vim.
-  However, some commands may work differently for POSIX compatibility.
-  Especially, ":read file" doesn't keep an empty line for an empty buffer.
-  See |new-posix| for the details.
-
-
-PLANNED FEATURES ~
-
-- Currently there is no planned feature.
-
-
-ETC ~
-
-- Welcome your feedback at: http://github.com/kana/vim-vspec/issues
+- See http://github.com/kana/vim-vspec/issues for known issues and planned
+  features.
 
 
 
@@ -396,7 +442,7 @@ CHANGELOG					*vspec-changelog*
 
 1.1.3	2014-02-02T20:18:47+09:00		*vspec-changelog-1.1.3*
 	- Accept double-quoted strings in |:describe| and |:it|.
-	- Add a known issue on |:read|.  See |vspec-bugs|.
+	- Add a known issue on |:read|.  See |vspec-faq|.
 
 1.1.2	2013-06-11T22:30:06+09:00		*vspec-changelog-1.1.2*
 	- Fix |bin/vspec| to output lines with LF, not CR LF.
