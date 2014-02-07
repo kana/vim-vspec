@@ -357,7 +357,7 @@ endfunction
 
 
 function! s:suite.generate_example_function_name(example_description)  "{{{2
-  return substitute(
+  return '_' . substitute(
   \   a:example_description,
   \   '[^[:alnum:]]',
   \   '\="_" . printf("%02x", char2nr(submatch(0)))',
