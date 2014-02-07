@@ -25,7 +25,7 @@ describe 'Automatic indentation'
     close!
   endfunction
 
-  it 'should indent lines after :describe'
+  it 'indents lines after :describe'
     call s:before()
 
     execute 'normal!' 'i' . join([
@@ -43,7 +43,7 @@ describe 'Automatic indentation'
     call s:after()
   end
 
-  it 'should indent lines after :it'
+  it 'indents lines after :it'
     call s:before()
 
     execute 'normal!' 'i' . join([
@@ -65,7 +65,7 @@ describe 'Automatic indentation'
     call s:after()
   end
 
-  it 'should indent lines after :before'
+  it 'indents lines after :before'
     call s:before()
 
     execute 'normal!' 'i' . join([
@@ -93,7 +93,7 @@ describe 'Automatic indentation'
     call s:after()
   end
 
-  it 'should indent lines after :after'
+  it 'indents lines after :after'
     call s:before()
 
     execute 'normal!' 'i' . join([

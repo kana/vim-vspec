@@ -1,5 +1,5 @@
 describe '=='
-  it 'should compare equality of given values with &ignorecase'
+  it 'tests equality of given values with &ignorecase'
     set noignorecase
     Expect 123 == 123
     Expect 123 not == 789
@@ -31,7 +31,7 @@ describe '=='
 end
 
 describe '==#'
-  it 'should compare equality of given values case-sensitively'
+  it 'tests equality of given values case-sensitively'
     set noignorecase
     Expect 123 ==# 123
     Expect 123 not ==# 789
@@ -63,7 +63,7 @@ describe '==#'
 end
 
 describe '==?'
-  it 'should compare equality of given values case-insensitively'
+  it 'tests equality of given values case-insensitively'
     set noignorecase
     Expect 123 ==? 123
     Expect 123 not ==? 789
@@ -95,7 +95,7 @@ describe '==?'
 end
 
 describe '!='
-  it 'should compare equality of given values with &ignorecase'
+  it 'tests equality of given values with &ignorecase'
     set noignorecase
     Expect 123 not != 123
     Expect 123 != 789
@@ -127,7 +127,7 @@ describe '!='
 end
 
 describe '!=#'
-  it 'should compare equality of given values case-sensitively'
+  it 'tests equality of given values case-sensitively'
     set noignorecase
     Expect 123 not !=# 123
     Expect 123 !=# 789
@@ -159,7 +159,7 @@ describe '!=#'
 end
 
 describe '!=?'
-  it 'should compare equality of given values case-insensitively'
+  it 'tests equality of given values case-insensitively'
     set noignorecase
     Expect 123 not !=? 123
     Expect 123 !=? 789
@@ -191,7 +191,7 @@ describe '!=?'
 end
 
 describe '<'
-  it 'should compare order of given values with &ignorecase'
+  it 'tests the order of given values with &ignorecase'
     set noignorecase
     Expect 123 < 456
     Expect 123 not < 123
@@ -217,7 +217,7 @@ describe '<'
 end
 
 describe '<#'
-  it 'should compare order of given values case-sensitively'
+  it 'tests the order of given values case-sensitively'
     set noignorecase
     Expect 123 <# 456
     Expect 123 not <# 123
@@ -243,7 +243,7 @@ describe '<#'
 end
 
 describe '<?'
-  it 'should compare order of given values case-insensitively'
+  it 'tests the order of given values case-insensitively'
     set noignorecase
     Expect 123 <? 456
     Expect 123 not <? 123
@@ -269,7 +269,7 @@ describe '<?'
 end
 
 describe '<='
-  it 'should compare order of given values with &ignorecase'
+  it 'tests the order of given values with &ignorecase'
     set noignorecase
     Expect 123 <= 456
     Expect 123 <= 123
@@ -295,7 +295,7 @@ describe '<='
 end
 
 describe '<=#'
-  it 'should compare order of given values case-sensitively'
+  it 'tests the order of given values case-sensitively'
     set noignorecase
     Expect 123 <=# 456
     Expect 123 <=# 123
@@ -321,7 +321,7 @@ describe '<=#'
 end
 
 describe '<=?'
-  it 'should compare order of given values case-insensitively'
+  it 'tests the order of given values case-insensitively'
     set noignorecase
     Expect 123 <=? 456
     Expect 123 <=? 123
@@ -347,7 +347,7 @@ describe '<=?'
 end
 
 describe '>'
-  it 'should compare order of given values with &ignorecase'
+  it 'tests the order of given values with &ignorecase'
     set noignorecase
     Expect 123 not > 456
     Expect 123 not > 123
@@ -373,7 +373,7 @@ describe '>'
 end
 
 describe '>#'
-  it 'should compare order of given values case-sensitively'
+  it 'tests the order of given values case-sensitively'
     set noignorecase
     Expect 123 not ># 456
     Expect 123 not ># 123
@@ -399,7 +399,7 @@ describe '>#'
 end
 
 describe '>?'
-  it 'should compare order of given values case-insensitively'
+  it 'tests the order of given values case-insensitively'
     set noignorecase
     Expect 123 not >? 456
     Expect 123 not >? 123
@@ -425,7 +425,7 @@ describe '>?'
 end
 
 describe '>='
-  it 'should compare order of given values with &ignorecase'
+  it 'tests the order of given values with &ignorecase'
     set noignorecase
     Expect 123 not >= 456
     Expect 123 >= 123
@@ -451,7 +451,7 @@ describe '>='
 end
 
 describe '>=#'
-  it 'should compare order of given values case-sensitively'
+  it 'tests the order of given values case-sensitively'
     set noignorecase
     Expect 123 not >=# 456
     Expect 123 >=# 123
@@ -477,7 +477,7 @@ describe '>=#'
 end
 
 describe '>=?'
-  it 'should compare order of given values case-insensitively'
+  it 'tests the order of given values case-insensitively'
     set noignorecase
     Expect 123 not >=? 456
     Expect 123 >=? 123
@@ -503,7 +503,7 @@ describe '>=?'
 end
 
 describe '=~'
-  it 'should perform regexp matching with &ignorecase'
+  it 'performs regexp matching with &ignorecase'
     set noignorecase
     Expect 'abc' =~ '^a'
     Expect 'abc' not =~ '^A'
@@ -519,7 +519,7 @@ describe '=~'
 end
 
 describe '=~#'
-  it 'should perform regexp matching case-sensitively'
+  it 'performs regexp matching case-sensitively'
     set noignorecase
     Expect 'abc' =~# '^a'
     Expect 'abc' not =~# '^A'
@@ -535,7 +535,7 @@ describe '=~#'
 end
 
 describe '=~?'
-  it 'should perform regexp matching case-insensitively'
+  it 'performs regexp matching case-insensitively'
     set noignorecase
     Expect 'abc' =~? '^a'
     Expect 'abc' =~? '^A'
@@ -551,7 +551,7 @@ describe '=~?'
 end
 
 describe '!~'
-  it 'should perform regexp matching with &ignorecase'
+  it 'performs regexp matching with &ignorecase'
     set noignorecase
     Expect 'abc' not !~ '^a'
     Expect 'abc' !~ '^A'
@@ -567,7 +567,7 @@ describe '!~'
 end
 
 describe '!~#'
-  it 'should perform regexp matching case-sensitively'
+  it 'performs regexp matching case-sensitively'
     set noignorecase
     Expect 'abc' not !~# '^a'
     Expect 'abc' !~# '^A'
@@ -583,7 +583,7 @@ describe '!~#'
 end
 
 describe '!~?'
-  it 'should perform regexp matching case-insensitively'
+  it 'performs regexp matching case-insensitively'
     set noignorecase
     Expect 'abc' not !~? '^a'
     Expect 'abc' not !~? '^A'
@@ -599,7 +599,7 @@ describe '!~?'
 end
 
 describe 'is'
-  it 'should compare identity of given references'
+  it 'compares identities of given references'
     let l1 = []
     let l2 = []
     let d1 = {}
@@ -620,7 +620,7 @@ describe 'is'
     set ignorecase&
   end
 
-  it 'should compare equality of given values with &ignorecase'
+  it 'tests equality of given values with &ignorecase'
     set noignorecase
     Expect 123 is 123
     Expect 123 not is 789
@@ -640,7 +640,7 @@ describe 'is'
 end
 
 describe 'is#'
-  it 'should compare identity of given references'
+  it 'compares identities of given references'
     let l1 = []
     let l2 = []
     let d1 = {}
@@ -661,7 +661,7 @@ describe 'is#'
     set ignorecase&
   end
 
-  it 'should compare equality of given values case-sensitively'
+  it 'tests equality of given values case-sensitively'
     set noignorecase
     Expect 123 is# 123
     Expect 123 not is# 789
@@ -681,7 +681,7 @@ describe 'is#'
 end
 
 describe 'is?'
-  it 'should compare identity of given references'
+  it 'compares identities of given references'
     let l1 = []
     let l2 = []
     let d1 = {}
@@ -702,7 +702,7 @@ describe 'is?'
     set ignorecase&
   end
 
-  it 'should compare equality of given values case-insensitively'
+  it 'tests equality of given values case-insensitively'
     set noignorecase
     Expect 123 is? 123
     Expect 123 not is? 789
@@ -722,7 +722,7 @@ describe 'is?'
 end
 
 describe 'isnot'
-  it 'should compare identity of given references'
+  it 'compares identities of given references'
     let l1 = []
     let l2 = []
     let d1 = {}
@@ -743,7 +743,7 @@ describe 'isnot'
     set ignorecase&
   end
 
-  it 'should compare equality of given values with &ignorecase'
+  it 'tests equality of given values with &ignorecase'
     set noignorecase
     Expect 123 not isnot 123
     Expect 123 isnot 789
@@ -763,7 +763,7 @@ describe 'isnot'
 end
 
 describe 'isnot#'
-  it 'should compare identity of given references'
+  it 'compares identities of given references'
     let l1 = []
     let l2 = []
     let d1 = {}
@@ -784,7 +784,7 @@ describe 'isnot#'
     set ignorecase&
   end
 
-  it 'should compare equality of given values case-sensitively'
+  it 'tests equality of given values case-sensitively'
     set noignorecase
     Expect 123 not isnot# 123
     Expect 123 isnot# 789
@@ -804,7 +804,7 @@ describe 'isnot#'
 end
 
 describe 'isnot?'
-  it 'should compare identity of given references'
+  it 'compares identities of given references'
     let l1 = []
     let l2 = []
     let d1 = {}
@@ -825,7 +825,7 @@ describe 'isnot?'
     set ignorecase&
   end
 
-  it 'should compare equality of given values case-insensitively'
+  it 'tests equality of given values case-insensitively'
     set noignorecase
     Expect 123 not isnot? 123
     Expect 123 isnot? 789
@@ -845,24 +845,24 @@ describe 'isnot?'
 end
 
 describe 'to_be_false'
-  it 'should succeed if a given value is false'
+  it 'matches to a value evaluated as false'
     Expect 0 to_be_false
     Expect 1 not to_be_false
   end
 
-  it 'is still available as old style alias'
+  it 'is still available in old style alias'
     Expect 0 toBeFalse
     Expect 1 not toBeFalse
   end
 end
 
 describe 'to_be_true'
-  it 'should succeed if a given value is true'
+  it 'matches to a value evaluated as true'
     Expect 0 not to_be_true
     Expect 1 to_be_true
   end
 
-  it 'is still available as old style alias'
+  it 'is still available in old style alias'
     Expect 0 not toBeTrue
     Expect 1 toBeTrue
   end

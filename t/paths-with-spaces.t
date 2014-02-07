@@ -16,7 +16,7 @@ function f
 
 f <(cat <<'END'
 describe './bin/vspec'
-  it 'should handle pahts which contain spaces'
+  it 'can handle pahts which contain spaces'
     let paths = split(&runtimepath, ',')
     Expect paths[0] ==# getcwd()
     Expect paths[1] ==# 'foo bar'
@@ -26,7 +26,7 @@ describe './bin/vspec'
 end
 END
 ) <(cat <<'END'
-ok 1 - ./bin/vspec should handle pahts which contain spaces
+ok 1 - ./bin/vspec can handle pahts which contain spaces
 1..1
 END
 )

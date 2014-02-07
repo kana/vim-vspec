@@ -2,12 +2,12 @@
 
 ./t/check-vspec-result <(cat <<'END'
 describe 'Suite 1'
-  it 'should be executed'
+  it 'is executed'
   end
 end
 
 describe 'Suite 2'
-  it 'should be executed and fail'
+  it 'is executed and failed'
     function A()
       call B()
     endfunction
@@ -22,16 +22,16 @@ describe 'Suite 2'
 end
 
 describe 'Suite 3'
-  it 'should be executed'
+  it 'is executed'
   end
 end
 END
 ) <(cat <<'END'
-ok 1 - Suite 1 should be executed
-not ok 2 - Suite 2 should be executed and fail
+ok 1 - Suite 1 is executed
+not ok 2 - Suite 2 is executed and failed
 # function <SNR>1_main..vspec#test..6..A..B..C, line 1
 # Vim:E492: Not an editor command:       ThisLineIsNotAValidVimScriptStatement
-ok 3 - Suite 3 should be executed
+ok 3 - Suite 3 is executed
 1..3
 END
 )

@@ -1,5 +1,5 @@
 describe 'bin/vspec'
-  it 'should remove user''s directory from the default &runtimepath'
+  it 'removes user''s directory from the default &runtimepath'
     let current_runtimepath = &runtimepath
     set runtimepath&
     let default_runtimepath = &runtimepath
@@ -16,7 +16,7 @@ describe 'bin/vspec'
     Expect stridx(ds[-1], $HOME) != -1
   end
 
-  it 'should not use relative paths for &runtimepath'
+  it 'does not use relative paths for &runtimepath'
     let p = '\v(^|\,)\.(\/|\\|\,|$)'
     Expect &runtimepath !~# p
   end

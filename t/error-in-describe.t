@@ -2,7 +2,7 @@
 
 ./t/check-vspec-result <(cat <<'END'
 describe 'Suite 1'
-  it 'should not be executed'
+  it 'is not executed'
   end
 end
 
@@ -17,12 +17,12 @@ describe 'Suite 2'
     ThisLineIsNotAValidVimScriptStatement
   endfunction
   call A()
-  it 'should not be executed'
+  it 'is not executed'
   end
 end
 
 describe 'Suite 3'
-  it 'should not be executed'
+  it 'is not executed'
   end
 end
 END
