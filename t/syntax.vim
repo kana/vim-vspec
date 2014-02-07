@@ -6,7 +6,7 @@ function! SynStack(lnum, col)
 endfunction
 
 describe 'Syntax highlighting'
-  function! s:before()
+  before
     tabnew
     tabonly!
 
@@ -29,11 +29,9 @@ describe 'Syntax highlighting'
     1 delete _
 
     setfiletype vim
-  endfunction
+  end
 
   it 'highlights :describe properly'
-    call s:before()
-
     Expect SynStack(1, 1) ==# ['vimVspecCommand']
     Expect SynStack(1, 2) ==# ['vimVspecCommand']
     Expect SynStack(1, 3) ==# ['vimVspecCommand']
@@ -67,8 +65,6 @@ describe 'Syntax highlighting'
   end
 
   it 'highlights :before properly'
-    call s:before()
-
     Expect SynStack(2, 1) ==# []
     Expect SynStack(2, 2) ==# []
     Expect SynStack(2, 3) ==# ['vimVspecCommand']
@@ -80,8 +76,6 @@ describe 'Syntax highlighting'
   end
 
   it 'highlights :after properly'
-    call s:before()
-
     Expect SynStack(5, 1) ==# []
     Expect SynStack(5, 2) ==# []
     Expect SynStack(5, 3) ==# ['vimVspecCommand']
@@ -92,8 +86,6 @@ describe 'Syntax highlighting'
   end
 
   it 'highlights :it properly'
-    call s:before()
-
     Expect SynStack(8, 1) ==# []
     Expect SynStack(8, 2) ==# []
     Expect SynStack(8, 3) ==# ['vimVspecCommand']
@@ -138,8 +130,6 @@ describe 'Syntax highlighting'
   end
 
   it 'highlights :Expect properly'
-    call s:before()
-
     Expect SynStack(9, 1) ==# []
     Expect SynStack(9, 2) ==# []
     Expect SynStack(9, 3) ==# []
@@ -209,8 +199,6 @@ describe 'Syntax highlighting'
   end
 
   it 'highlights :SKIP and :TODO properly'
-    call s:before()
-
     Expect SynStack(11, 1) ==# []
     Expect SynStack(11, 2) ==# []
     Expect SynStack(11, 3) ==# []
@@ -231,8 +219,6 @@ describe 'Syntax highlighting'
   end
 
   it 'highlights :end properly'
-    call s:before()
-
     Expect SynStack(13, 1) ==# []
     Expect SynStack(13, 2) ==# []
     Expect SynStack(13, 3) ==# ['vimVspecCommand']
