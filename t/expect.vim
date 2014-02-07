@@ -21,6 +21,11 @@ describe ':Expect'
   it 'parses ''|'' without errors'
     Expect '|' ==# "|"
   end
+
+  it 'can evaluate local variables'
+    let v = 'foo'
+    Expect v ==# 'foo'
+  end
 end
 
 describe ':Expect not'
