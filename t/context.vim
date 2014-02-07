@@ -4,7 +4,7 @@ let g:the_reference_of_dummy_scope = g:dummy_scope
 call vspec#hint({'scope': 'g:dummy_scope'})
 
 describe ':ResetContext'
-  it 'should reset to the state when vspec#hint() is called'
+  it 'resets to the state when vspec#hint() is called'
     Expect g:dummy_scope ==# g:DUMMY_SCOPE_CONTENT
 
     let g:dummy_scope['abc'] = 'aabbcc'  " Modify an existing variable.
@@ -19,7 +19,7 @@ describe ':ResetContext'
 end
 
 describe ':SaveContext'
-  it 'should save the current state for :ResetContext'
+  it 'saves the current state for :ResetContext'
     ResetContext
 
     Expect g:dummy_scope ==# g:DUMMY_SCOPE_CONTENT

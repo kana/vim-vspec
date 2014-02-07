@@ -2,7 +2,7 @@
 
 ./t/check-vspec-result <(cat <<'END'
 describe 'Suite 1'
-  it 'should not be executed'
+  it 'is not executed'
   end
 end
 
@@ -18,7 +18,7 @@ endfunction
 call A()
 
 describe 'Suite 2'
-  it 'should not be executed'
+  it 'is not executed'
   end
 end
 END
