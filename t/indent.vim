@@ -15,19 +15,17 @@ silent filetype plugin indent on
 syntax enable
 
 describe 'Automatic indentation'
-  function! s:before()
+  before
     new
     setfiletype vim
     setlocal expandtab shiftwidth=2
-  endfunction
+  end
 
-  function! s:after()
+  after
     close!
-  endfunction
+  end
 
   it 'indents lines after :describe'
-    call s:before()
-
     execute 'normal!' 'i' . join([
     \   'describe ''foo''',
     \   'bar',
@@ -39,13 +37,9 @@ describe 'Automatic indentation'
     \   '  bar',
     \   'end',
     \ ]
-
-    call s:after()
   end
 
   it 'indents lines after :it'
-    call s:before()
-
     execute 'normal!' 'i' . join([
     \   'describe ''foo''',
     \   'it ''bar''',
@@ -61,13 +55,9 @@ describe 'Automatic indentation'
     \   '  end',
     \   'end',
     \ ]
-
-    call s:after()
   end
 
   it 'indents lines after :before'
-    call s:before()
-
     execute 'normal!' 'i' . join([
     \   'describe ''foo''',
     \   'before',
@@ -89,13 +79,9 @@ describe 'Automatic indentation'
     \   '  end',
     \   'end',
     \ ]
-
-    call s:after()
   end
 
   it 'indents lines after :after'
-    call s:before()
-
     execute 'normal!' 'i' . join([
     \   'describe ''foo''',
     \   'after',
@@ -117,7 +103,5 @@ describe 'Automatic indentation'
     \   '  end',
     \   'end',
     \ ]
-
-    call s:after()
   end
 end
