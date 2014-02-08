@@ -23,9 +23,10 @@ describe 'Suite 2'
 end
 END
 ) <(cat <<'END'
+# -----------------------------------------------------------------------------
 # function A..B..C, line 1
 # Vim:E492: Not an editor command:   ThisLineIsNotAValidVimScriptStatement
-1..0
+Bail out!  Unexpected error happened while processing a test script.
 END
 )
 
