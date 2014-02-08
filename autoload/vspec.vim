@@ -208,9 +208,10 @@ function! vspec#test(specfile_path)  "{{{2
     execute 'source' compiled_specfile_path
     call s:run_suites(s:all_suites)
   catch
+    echo '#' repeat('-', 77)
     echo '#' v:throwpoint
     echo '#' v:exception
-    echo '1..0'
+    echo 'Bail out!  Unexpected error happened while processing a test script.'
   finally
     " This :echo is required to terminate the whole message with a new line.
     " Because :echo writes a message as "\n{message}", not "{message}\n".
