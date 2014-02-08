@@ -210,7 +210,9 @@ function! vspec#test(specfile_path)  "{{{2
   catch
     echo '#' repeat('-', 77)
     echo '#' v:throwpoint
-    echo '#' v:exception
+    for exception_line in split(v:exception, '\n')
+      echo '#' exception_line
+    endfor
     echo 'Bail out!  Unexpected error happened while processing a test script.'
   finally
     " This :echo is required to terminate the whole message with a new line.
@@ -305,7 +307,9 @@ function! s:run_suites(all_suites)
           \   example
           \ )
           echo '#' v:throwpoint
-          echo '#' v:exception
+          for exception_line in split(v:exception, '\n')
+            echo '#' exception_line
+          endfor
         endtry
         call suite.after_block()
       endfor
