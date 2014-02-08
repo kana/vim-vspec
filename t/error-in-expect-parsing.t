@@ -20,7 +20,7 @@ END
 ) <(cat <<'END'
 ok 1 - Suite 1 is executed
 not ok 2 - Suite 2 is executed and failed
-# function <SNR>1_main..vspec#test..6..<SNR>2_parse_should_arguments, line 2
+# function <SNR>1_main..vspec#test..<SNR>2_run_suites..6..<SNR>2_parse_should_arguments, line 2
 # Vim(let):E688: More targets than List items
 ok 3 - Suite 3 is executed
 1..3

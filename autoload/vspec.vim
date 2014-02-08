@@ -206,14 +206,23 @@ function! vspec#test(specfile_path)  "{{{2
 
   try
     execute 'source' compiled_specfile_path
+    call s:run_suites(s:all_suites)
   catch
     echo '#' v:throwpoint
     echo '#' v:exception
-    let s:all_suites = []
+    echo '1..0'
+  finally
+    " This :echo is required to terminate the whole message with a new line.
+    " Because :echo writes a message as "\n{message}", not "{message}\n".
+    echo ''
   endtry
 
+  call delete(compiled_specfile_path)
+endfunction
+
+function! s:run_suites(all_suites)
   let example_count = 0
-  for suite in s:all_suites
+  for suite in a:all_suites
     call s:push_current_suite(suite)
       for example in suite.example_list
         let example_count += 1
@@ -302,9 +311,6 @@ function! vspec#test(specfile_path)  "{{{2
     call s:pop_current_suite()
   endfor
   echo printf('1..%d', example_count)
-  echo ''
-
-  call delete(compiled_specfile_path)
 endfunction
 
 
