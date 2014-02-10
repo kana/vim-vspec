@@ -163,6 +163,20 @@ COMMANDS					*vspec-commands*
 :Expect {actual} toBeFalse
 			Deprecated.  Old names of to_be_true/to_be_false.
 
+						*vspec-to_throw*
+:Expect expr { {expression} } to_throw [{regexp}]
+			Test whether a given {expression} throws an exception
+			or not.  This expectation succeeds if an exception is
+			thrown and |v:exception| is matched to {regexp}.
+			Otherwise, this expectation fails.
+
+			{regexp} is optional.  In this case, this expectation
+			succeeds if an exception is thrown.  The content of
+			|v:exception| does not matter.
+
+			Note that you must wrap {expression} with "expr {" and
+			"}" to denote the {expression} might fail.
+
 :Expect {actual} not {matcher} {expected}	*:Expect-not*
 :Expect {actual} not {custom-matcher} [{arg}, ...]
 			Like |:Expect|, but test whether {actual} value does
