@@ -148,20 +148,20 @@ COMMANDS					*vspec-commands*
 			The custom matcher will be called with {actual} and
 			{arg}s.  It must return true if {actual} value is
 			valid, otherwise it must return false.
-			See also |vspec-custom-matcher-examples| and
-			|vspec#customize_matcher()|.
+
+			See also:
+			- |vspec-predefined-custom-matchers|
+			- |vspec-custom-matcher-examples|
+			- |vspec#customize_matcher()|
 
 					    *vspec-predefined-custom-matchers*
-			The following custom matcheres are predefined:
+:Expect {actual} to_be_true			*vspec-to_be_true*
+:Expect {actual} to_be_false			*vspec-to_be_false*
+			Test whether {actual} is evaluated to true/false.
 
-			"to_be_true"
-				Return true if {actual} value is true.
-			"to_be_false"
-				Return true if {actual} value is false.
-			"toBeTrue"
-				Same as "to_be_true".  Deprecated.
-			"toBeFalse"
-				Same as "to_be_false".  Deprecated.
+:Expect {actual} toBeTrue
+:Expect {actual} toBeFalse
+			Deprecated.  Old names of to_be_true/to_be_false.
 
 :Expect {actual} not {matcher} {expected}	*:Expect-not*
 :Expect {actual} not {custom-matcher} [{arg}, ...]
