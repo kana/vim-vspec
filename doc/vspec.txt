@@ -454,6 +454,10 @@ BUGS						*vspec-bugs*
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.2.0	2014-02-13T23:12:36+09:00		*vspec-changelog-1.2.0*
+	- Add "to_throw" matcher to test whether an exception is thrown or
+	  not.  See |vspec-to_throw| for the details.
+
 1.1.4	2014-02-08T20:28:39+09:00		*vspec-changelog-1.1.4*
 	- Add more notes on common pitfalls to write tests.  See |vspec-faq|.
 	- Fix a bug that |:it| fails if {example} starts with a number.
