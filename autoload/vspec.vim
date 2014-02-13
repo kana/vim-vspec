@@ -368,6 +368,33 @@ call vspec#customize_matcher('toBeTrue', function('vspec#_matcher_true'))
 
 
 
+" Predefined custom matchers - to_throw  "{{{2
+
+let s:to_throw = {}
+
+function! s:to_throw.match(result, ...)
+  return a:result.exception isnot 0 && (a:0 == 0 || a:result.exception =~# a:1)
+endfunction
+
+function! s:to_throw.failure_message_for_should(result, ...)
+  return printf(
+  \   'But %s was thrown',
+  \   a:result.exception is 0 ? 'nothing' : string(a:result.exception)
+  \ )
+endfunction
+
+let s:to_throw.failure_message_for_should_not =
+\ s:to_throw.failure_message_for_should
+
+call vspec#customize_matcher('to_throw', s:to_throw)
+
+
+
+
+
+
+
+
 " Suites  "{{{1
 function! s:suite.add_example(example_description)  "{{{2
   call add(self.example_list, a:example_description)
