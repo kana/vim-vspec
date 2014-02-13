@@ -148,20 +148,34 @@ COMMANDS					*vspec-commands*
 			The custom matcher will be called with {actual} and
 			{arg}s.  It must return true if {actual} value is
 			valid, otherwise it must return false.
-			See also |vspec-custom-matcher-examples| and
-			|vspec#customize_matcher()|.
+
+			See also:
+			- |vspec-predefined-custom-matchers|
+			- |vspec-custom-matcher-examples|
+			- |vspec#customize_matcher()|
 
 					    *vspec-predefined-custom-matchers*
-			The following custom matcheres are predefined:
+:Expect {actual} to_be_true			*vspec-to_be_true*
+:Expect {actual} to_be_false			*vspec-to_be_false*
+			Test whether {actual} is evaluated to true/false.
 
-			"to_be_true"
-				Return true if {actual} value is true.
-			"to_be_false"
-				Return true if {actual} value is false.
-			"toBeTrue"
-				Same as "to_be_true".  Deprecated.
-			"toBeFalse"
-				Same as "to_be_false".  Deprecated.
+:Expect {actual} toBeTrue
+:Expect {actual} toBeFalse
+			Deprecated.  Old names of to_be_true/to_be_false.
+
+						*vspec-to_throw*
+:Expect expr { {expression} } to_throw [{regexp}]
+			Test whether a given {expression} throws an exception
+			or not.  This expectation succeeds if an exception is
+			thrown and |v:exception| is matched to {regexp}.
+			Otherwise, this expectation fails.
+
+			{regexp} is optional.  In this case, this expectation
+			succeeds if an exception is thrown.  The content of
+			|v:exception| does not matter.
+
+			Note that you must wrap {expression} with "expr {" and
+			"}" to denote the {expression} might fail.
 
 :Expect {actual} not {matcher} {expected}	*:Expect-not*
 :Expect {actual} not {custom-matcher} [{arg}, ...]

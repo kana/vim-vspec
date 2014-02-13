@@ -85,10 +85,33 @@ let s:suite = {}  "{{{2
 " Interface  "{{{1
 " :Expect  "{{{2
 command! -complete=expression -nargs=+ Expect
-\ call s:cmd_Expect(
-\   s:parse_should_arguments(<q-args>, 'raw'),
-\   map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
-\ )
+\   if <q-args> =~# '^expr\s*{'
+\ |   let s:_ = {}
+\ |   let [s:_.ae, s:_.ne, s:_.me, s:_.ee] =
+\      s:parse_should_arguments(<q-args>, 'eval')
+\ |   let s:_.nv = eval(s:_.ne)
+\ |   let s:_.mv = eval(s:_.me)
+\ |   let s:_.ev = eval(s:_.ee)
+\ |   let s:_.av = 0
+\ |   let s:_.ax = 0
+\ |   let s:_.at = 0
+\ |   try
+\ |     let s:_.av = eval(substitute(s:_.ae, '^expr\s*{\(.*\)}$', '\1', ''))
+\ |   catch
+\ |     let s:_.ax = v:exception
+\ |     let s:_.at = v:throwpoint
+\ |   endtry
+\ |   call s:cmd_Expect(
+\       s:parse_should_arguments(<q-args>, 'raw'),
+\       [{'value': s:_.av, 'exception': s:_.ax, 'throwpoint': s:_.at},
+\        s:_.nv, s:_.mv, s:_.ev]
+\     )
+\ | else
+\ |   call s:cmd_Expect(
+\       s:parse_should_arguments(<q-args>, 'raw'),
+\       map(s:parse_should_arguments(<q-args>, 'eval'), 'eval(v:val)')
+\     )
+\ | endif
 
 
 
@@ -337,6 +360,33 @@ function! vspec#_matcher_true(value)
 endfunction
 call vspec#customize_matcher('to_be_true', function('vspec#_matcher_true'))
 call vspec#customize_matcher('toBeTrue', function('vspec#_matcher_true'))
+
+
+
+
+
+
+
+
+" Predefined custom matchers - to_throw  "{{{2
+
+let s:to_throw = {}
+
+function! s:to_throw.match(result, ...)
+  return a:result.exception isnot 0 && (a:0 == 0 || a:result.exception =~# a:1)
+endfunction
+
+function! s:to_throw.failure_message_for_should(result, ...)
+  return printf(
+  \   'But %s was thrown',
+  \   a:result.exception is 0 ? 'nothing' : string(a:result.exception)
+  \ )
+endfunction
+
+let s:to_throw.failure_message_for_should_not =
+\ s:to_throw.failure_message_for_should
+
+call vspec#customize_matcher('to_throw', s:to_throw)
 
 
 

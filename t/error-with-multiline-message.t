@@ -14,7 +14,7 @@ end
 END
 ) <(cat <<'END'
 not ok 1 - vspec correctly shows a multiline error message
-# function <SNR>1_main..vspec#test..<SNR>2_run_suites..5, line 1
+# function <SNR>1_main..vspec#test..<SNR>2_run_suites..7, line 1
 # Foo is called in an invalid context:
 # In Foo, line 1
 # In Bar, line 2
