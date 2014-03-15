@@ -198,6 +198,14 @@ endfunction
 
 
 
+function! vspec#pretty_string(value)  "{{{2
+  " TODO: Implement pretty stringification.
+  return string(a:value)
+endfunction
+
+
+
+
 function! vspec#ref(variable_name)  "{{{2
   if a:variable_name =~# '^s:'
     return s:get_hinted_scope()[a:variable_name[2:]]
