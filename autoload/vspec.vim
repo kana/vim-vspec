@@ -199,8 +199,35 @@ endfunction
 
 
 function! vspec#pretty_string(value)  "{{{2
-  " TODO: Implement pretty stringification.
-  return string(a:value)
+  return substitute(
+  \   string(a:value),
+  \   '''\(\%([^'']\|''''\)*\)''',
+  \   '\=s:reescape_string_content(submatch(1))',
+  \   'g'
+  \ )
+endfunction
+
+function! s:reescape_string_content(s)
+  if !exists('s:REESCAPE_TABLE')
+    let s:REESCAPE_TABLE = {}
+    for i in range(0x01, 0xFF)
+      let c = nr2char(i)
+      let s:REESCAPE_TABLE[c] = c =~# '\p' ? c : printf('\x%02X', i)
+    endfor
+    call extend(s:REESCAPE_TABLE, {
+    \   "\"": '\"',
+    \   "\\": '\\',
+    \   "\b": '\b',
+    \   "\e": '\e',
+    \   "\f": '\f',
+    \   "\n": '\n',
+    \   "\r": '\r',
+    \   "\t": '\t',
+    \ })
+  endif
+  let s = substitute(a:s, "''", "'", 'g')
+  let cs = map(split(s, '\ze.'), 'get(s:REESCAPE_TABLE, v:val, v:val)')
+  return '"' . join(cs, '') . '"'
 endfunction
 
 
