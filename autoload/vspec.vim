@@ -742,8 +742,8 @@ endfunction
 
 function! s:generate_default_failure_message(i)  "{{{2
   return [
-  \   '  Actual value: ' . string(a:i.value_actual),
-  \   'Expected value: ' . string(a:i.value_expected),
+  \   '  Actual value: ' . vspec#pretty_string(a:i.value_actual),
+  \   'Expected value: ' . vspec#pretty_string(a:i.value_expected),
   \ ]
 endfunction
 
