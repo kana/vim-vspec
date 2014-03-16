@@ -462,6 +462,12 @@ BUGS						*vspec-bugs*
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.3.0	2014-03-16T18:28:33+09:00		*vspec-changelog-1.3.0*
+	- Add |vspec#pretty_string()|.
+	- Fix to properly show special characters in failure messages.  In old
+	  versions, special characters especially line feeds are rendered as
+	  is, so that resulting messages are not in valid TAP format.
+
 1.2.0	2014-02-13T23:12:36+09:00		*vspec-changelog-1.2.0*
 	- Add "to_throw" matcher to test whether an exception is thrown or
 	  not.  See |vspec-to_throw| for the details.
