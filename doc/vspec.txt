@@ -313,6 +313,14 @@ vspec#hint({info})				*vspec#hint()*
 				If this value is given, you can use
 				|vspec#ref()| and |vspec#set()|.
 
+vspec#pretty_string({value})			*vspec#pretty_string()*
+			Similar to |string()|, but use "string" notation
+			rather than 'string' notation to encode {value} to
+			a string.  Its result consists of only printable
+			characters, so that it is safe to |:echo|.  But it can
+			be decoded to the original {value} with |eval()|,
+			unlike |strtrans()|.
+
 vspec#ref({varname})				*vspec#ref()*
 			Return the value of a variable.
 

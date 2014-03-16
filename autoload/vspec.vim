@@ -198,6 +198,41 @@ endfunction
 
 
 
+function! vspec#pretty_string(value)  "{{{2
+  return substitute(
+  \   string(a:value),
+  \   '''\(\%([^'']\|''''\)*\)''',
+  \   '\=s:reescape_string_content(submatch(1))',
+  \   'g'
+  \ )
+endfunction
+
+function! s:reescape_string_content(s)
+  if !exists('s:REESCAPE_TABLE')
+    let s:REESCAPE_TABLE = {}
+    for i in range(0x01, 0xFF)
+      let c = nr2char(i)
+      let s:REESCAPE_TABLE[c] = c =~# '\p' ? c : printf('\x%02X', i)
+    endfor
+    call extend(s:REESCAPE_TABLE, {
+    \   "\"": '\"',
+    \   "\\": '\\',
+    \   "\b": '\b',
+    \   "\e": '\e',
+    \   "\f": '\f',
+    \   "\n": '\n',
+    \   "\r": '\r',
+    \   "\t": '\t',
+    \ })
+  endif
+  let s = substitute(a:s, "''", "'", 'g')
+  let cs = map(split(s, '\ze.'), 'get(s:REESCAPE_TABLE, v:val, v:val)')
+  return '"' . join(cs, '') . '"'
+endfunction
+
+
+
+
 function! vspec#ref(variable_name)  "{{{2
   if a:variable_name =~# '^s:'
     return s:get_hinted_scope()[a:variable_name[2:]]
@@ -707,8 +742,8 @@ endfunction
 
 function! s:generate_default_failure_message(i)  "{{{2
   return [
-  \   '  Actual value: ' . string(a:i.value_actual),
-  \   'Expected value: ' . string(a:i.value_expected),
+  \   '  Actual value: ' . vspec#pretty_string(a:i.value_actual),
+  \   'Expected value: ' . vspec#pretty_string(a:i.value_expected),
   \ ]
 endfunction
 
