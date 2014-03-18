@@ -26,7 +26,7 @@ describe 'vspec#pretty_string'
     \   ['foo"bar', '"foo\"bar"'],
     \   ['foo\bar', '"foo\\bar"'],
     \   ["\b\e\f\n\r\t", '"\b\e\f\n\r\t"'],
-    \   ["\x1\x11\X80\177", '"\x01\x11\x80\x7F"'],
+    \   ["\x1\x11\X1d\177", '"\x01\x11\x1D\x7F"'],
     \   ["foo\nbar\nbaz\nqux\n", '"foo\nbar\nbaz\nqux\n"'],
     \   [[], '[]'],
     \   [[1, 2, 3], '[1, 2, 3]'],
