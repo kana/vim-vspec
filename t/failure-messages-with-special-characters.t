@@ -23,7 +23,7 @@ describe 'vspec'
   end
 
   it 'shows strings with other special characters in a decodable style'
-    Expect "foo\x80\X7fbar" ==# 'foo\x80\X7fbar'
+    Expect "foo\x1d\X7fbar" ==# 'foo\x1d\X7fbar'
   end
 end
 END
@@ -49,9 +49,9 @@ not ok 5 - vspec shows strings with backslashes in a decodable style
 #       Actual value: "foo\\bar"
 #     Expected value: "foo\\\\bar"
 not ok 6 - vspec shows strings with other special characters in a decodable style
-# Expected "foo\x80\X7fbar" ==# 'foo\x80\X7fbar'
-#       Actual value: "foo\x80\x7Fbar"
-#     Expected value: "foo\\x80\\X7fbar"
+# Expected "foo\x1d\X7fbar" ==# 'foo\x1d\X7fbar'
+#       Actual value: "foo\x1D\x7Fbar"
+#     Expected value: "foo\\x1d\\X7fbar"
 1..6
 END
 )
