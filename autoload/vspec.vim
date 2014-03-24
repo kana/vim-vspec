@@ -267,7 +267,7 @@ function! vspec#test(specfile_path)  "{{{2
     call s:run_suites(s:all_suites)
   catch
     echo '#' repeat('-', 77)
-    echo '#' v:throwpoint
+    echo '#' s:simplify_call_stack(v:throwpoint, expand('<sfile>'), 'unknown')
     for exception_line in split(v:exception, '\n')
       echo '#' exception_line
     endfor
@@ -364,7 +364,7 @@ function! s:run_suites(all_suites)
           \   suite.subject,
           \   example
           \ )
-          echo '#' v:throwpoint
+          echo '#' s:simplify_call_stack(v:throwpoint, expand('<sfile>'), 'it')
           for exception_line in split(v:exception, '\n')
             echo '#' exception_line
           endfor
@@ -890,6 +890,27 @@ endfunction
 
 function! s:get_hinted_sid()  "{{{2
   return eval(s:expr_hinted_sid)
+endfunction
+
+
+
+
+function! s:simplify_call_stack(throwpoint, base_call_stack, type)  "{{{2
+  if a:type ==# 'it'
+    return substitute(
+    \   a:throwpoint,
+    \   '\V' . escape(a:base_call_stack, '\') . '..\d\+',
+    \   '{example}',
+    \   ''
+    \ )
+  else
+    return substitute(
+    \   a:throwpoint,
+    \   '\V' . escape(a:base_call_stack, '\'),
+    \   '{vspec}',
+    \   ''
+    \ )
+  endif
 endfunction
 
 
