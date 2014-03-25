@@ -282,18 +282,18 @@ function! vspec#test(specfile_path)  "{{{2
 endfunction
 
 function! s:run_suites(all_suites)
-  let example_count = 0
+  let total_count_of_examples = 0
   for suite in a:all_suites
     call s:push_current_suite(suite)
       for example in suite.example_list
-        let example_count += 1
+        let total_count_of_examples += 1
         call suite.before_block()
         try
           call suite.example_dict[suite.generate_example_function_name(example)]()
           echo printf(
           \   '%s %d - %s %s',
           \   'ok',
-          \   example_count,
+          \   total_count_of_examples,
           \   suite.subject,
           \   example
           \ )
@@ -306,7 +306,7 @@ function! s:run_suites(all_suites)
               echo printf(
               \   '%s %d - %s %s',
               \   'not ok',
-              \   example_count,
+              \   total_count_of_examples,
               \   suite.subject,
               \   example
               \ )
@@ -323,7 +323,7 @@ function! s:run_suites(all_suites)
               echo printf(
               \   '%s %d - # TODO %s %s',
               \   'not ok',
-              \   example_count,
+              \   total_count_of_examples,
               \   suite.subject,
               \   example
               \ )
@@ -331,7 +331,7 @@ function! s:run_suites(all_suites)
               echo printf(
               \   '%s %d - # SKIP %s %s - %s',
               \   'ok',
-              \   example_count,
+              \   total_count_of_examples,
               \   suite.subject,
               \   example,
               \   i.message
@@ -340,7 +340,7 @@ function! s:run_suites(all_suites)
               echo printf(
               \   '%s %d - %s %s',
               \   'not ok',
-              \   example_count,
+              \   total_count_of_examples,
               \   suite.subject,
               \   example
               \ )
@@ -350,7 +350,7 @@ function! s:run_suites(all_suites)
             echo printf(
             \   '%s %d - %s %s',
             \   'not ok',
-            \   example_count,
+            \   total_count_of_examples,
             \   suite.subject,
             \   example
             \ )
@@ -360,7 +360,7 @@ function! s:run_suites(all_suites)
           echo printf(
           \   '%s %d - %s %s',
           \   'not ok',
-          \   example_count,
+          \   total_count_of_examples,
           \   suite.subject,
           \   example
           \ )
@@ -373,7 +373,7 @@ function! s:run_suites(all_suites)
       endfor
     call s:pop_current_suite()
   endfor
-  echo printf('1..%d', example_count)
+  echo printf('1..%d', total_count_of_examples)
 endfunction
 
 
