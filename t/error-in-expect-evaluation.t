@@ -20,7 +20,7 @@ END
 ) <(cat <<'END'
 ok 1 - Suite 1 is executed
 not ok 2 - Suite 2 is executed and failed
-# function <SNR>1_main..vspec#test..<SNR>2_run_suites..8, line 1
+# {example}, line 1
 # Vim(call):E121: Undefined variable: foo
 ok 3 - Suite 3 is executed
 1..3
