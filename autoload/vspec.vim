@@ -285,8 +285,9 @@ function! s:run_suites(all_suites)
   let total_count_of_examples = 0
   for suite in a:all_suites
     call s:push_current_suite(suite)
-      for example in suite.example_list
+      for example_index in range(len(suite.example_list))
         let total_count_of_examples += 1
+        let example = suite.example_list[example_index]
         call suite.before_block()
         try
           call suite.example_dict[suite.generate_example_function_name(example)]()
