@@ -290,7 +290,9 @@ function! s:run_suites(all_suites)
         let example = suite.example_list[example_index]
         call suite.before_block()
         try
-          call suite.example_dict[suite.generate_example_function_name(example)]()
+          call suite.example_dict[
+          \   suite.generate_example_function_name(example_index)
+          \ ]()
           echo printf(
           \   '%s %d - %s %s',
           \   'ok',
@@ -453,13 +455,8 @@ endfunction
 
 
 
-function! s:suite.generate_example_function_name(example_description)  "{{{2
-  return '_' . substitute(
-  \   a:example_description,
-  \   '[^[:alnum:]]',
-  \   '\="_" . printf("%02x", char2nr(submatch(0)))',
-  \   'g'
-  \ )
+function! s:suite.generate_example_function_name(example_index)  "{{{2
+  return '_' . a:example_index
 endfunction
 
 
@@ -498,7 +495,7 @@ function! vspec#new_suite(subject)  "{{{2
 
   let s.subject = a:subject  " :: SubjectString
   let s.example_list = []  " :: [DescriptionString]
-  let s.example_dict = {}  " :: DescriptionString -> ExampleFuncref
+  let s.example_dict = {}  " :: ExampleIndexAsIdentifier -> ExampleFuncref
 
   return s
 endfunction
@@ -540,7 +537,7 @@ function! s:translate_script(slines)  "{{{2
       call insert(stack, 'it', 0)
       call extend(rlines, [
       \   printf('call suite.add_example(%s)', tokens[1]),
-      \   printf('function! suite.example_dict[suite.generate_example_function_name(%s)]()', tokens[1]),
+      \   'function! suite.example_dict[suite.generate_example_function_name(len(suite.example_list) - 1)]()',
       \ ])
       continue
     endif
