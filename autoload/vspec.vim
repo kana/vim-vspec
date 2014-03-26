@@ -282,18 +282,21 @@ function! vspec#test(specfile_path)  "{{{2
 endfunction
 
 function! s:run_suites(all_suites)
-  let example_count = 0
+  let total_count_of_examples = 0
   for suite in a:all_suites
     call s:push_current_suite(suite)
-      for example in suite.example_list
-        let example_count += 1
+      for example_index in range(len(suite.example_list))
+        let total_count_of_examples += 1
+        let example = suite.example_list[example_index]
         call suite.before_block()
         try
-          call suite.example_dict[suite.generate_example_function_name(example)]()
+          call suite.example_dict[
+          \   suite.generate_example_function_name(example_index)
+          \ ]()
           echo printf(
           \   '%s %d - %s %s',
           \   'ok',
-          \   example_count,
+          \   total_count_of_examples,
           \   suite.subject,
           \   example
           \ )
@@ -306,7 +309,7 @@ function! s:run_suites(all_suites)
               echo printf(
               \   '%s %d - %s %s',
               \   'not ok',
-              \   example_count,
+              \   total_count_of_examples,
               \   suite.subject,
               \   example
               \ )
@@ -323,7 +326,7 @@ function! s:run_suites(all_suites)
               echo printf(
               \   '%s %d - # TODO %s %s',
               \   'not ok',
-              \   example_count,
+              \   total_count_of_examples,
               \   suite.subject,
               \   example
               \ )
@@ -331,7 +334,7 @@ function! s:run_suites(all_suites)
               echo printf(
               \   '%s %d - # SKIP %s %s - %s',
               \   'ok',
-              \   example_count,
+              \   total_count_of_examples,
               \   suite.subject,
               \   example,
               \   i.message
@@ -340,7 +343,7 @@ function! s:run_suites(all_suites)
               echo printf(
               \   '%s %d - %s %s',
               \   'not ok',
-              \   example_count,
+              \   total_count_of_examples,
               \   suite.subject,
               \   example
               \ )
@@ -350,7 +353,7 @@ function! s:run_suites(all_suites)
             echo printf(
             \   '%s %d - %s %s',
             \   'not ok',
-            \   example_count,
+            \   total_count_of_examples,
             \   suite.subject,
             \   example
             \ )
@@ -360,7 +363,7 @@ function! s:run_suites(all_suites)
           echo printf(
           \   '%s %d - %s %s',
           \   'not ok',
-          \   example_count,
+          \   total_count_of_examples,
           \   suite.subject,
           \   example
           \ )
@@ -373,7 +376,7 @@ function! s:run_suites(all_suites)
       endfor
     call s:pop_current_suite()
   endfor
-  echo printf('1..%d', example_count)
+  echo printf('1..%d', total_count_of_examples)
 endfunction
 
 
@@ -452,13 +455,8 @@ endfunction
 
 
 
-function! s:suite.generate_example_function_name(example_description)  "{{{2
-  return '_' . substitute(
-  \   a:example_description,
-  \   '[^[:alnum:]]',
-  \   '\="_" . printf("%02x", char2nr(submatch(0)))',
-  \   'g'
-  \ )
+function! s:suite.generate_example_function_name(example_index)  "{{{2
+  return '_' . a:example_index
 endfunction
 
 
@@ -497,7 +495,7 @@ function! vspec#new_suite(subject)  "{{{2
 
   let s.subject = a:subject  " :: SubjectString
   let s.example_list = []  " :: [DescriptionString]
-  let s.example_dict = {}  " :: DescriptionString -> ExampleFuncref
+  let s.example_dict = {}  " :: ExampleIndexAsIdentifier -> ExampleFuncref
 
   return s
 endfunction
@@ -539,7 +537,7 @@ function! s:translate_script(slines)  "{{{2
       call insert(stack, 'it', 0)
       call extend(rlines, [
       \   printf('call suite.add_example(%s)', tokens[1]),
-      \   printf('function! suite.example_dict[suite.generate_example_function_name(%s)]()', tokens[1]),
+      \   'function! suite.example_dict[suite.generate_example_function_name(len(suite.example_list) - 1)]()',
       \ ])
       continue
     endif
