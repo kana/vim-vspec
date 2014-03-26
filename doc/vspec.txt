@@ -462,6 +462,23 @@ BUGS						*vspec-bugs*
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.3.1	2014-03-26T21:51:39+09:00		*vspec-changelog-1.3.1*
+	- When an unexpected error happens while running a test script,
+	  vspec showed |v:exception| and |v:throwpoint| about the error.
+	  But v:throwpoint includes also an internal call stack of vspec.
+	  It's somewhat confusing for users to grasp where the error happens.
+	  Now vspec shows v:throwpoint without the internal call stack.
+	- Now it's safe to use the same description for multiple |:it| within
+	  a |:describe| block.  In old versions, such :it blocks are not
+	  properly executed.  All but the last :it block will never be
+	  executed, and only the last :it block will be executed many times.
+	  Though it is recommended to write a distinct description for each
+	  :it block, the old behavior is surprising for users, and it is
+	  annoying when writing one-time tests to check nontrivial behavior.
+	- Now it's safe to use combining characters such as U+0300 (grave
+	  accent) in :it descriptions.  In old versions use of such characters
+	  causes unexpected errors or results depending on 'encoding'.
+
 1.3.0	2014-03-16T18:28:33+09:00		*vspec-changelog-1.3.0*
 	- Add |vspec#pretty_string()|.
 	- Fix to properly show special characters in failure messages.  In old
