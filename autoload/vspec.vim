@@ -521,6 +521,8 @@ function! s:translate_script(slines)  "{{{2
   let rlines = []
   let stack = []
 
+  call add(rlines, 'let suite_stack = [{}]')
+
   for sline in a:slines
     let tokens = matchlist(sline, '^\s*\%(describe\|context\)\s*\(\(["'']\).*\2\)\s*$')
     if !empty(tokens)
@@ -528,6 +530,7 @@ function! s:translate_script(slines)  "{{{2
       call extend(rlines, [
       \   printf('let suite = vspec#new_suite(%s)', tokens[1]),
       \   'call vspec#add_suite(suite)',
+      \   'call add(suite_stack, suite)',
       \ ])
       continue
     endif
@@ -564,7 +567,10 @@ function! s:translate_script(slines)  "{{{2
     if !empty(tokens)
       let type = remove(stack, 0)
       if type ==# 'describe'
-        " Nothing to do.
+        call extend(rlines, [
+        \   'call remove(suite_stack, -1)',
+        \   'let suite = suite_stack[-1]',
+        \ ])
       elseif type ==# 'it'
         call extend(rlines, [
         \   'endfunction',
