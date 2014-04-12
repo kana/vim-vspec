@@ -39,6 +39,46 @@ describe 'Automatic indentation'
     \ ]
   end
 
+  it 'indents lines after :context'
+    execute 'normal!' 'i' . join([
+    \   'context ''foo''',
+    \   'bar',
+    \   'end',
+    \ ], "\<Return>")
+
+    Expect getline(1, '$') ==# [
+    \   'context ''foo''',
+    \   '  bar',
+    \   'end',
+    \ ]
+  end
+
+  it 'indents nested :describe/:context properly'
+    execute 'normal!' 'i' . join([
+    \   'describe ''foo''',
+    \   'foo-content',
+    \   'describe ''bar''',
+    \   'bar-content',
+    \   'end',
+    \   'context ''baz''',
+    \   'baz-content',
+    \   'end',
+    \   'end',
+    \ ], "\<Return>")
+
+    Expect getline(1, '$') ==# [
+    \   'describe ''foo''',
+    \   '  foo-content',
+    \   '  describe ''bar''',
+    \   '    bar-content',
+    \   '  end',
+    \   '  context ''baz''',
+    \   '    baz-content',
+    \   '  end',
+    \   'end',
+    \ ]
+  end
+
   it 'indents lines after :it'
     execute 'normal!' 'i' . join([
     \   'describe ''foo''',
