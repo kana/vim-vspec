@@ -95,6 +95,22 @@ COMMANDS					*vspec-commands*
 			Define a set of examples about {subject}.  {subject}
 			is a string to describe the subject of the examples.
 
+			:describe can be nested.  It is useful to group
+			examples by their category.  For example: >
+
+				describe 'textobj-function'
+				  describe 'af'
+				    it 'targets a whole function'
+				      ...
+				    end
+				  end
+				  describe 'if'
+				    it 'targets the inner code of a function'
+				      ...
+				    end
+				  end
+				end
+
 :it {example}					*:it*
 :end
 			Define an example.  {example} is a string to describe
