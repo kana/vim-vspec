@@ -522,7 +522,9 @@ function! vspec#new_suite(subject, parent_suite)  "{{{2
 
   let s.subject = a:subject  " :: SubjectString
   let s.parent = a:parent_suite  " :: Suite
-  let s.pretty_subject = s:subject
+  let s.pretty_subject = s.has_parent()
+  \                      ? s.parent.pretty_subject . ' ' . s.subject
+  \                      : s.subject
   let s.example_list = []  " :: [DescriptionString]
   let s.example_dict = {}  " :: ExampleIndexAsIdentifier -> ExampleFuncref
 
