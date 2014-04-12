@@ -111,6 +111,25 @@ COMMANDS					*vspec-commands*
 				  end
 				end
 
+:context {subject}				*:context*
+:end
+			Define a set of examples about {subject}.  This is an
+			alias of |:context|.  It is useful to make nested
+			groups more readable.  For example: >
+
+				describe 'textobj-function'
+				  context 'with JavaScript'
+				    it 'targets a function'
+				      ...
+				    end
+				  end
+				  context 'with Ruby'
+				    it 'targets a method'
+				      ...
+				    end
+				  end
+				end
+
 :it {example}					*:it*
 :end
 			Define an example.  {example} is a string to describe
