@@ -24,6 +24,10 @@ describe 'Syntax highlighting'
     \   '    SKIP',
     \   '    TODO',
     \   '  end',
+    \   '  context ''with a nested suite''',
+    \   '    it ''is supported''',
+    \   '    end',
+    \   '  end',
     \   'end',
     \ ]
     1 delete _
@@ -225,8 +229,54 @@ describe 'Syntax highlighting'
     Expect SynStack(13, 4) ==# ['vimVspecCommand']
     Expect SynStack(13, 5) ==# ['vimVspecCommand']
 
-    Expect SynStack(14, 1) ==# ['vimVspecCommand']
-    Expect SynStack(14, 2) ==# ['vimVspecCommand']
+    Expect SynStack(18, 1) ==# ['vimVspecCommand']
+    Expect SynStack(18, 2) ==# ['vimVspecCommand']
+    Expect SynStack(18, 3) ==# ['vimVspecCommand']
+  end
+
+  it 'highlights :end properly'
+    Expect SynStack(13, 1) ==# []
+    Expect SynStack(13, 2) ==# []
+    Expect SynStack(13, 3) ==# ['vimVspecCommand']
+    Expect SynStack(13, 4) ==# ['vimVspecCommand']
+    Expect SynStack(13, 5) ==# ['vimVspecCommand']
+
+    Expect SynStack(18, 1) ==# ['vimVspecCommand']
+    Expect SynStack(18, 2) ==# ['vimVspecCommand']
+    Expect SynStack(18, 3) ==# ['vimVspecCommand']
+  end
+
+  it 'highlights :context properly'
+    Expect SynStack(14, 1) ==# []
+    Expect SynStack(14, 2) ==# []
     Expect SynStack(14, 3) ==# ['vimVspecCommand']
+    Expect SynStack(14, 4) ==# ['vimVspecCommand']
+    Expect SynStack(14, 5) ==# ['vimVspecCommand']
+    Expect SynStack(14, 6) ==# ['vimVspecCommand']
+    Expect SynStack(14, 7) ==# ['vimVspecCommand']
+    Expect SynStack(14, 8) ==# ['vimVspecCommand']
+    Expect SynStack(14, 9) ==# ['vimVspecCommand']
+    Expect SynStack(14, 10) ==# []
+    Expect SynStack(14, 11) ==# ['vimString']
+    Expect SynStack(14, 12) ==# ['vimString']
+    Expect SynStack(14, 13) ==# ['vimString']
+    Expect SynStack(14, 14) ==# ['vimString']
+    Expect SynStack(14, 15) ==# ['vimString']
+    Expect SynStack(14, 16) ==# ['vimString']
+    Expect SynStack(14, 17) ==# ['vimString']
+    Expect SynStack(14, 18) ==# ['vimString']
+    Expect SynStack(14, 19) ==# ['vimString']
+    Expect SynStack(14, 20) ==# ['vimString']
+    Expect SynStack(14, 21) ==# ['vimString']
+    Expect SynStack(14, 22) ==# ['vimString']
+    Expect SynStack(14, 23) ==# ['vimString']
+    Expect SynStack(14, 24) ==# ['vimString']
+    Expect SynStack(14, 25) ==# ['vimString']
+    Expect SynStack(14, 26) ==# ['vimString']
+    Expect SynStack(14, 27) ==# ['vimString']
+    Expect SynStack(14, 28) ==# ['vimString']
+    Expect SynStack(14, 29) ==# ['vimString']
+    Expect SynStack(14, 30) ==# ['vimString']
+    Expect SynStack(14, 31) ==# ['vimString']
   end
 end
