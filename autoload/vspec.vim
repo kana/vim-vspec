@@ -297,7 +297,7 @@ function! s:run_suites(all_suites)
           \   '%s %d - %s %s',
           \   'ok',
           \   total_count_of_examples,
-          \   suite.subject,
+          \   suite.pretty_subject,
           \   example
           \ )
         catch /^vspec:/
@@ -310,7 +310,7 @@ function! s:run_suites(all_suites)
               \   '%s %d - %s %s',
               \   'not ok',
               \   total_count_of_examples,
-              \   suite.subject,
+              \   suite.pretty_subject,
               \   example
               \ )
               echo '# Expected' join(filter([
@@ -327,7 +327,7 @@ function! s:run_suites(all_suites)
               \   '%s %d - # TODO %s %s',
               \   'not ok',
               \   total_count_of_examples,
-              \   suite.subject,
+              \   suite.pretty_subject,
               \   example
               \ )
             elseif type ==# 'SKIP'
@@ -335,7 +335,7 @@ function! s:run_suites(all_suites)
               \   '%s %d - # SKIP %s %s - %s',
               \   'ok',
               \   total_count_of_examples,
-              \   suite.subject,
+              \   suite.pretty_subject,
               \   example,
               \   i.message
               \ )
@@ -344,7 +344,7 @@ function! s:run_suites(all_suites)
               \   '%s %d - %s %s',
               \   'not ok',
               \   total_count_of_examples,
-              \   suite.subject,
+              \   suite.pretty_subject,
               \   example
               \ )
               echo '#' substitute(v:exception, '^vspec:', '', '')
@@ -354,7 +354,7 @@ function! s:run_suites(all_suites)
             \   '%s %d - %s %s',
             \   'not ok',
             \   total_count_of_examples,
-            \   suite.subject,
+            \   suite.pretty_subject,
             \   example
             \ )
             echo '#' substitute(v:exception, '^vspec:', '', '')
@@ -364,7 +364,7 @@ function! s:run_suites(all_suites)
           \   '%s %d - %s %s',
           \   'not ok',
           \   total_count_of_examples,
-          \   suite.subject,
+          \   suite.pretty_subject,
           \   example
           \ )
           echo '#' s:simplify_call_stack(v:throwpoint, expand('<sfile>'), 'it')
@@ -522,6 +522,7 @@ function! vspec#new_suite(subject, parent_suite)  "{{{2
 
   let s.subject = a:subject  " :: SubjectString
   let s.parent = a:parent_suite  " :: Suite
+  let s.pretty_subject = s:subject
   let s.example_list = []  " :: [DescriptionString]
   let s.example_dict = {}  " :: ExampleIndexAsIdentifier -> ExampleFuncref
 
