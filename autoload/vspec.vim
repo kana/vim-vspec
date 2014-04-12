@@ -288,7 +288,7 @@ function! s:run_suites(all_suites)
       for example_index in range(len(suite.example_list))
         let total_count_of_examples += 1
         let example = suite.example_list[example_index]
-        call suite.before_block()
+        call suite.run_before_blocks()
         try
           call suite.example_dict[
           \   suite.generate_example_function_name(example_index)
@@ -297,7 +297,7 @@ function! s:run_suites(all_suites)
           \   '%s %d - %s %s',
           \   'ok',
           \   total_count_of_examples,
-          \   suite.subject,
+          \   suite.pretty_subject,
           \   example
           \ )
         catch /^vspec:/
@@ -310,7 +310,7 @@ function! s:run_suites(all_suites)
               \   '%s %d - %s %s',
               \   'not ok',
               \   total_count_of_examples,
-              \   suite.subject,
+              \   suite.pretty_subject,
               \   example
               \ )
               echo '# Expected' join(filter([
@@ -327,7 +327,7 @@ function! s:run_suites(all_suites)
               \   '%s %d - # TODO %s %s',
               \   'not ok',
               \   total_count_of_examples,
-              \   suite.subject,
+              \   suite.pretty_subject,
               \   example
               \ )
             elseif type ==# 'SKIP'
@@ -335,7 +335,7 @@ function! s:run_suites(all_suites)
               \   '%s %d - # SKIP %s %s - %s',
               \   'ok',
               \   total_count_of_examples,
-              \   suite.subject,
+              \   suite.pretty_subject,
               \   example,
               \   i.message
               \ )
@@ -344,7 +344,7 @@ function! s:run_suites(all_suites)
               \   '%s %d - %s %s',
               \   'not ok',
               \   total_count_of_examples,
-              \   suite.subject,
+              \   suite.pretty_subject,
               \   example
               \ )
               echo '#' substitute(v:exception, '^vspec:', '', '')
@@ -354,7 +354,7 @@ function! s:run_suites(all_suites)
             \   '%s %d - %s %s',
             \   'not ok',
             \   total_count_of_examples,
-            \   suite.subject,
+            \   suite.pretty_subject,
             \   example
             \ )
             echo '#' substitute(v:exception, '^vspec:', '', '')
@@ -364,7 +364,7 @@ function! s:run_suites(all_suites)
           \   '%s %d - %s %s',
           \   'not ok',
           \   total_count_of_examples,
-          \   suite.subject,
+          \   suite.pretty_subject,
           \   example
           \ )
           echo '#' s:simplify_call_stack(v:throwpoint, expand('<sfile>'), 'it')
@@ -372,7 +372,7 @@ function! s:run_suites(all_suites)
             echo '#' exception_line
           endfor
         endtry
-        call suite.after_block()
+        call suite.run_after_blocks()
       endfor
     call s:pop_current_suite()
   endfor
@@ -462,6 +462,33 @@ endfunction
 
 
 
+function! s:suite.has_parent()  "{{{2
+  return !empty(self.parent)
+endfunction
+
+
+
+
+function! s:suite.run_after_blocks()  "{{{2
+  call self.after_block()
+  if self.has_parent()
+    call self.parent.run_after_blocks()
+  endif
+endfunction
+
+
+
+
+function! s:suite.run_before_blocks()  "{{{2
+  if self.has_parent()
+    call self.parent.run_before_blocks()
+  endif
+  call self.before_block()
+endfunction
+
+
+
+
 function! s:get_current_suite()  "{{{2
   return s:current_suites[0]
 endfunction
@@ -490,10 +517,14 @@ endfunction
 
 
 
-function! vspec#new_suite(subject)  "{{{2
+function! vspec#new_suite(subject, parent_suite)  "{{{2
   let s = copy(s:suite)
 
   let s.subject = a:subject  " :: SubjectString
+  let s.parent = a:parent_suite  " :: Suite
+  let s.pretty_subject = s.has_parent()
+  \                      ? s.parent.pretty_subject . ' ' . s.subject
+  \                      : s.subject
   let s.example_list = []  " :: [DescriptionString]
   let s.example_dict = {}  " :: ExampleIndexAsIdentifier -> ExampleFuncref
 
@@ -521,13 +552,16 @@ function! s:translate_script(slines)  "{{{2
   let rlines = []
   let stack = []
 
+  call add(rlines, 'let suite_stack = [{}]')
+
   for sline in a:slines
-    let tokens = matchlist(sline, '^\s*describe\s*\(\(["'']\).*\2\)\s*$')
+    let tokens = matchlist(sline, '^\s*\%(describe\|context\)\s*\(\(["'']\).*\2\)\s*$')
     if !empty(tokens)
       call insert(stack, 'describe', 0)
       call extend(rlines, [
-      \   printf('let suite = vspec#new_suite(%s)', tokens[1]),
+      \   printf('let suite = vspec#new_suite(%s, suite_stack[-1])', tokens[1]),
       \   'call vspec#add_suite(suite)',
+      \   'call add(suite_stack, suite)',
       \ ])
       continue
     endif
@@ -564,7 +598,10 @@ function! s:translate_script(slines)  "{{{2
     if !empty(tokens)
       let type = remove(stack, 0)
       if type ==# 'describe'
-        " Nothing to do.
+        call extend(rlines, [
+        \   'call remove(suite_stack, -1)',
+        \   'let suite = suite_stack[-1]',
+        \ ])
       elseif type ==# 'it'
         call extend(rlines, [
         \   'endfunction',
