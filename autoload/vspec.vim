@@ -288,7 +288,7 @@ function! s:run_suites(all_suites)
       for example_index in range(len(suite.example_list))
         let total_count_of_examples += 1
         let example = suite.example_list[example_index]
-        call suite.before_block()
+        call suite.run_before_blocks()
         try
           call suite.example_dict[
           \   suite.generate_example_function_name(example_index)
@@ -372,7 +372,7 @@ function! s:run_suites(all_suites)
             echo '#' exception_line
           endfor
         endtry
-        call suite.after_block()
+        call suite.run_after_blocks()
       endfor
     call s:pop_current_suite()
   endfor
@@ -457,6 +457,33 @@ endfunction
 
 function! s:suite.generate_example_function_name(example_index)  "{{{2
   return '_' . a:example_index
+endfunction
+
+
+
+
+function! s:suite.has_parent()  "{{{2
+  return !empty(self.parent)
+endfunction
+
+
+
+
+function! s:suite.run_after_blocks()  "{{{2
+  call self.after_block()
+  if self.has_parent()
+    call self.parent.run_after_blocks()
+  endif
+endfunction
+
+
+
+
+function! s:suite.run_before_blocks()  "{{{2
+  if self.has_parent()
+    call self.parent.run_before_blocks()
+  endif
+  call self.before_block()
 endfunction
 
 
