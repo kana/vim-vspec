@@ -495,6 +495,10 @@ BUGS						*vspec-bugs*
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.4.0	2014-04-12T15:19:32+09:00		*vspec-changelog-1.4.0*
+	- Support nested |:describe|.
+	- Support |:context| as an alias of |:describe|.
+
 1.3.1	2014-03-26T21:51:39+09:00		*vspec-changelog-1.3.1*
 	- When an unexpected error happens while running a test script,
 	  vspec showed |v:exception| and |v:throwpoint| about the error.
