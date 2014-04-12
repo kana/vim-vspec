@@ -24,6 +24,7 @@
 
 syntax keyword vimVspecCommand after
 syntax keyword vimVspecCommand before
+syntax keyword vimVspecCommand context skipwhite nextgroup=vimString
 syntax keyword vimVspecCommand describe skipwhite nextgroup=vimString
 syntax keyword vimVspecCommand end
 syntax keyword vimVspecCommand Expect skipwhite
