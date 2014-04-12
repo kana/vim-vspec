@@ -490,10 +490,11 @@ endfunction
 
 
 
-function! vspec#new_suite(subject)  "{{{2
+function! vspec#new_suite(subject, parent_suite)  "{{{2
   let s = copy(s:suite)
 
   let s.subject = a:subject  " :: SubjectString
+  let s.parent = a:parent_suite  " :: Suite
   let s.example_list = []  " :: [DescriptionString]
   let s.example_dict = {}  " :: ExampleIndexAsIdentifier -> ExampleFuncref
 
@@ -528,7 +529,7 @@ function! s:translate_script(slines)  "{{{2
     if !empty(tokens)
       call insert(stack, 'describe', 0)
       call extend(rlines, [
-      \   printf('let suite = vspec#new_suite(%s)', tokens[1]),
+      \   printf('let suite = vspec#new_suite(%s, suite_stack[-1])', tokens[1]),
       \   'call vspec#add_suite(suite)',
       \   'call add(suite_stack, suite)',
       \ ])
