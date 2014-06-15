@@ -114,7 +114,7 @@ COMMANDS					*vspec-commands*
 :context {subject}				*:context*
 :end
 			Define a set of examples about {subject}.  This is an
-			alias of |:context|.  It is useful to make nested
+			alias of |:describe|.  It is useful to make nested
 			groups more readable.  For example: >
 
 				describe 'textobj-function'
