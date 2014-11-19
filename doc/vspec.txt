@@ -495,6 +495,9 @@ BUGS						*vspec-bugs*
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.4.1	2014-11-19T19:28:39+09:00		*vspec-changelog-1.4.1*
+	- Fix |bin/vspec| not to output CR on Mac OS X 10.9.
+
 1.4.0	2014-04-12T15:19:32+09:00		*vspec-changelog-1.4.0*
 	- Support nested |:describe|.
 	- Support |:context| as an alias of |:describe|.
