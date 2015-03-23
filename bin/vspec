@@ -24,7 +24,7 @@
 # }}}
 
 vim -u NONE -i NONE -N -e -s -S "$0-bootstrap.vim" "$@" 2>&1 |
-  sed $'s/\r$//'
+  sed $'s/\r$//;1{/^$/d;}'
 
 # __END__
 # vim: foldmethod=marker
