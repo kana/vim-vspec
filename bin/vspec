@@ -23,45 +23,7 @@
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-if [ "$#" = '0' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ]
-then
-  echo "Usage: $0 [{non-standard-runtimepath} ...] {input-script}"
-  exit
-fi
-
-args=("$@")
-driver_script=",,$$.vim"
-input_script="${args[$((${#args[@]}- 1))]}"
-unset args[$((${#args[@]}- 1))]  # Now holds all {non-standard-runtimepath}s.
-
-
-
-
-cat <<END >"$driver_script"
-  function s:main()
-    let standard_paths = split(&runtimepath, ',')[1:-2]
-    let non_standard_paths = reverse([$(for a in "${args[@]}"
-                                        do
-                                          echo -n "'$a',"
-                                        done)])
-    let all_paths = copy(standard_paths)
-    for i in non_standard_paths
-      let all_paths = [i] + all_paths + [i . '/after']
-    endfor
-    let &runtimepath = join(all_paths, ',')
-
-    1 verbose call vspec#test('$input_script')
-    qall!
-  endfunction
-  call s:main()
-END
-
-vim -u NONE -i NONE -N -e -s -S "$driver_script" 2>&1 | sed $'s/\r$//'
-
-
-
-
-rm -f "$driver_script"
+vim -u NONE -i NONE -N -e -s -S "$0-bootstrap.vim" "$@" 2>&1 | sed $'s/\r$//'
 
 # __END__
 # vim: foldmethod=marker
