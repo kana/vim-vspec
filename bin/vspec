@@ -23,7 +23,8 @@
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-vim -u NONE -i NONE -N -e -s -S "$0-bootstrap.vim" "$@" 2>&1 | sed $'s/\r$//'
+vim -u NONE -i NONE -N -e -s -S "$0-bootstrap.vim" "$@" 2>&1 |
+  sed $'s/\r$//'
 
 # __END__
 # vim: foldmethod=marker
