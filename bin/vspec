@@ -23,7 +23,7 @@
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-vim -u NONE -i NONE -N -e -s -S "$0-bootstrap.vim" "$@" 2>&1 |
+vim -u NONE -i NONE -N -n -e -s -S "$0-bootstrap.vim" "$@" 2>&1 |
   sed $'s/\r$//;1{/^$/d;}'
 
 # __END__
