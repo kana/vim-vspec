@@ -69,7 +69,7 @@ Requirements:
 - Vim 7.3 or later
 
 Latest version:
-http://github.com/kana/vim-vspec
+https://github.com/kana/vim-vspec
 
 
 
