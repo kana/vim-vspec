@@ -19,8 +19,8 @@ describe './bin/vspec'
   it 'can handle pahts which contain spaces'
     let paths = split(&runtimepath, ',')
     Expect paths[0] ==# getcwd()
-    Expect paths[1] ==# 'foo bar'
-    Expect paths[-2] ==# 'foo bar/after'
+    Expect paths[1] ==# getcwd() . '/foo bar'
+    Expect paths[-2] ==# getcwd() . '/foo bar/after'
     Expect paths[-1] ==# getcwd() . '/after'
   end
 end
