@@ -31,12 +31,20 @@ vim_args=()
 
 
 
+error()
+{
+  echo "$@" >&2
+  exit 1
+}
+
 usage()
 {
   cat <<END >&2
 Usage: $0 [options] [files or directories]
 
 Options:
+    -d DIR      Use also DIR as a part of 'runtimepath' to run *.vim tests.
+                Can be specified multiple times.
     -h, --help  Display this help and exit.
 END
   exit 1
@@ -48,6 +56,11 @@ END
 while [[ $# -ge 1 ]]
 do
   case "$1" in
+    -d)
+      [[ $# -lt 2 ]] && error "Option $1 requires a value"
+      dep_dirs+=("$2")
+      shift 2
+      ;;
     -h|--help)
       usage
       ;;
