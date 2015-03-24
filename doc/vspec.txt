@@ -44,13 +44,25 @@ INTRODUCTION					*vspec-introduction*
 
 *vspec* is a testing framework for Vim script.  It consists of:
 
-* A driver script to run a test suite,
-* A Vim plugin to write tests in a format which resembles RSpec,
+* Utilities to run tests in isolated Vim process,
+* A Vim plugin to write tests in a format which resembles RSpec, and
 * Additional syntax/indent files for Vim script to write tests.
 
-Since vspec is a part of a system to automated tests for Vim script,
-it requires several steps to set up an environment to easily run tests.
-See the following article: http://whileimautomaton.net/2013/02/13211500
+vspec is not a tool to set up environment to run tests.  If you want to test
+a plugin which depends on some other plugins, you have to:
+
+* Install such dependencies to somewhere, and
+* Specify where the dependencies are installed to run tests.
+
+These steps are tedious to do by hand.  It is recommended to use
+https://github.com/kana/vim-flavor to automate setting up test environment and
+running tests.
+
+See also:
+
+* http://vimcasts.org/episodes/an-introduction-to-vspec/
+* http://whileimautomaton.net/2013/02/13211500  Typical usage of vspec
+* http://whileimautomaton.net/2013/02/08211255  How to use vspec on Travis CI
 
 
 Requirements:
