@@ -7,5 +7,5 @@ task :dump do
 end
 
 task :test do
-  sh 'bundle exec ./bin/prove-vspec -d "$PWD"'
+  sh 'bundle exec ./bin/prove-vspec -d .'
 end
