@@ -31,6 +31,21 @@ vim_args=()
 
 
 
+while [[ $# -ge 1 ]]
+do
+  case "$1" in
+    --)
+      shift
+      break
+      ;;
+    -*)
+      error "Unknown option: $1";;
+    *)
+      break
+      ;;
+  esac
+done
+
 for i in "$@"
 do
   case "$i" in
