@@ -31,6 +31,25 @@ vim_args=()
 
 
 
+for i in "$@"
+do
+  case "$i" in
+    *.t)
+      t_args+=("$i")
+      ;;
+    *.vim)
+      vim_args+=("$i")
+      ;;
+    *)
+      t_args+=("$i")
+      vim_args+=("$i")
+      ;;
+  esac
+done
+
+
+
+
 [[ $# == 0 || ${#t_args[@]} != 0 ]] &&
   prove "${prove_options[@]}" \
         --ext '.t' \
