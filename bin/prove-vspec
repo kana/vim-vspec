@@ -31,9 +31,26 @@ vim_args=()
 
 
 
+usage()
+{
+  cat <<END >&2
+Usage: $0 [options] [files or directories]
+
+Options:
+    -h, --help  Display this help and exit.
+END
+  exit 1
+}
+
+
+
+
 while [[ $# -ge 1 ]]
 do
   case "$1" in
+    -h|--help)
+      usage
+      ;;
     --)
       shift
       break
