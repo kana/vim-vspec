@@ -81,20 +81,33 @@ INTERFACE					*vspec-interface*
 EXTERNAL COMMANDS				*vspec-external-commands*
 
 						*bin/vspec*
-bin/vspec [{non-standard-runtimepath} ...] {input-script}
-			Utility command to test Vim script with vspec.
+bin/vspec [{dependency-path} ...] {test-script}
+			A utility to run {test-script} to test Vim script.
 
-			{input-script} is the path to a file which is a test
-			script written with vspec.
+			Output format is Test Anything Protocol version 12.
+			See also http://testanything.org/ for the details.
 
-			{non-standard-runtimepath} is the path to a directory
-			to use as a part of 'runtimepath' while executing
-			{input-script}.
+			{test-script} is the path to a Vim script file written
+			with vspec.
+
+			{dependency-path} is the path to a directory which
+			contains another Vim plugin required by {test-script}.
+
+			'runtimepath' is automatically configured before
+			running {test-script}:
+
+			* User directory (typically ~/.vim) is removed,
+			  to avoid making tests irreproducible.
+			* Each {dependency-path} is added.
+			* |after-directory| of the above directories is also
+			  removed or added too.
+
+			Note that the path to vspec plugin must be specified
+			as {dependency-path}.
 
 			Examples: >
-
-				$ ./bin/vspec . test/context.input
-
+				$ ./vspec/bin/vspec . ./vspec t/basics.vim
+<
 
 ------------------------------------------------------------------------------
 COMMANDS					*vspec-commands*
