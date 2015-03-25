@@ -108,6 +108,11 @@ bin/vspec [{dependency-path} ...] {test-script}
 			Examples: >
 				$ ./vspec/bin/vspec . ./vspec t/basics.vim
 <
+			If the name of {test-script} matches *.t, the file
+			itself is executed.  This is handy for complex tests
+			which requires full control on Vim.  In this case
+			{test-script} can be any executable file.
+
 						*bin/prove-vspec*
 bin/prove-vspec [{option} ...] [--] {file-or-directory} ...
 			A utility to run many tests at once.  This is
