@@ -108,6 +108,21 @@ bin/vspec [{dependency-path} ...] {test-script}
 			Examples: >
 				$ ./vspec/bin/vspec . ./vspec t/basics.vim
 <
+						*bin/prove-vspec*
+bin/prove-vspec [{option} ...] [--] {file-or-directory} ...
+			A utility to run many tests at once.  This is
+			a wrapper of "prove" to run test scripts written with
+			vspec.  See also: http://perldoc.perl.org/prove.html
+
+			If no {file-or-directory} is specified, t/*.vim are
+			run by default.
+
+			Available {option}s:
+
+			-d DIR
+				Use DIR as {dependency-path} for |bin/vspec|.
+				Can be specified multiple times.
+
 
 ------------------------------------------------------------------------------
 COMMANDS					*vspec-commands*
