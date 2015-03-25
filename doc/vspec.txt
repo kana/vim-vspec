@@ -406,13 +406,6 @@ vspec#set({varname}, {value})			*vspec#set()*
 			Assign {value} to a variable.  See |vspec#ref()| for
 			the details of {varname}.
 
-vspec#test({specfile-path})			*vspec#test()*
-			|:source| {specfile-path}, test examples described in
-			the file, then output results of the exmaples.
-
-			Output format is Test Anything Protocol version 12.
-			See also http://testanything.org/ for the details.
-
 
 
 
