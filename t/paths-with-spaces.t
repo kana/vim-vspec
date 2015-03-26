@@ -18,10 +18,10 @@ f <(cat <<'END'
 describe './bin/vspec'
   it 'can handle pahts which contain spaces'
     let paths = split(&runtimepath, ',')
-    Expect paths[0] ==# getcwd()
-    Expect paths[1] ==# getcwd() . '/foo bar'
-    Expect paths[-2] ==# getcwd() . '/foo bar/after'
-    Expect paths[-1] ==# getcwd() . '/after'
+    Expect paths[0] ==# getcwd() . '/foo bar'
+    Expect paths[1] ==# getcwd()
+    Expect paths[-2] ==# getcwd() . '/after'
+    Expect paths[-1] ==# getcwd() . '/foo bar/after'
   end
 end
 END
