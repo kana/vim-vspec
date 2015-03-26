@@ -10,13 +10,13 @@ function! s:bootstrap()
 
   let test_script = args[-1]
   let standard_paths = split(&runtimepath, ',')[1:-2]
-  let dependency_paths = reverse(map(args[:-2], '
+  let dependency_paths = map(args[:-2], '
   \  fnamemodify(v:val, isdirectory(v:val) ? ":p:h" : ":p")
-  \ '))
-  let all_paths = copy(standard_paths)
-  for i in dependency_paths
-    let all_paths = [i] + all_paths + [i . '/after']
-  endfor
+  \ ')
+  let all_paths =
+  \   dependency_paths
+  \ + standard_paths
+  \ + map(reverse(copy(dependency_paths)), 'v:val . "/after"')
   let &runtimepath = join(all_paths, ',')
 
   1 verbose call vspec#test(test_script)
