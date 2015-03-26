@@ -8,7 +8,7 @@ function! s:bootstrap()
     qall!
   endif
 
-  let input_script = args[-1]
+  let test_script = args[-1]
   let standard_paths = split(&runtimepath, ',')[1:-2]
   let dependency_paths = reverse(map(args[:-2], '
   \  fnamemodify(v:val, isdirectory(v:val) ? ":p:h" : ":p")
@@ -19,7 +19,7 @@ function! s:bootstrap()
   endfor
   let &runtimepath = join(all_paths, ',')
 
-  1 verbose call vspec#test(input_script)
+  1 verbose call vspec#test(test_script)
   qall!
 endfunction
 call s:bootstrap()
