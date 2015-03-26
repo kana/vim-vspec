@@ -1,20 +1,6 @@
 #!/bin/bash
 
-function f
-{
-  # FIXME: Almost same as t/check-vspec-result
-  diff="$(diff --unified "$2" <(./bin/vspec "$PWD" 'foo bar' "$1"))"
-  if [ $? = 0 ]
-  then
-    echo 'ok 1'
-  else
-    echo 'not ok 1'
-    echo "$diff" | sed 's/^/# /'
-  fi
-  echo '1..1'
-}
-
-f <(cat <<'END'
+./t/check-vspec-result -d 'foo bar' <(cat <<'END'
 describe './bin/vspec'
   it 'can handle pahts which contain spaces'
     let paths = split(&runtimepath, ',')
