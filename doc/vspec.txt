@@ -102,11 +102,13 @@ bin/vspec [{dependency-path} ...] {test-script}
 			* |after-directory| of the above directories is also
 			  removed or added too.
 
-			Note that the path to vspec plugin must be specified
-			as {dependency-path}.
+			Note that the path to vspec plugin is automatically
+			specified as a {dependency-path}.  You don't have to
+			specify the path manually.  If the path is explicitly
+			specified, it is ignored.
 
 			Examples: >
-				$ ./vspec/bin/vspec . ./vspec t/basics.vim
+				$ ./vspec/bin/vspec . t/basics.vim
 <
 			If the name of {test-script} matches *.t, the file
 			itself is executed.  This is handy for complex tests
