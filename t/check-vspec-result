@@ -1,6 +1,8 @@
 #!/bin/bash
 
-diff="$(diff --unified "$2" <(./bin/vspec "$PWD" "$1"))"
+dep_dirs=("$PWD")
+
+diff="$(diff --unified "$2" <(./bin/vspec "${dep_dirs[@]}" "$1"))"
 if [ $? = 0 ]
 then
   echo 'ok 1'
