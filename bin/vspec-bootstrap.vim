@@ -1,4 +1,4 @@
-function! s:bootstrap()
+function! s:bootstrap(vspec_path)
   let args = argv()
   argdelete *
   enew
@@ -10,9 +10,9 @@ function! s:bootstrap()
 
   let test_script = args[-1]
   let standard_paths = split(&runtimepath, ',')[1:-2]
-  let dependency_paths = map(args[:-2], '
-  \  fnamemodify(v:val, isdirectory(v:val) ? ":p:h" : ":p")
-  \ ')
+  let dependency_paths =
+  \   map(args[:-2], 'fnamemodify(v:val, isdirectory(v:val) ? ":p:h" : ":p")')
+  \ + [a:vspec_path]
   let all_paths =
   \   dependency_paths
   \ + standard_paths
@@ -22,4 +22,4 @@ function! s:bootstrap()
   1 verbose call vspec#test(test_script)
   qall!
 endfunction
-call s:bootstrap()
+call s:bootstrap(expand('<sfile>:p:h:h'))
