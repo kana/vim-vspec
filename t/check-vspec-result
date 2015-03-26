@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dep_dirs=("$PWD")
+dep_dirs=()
 while [[ $# -ge 1 ]]
 do
   case "$1" in
