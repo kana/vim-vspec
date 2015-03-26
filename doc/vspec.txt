@@ -44,23 +44,32 @@ INTRODUCTION					*vspec-introduction*
 
 *vspec* is a testing framework for Vim script.  It consists of:
 
-* A driver script to run a test suite,
-* A Vim plugin to write tests in a format which resembles RSpec,
+* Utilities to run tests in isolated Vim process,
+* A Vim plugin to write tests in a format which resembles RSpec, and
 * Additional syntax/indent files for Vim script to write tests.
 
-Since vspec is a part of a system to automated tests for Vim script,
-it requires several steps to set up an environment to easily run tests.
-See the following article: http://whileimautomaton.net/2013/02/13211500
+vspec is not a tool to set up environment to run tests.  If you want to test
+a plugin which depends on some other plugins, you have to:
+
+* Install such dependencies to somewhere, and
+* Specify where the dependencies are installed to run tests.
+
+These steps are tedious to do by hand.  It is recommended to use
+https://github.com/kana/vim-flavor to automate setting up test environment and
+running tests.
+
+See also:
+
+* http://vimcasts.org/episodes/an-introduction-to-vspec/
+* http://whileimautomaton.net/2013/02/13211500  Typical usage of vspec
+* http://whileimautomaton.net/2013/02/08211255  How to use vspec on Travis CI
 
 
 Requirements:
 - Vim 7.3 or later
 
 Latest version:
-http://github.com/kana/vim-vspec
-
-Document in HTML format:
-http://vim-doc.heroku.com/view?https://raw.github.com/kana/vim-vspec/master/doc/vspec.txt
+https://github.com/kana/vim-vspec
 
 
 
@@ -72,19 +81,47 @@ INTERFACE					*vspec-interface*
 EXTERNAL COMMANDS				*vspec-external-commands*
 
 						*bin/vspec*
-bin/vspec [{non-standard-runtimepath} ...] {input-script}
-			Utility command to test Vim script with vspec.
+bin/vspec [{dependency-path} ...] {test-script}
+			A utility to run {test-script} to test Vim script.
 
-			{input-script} is the path to a file which is a test
-			script written with vspec.
+			Output format is Test Anything Protocol version 12.
+			See also http://testanything.org/ for the details.
 
-			{non-standard-runtimepath} is the path to a directory
-			to use as a part of 'runtimepath' while executing
-			{input-script}.
+			{test-script} is the path to a Vim script file written
+			with vspec.
+
+			{dependency-path} is the path to a directory which
+			contains another Vim plugin required by {test-script}.
+
+			'runtimepath' is automatically configured before
+			running {test-script}:
+
+			* User directory (typically ~/.vim) is removed,
+			  to avoid making tests irreproducible.
+			* Each {dependency-path} is added.
+			* |after-directory| of the above directories is also
+			  removed or added too.
+
+			Note that the path to vspec plugin must be specified
+			as {dependency-path}.
 
 			Examples: >
+				$ ./vspec/bin/vspec . ./vspec t/basics.vim
+<
+						*bin/prove-vspec*
+bin/prove-vspec [{option} ...] [--] {file-or-directory} ...
+			A utility to run many tests at once.  This is
+			a wrapper of "prove" to run test scripts written with
+			vspec.  See also: http://perldoc.perl.org/prove.html
 
-				$ ./bin/vspec . test/context.input
+			If no {file-or-directory} is specified, t/*.vim are
+			run by default.
+
+			Available {option}s:
+
+			-d DIR
+				Use DIR as {dependency-path} for |bin/vspec|.
+				Can be specified multiple times.
 
 
 ------------------------------------------------------------------------------
@@ -369,13 +406,6 @@ vspec#set({varname}, {value})			*vspec#set()*
 			Assign {value} to a variable.  See |vspec#ref()| for
 			the details of {varname}.
 
-vspec#test({specfile-path})			*vspec#test()*
-			|:source| {specfile-path}, test examples described in
-			the file, then output results of the exmaples.
-
-			Output format is Test Anything Protocol version 12.
-			See also http://testanything.org/ for the details.
-
 
 
 
@@ -614,4 +644,4 @@ CHANGELOG					*vspec-changelog*
 
 
 ==============================================================================
-vim:tw=78:ts=8:ft=help:norl:fen:fdl=0:fdm=marker:
+vim:tw=78:ts=8:noet:ft=help:norl:fen:fdl=0:fdm=marker:

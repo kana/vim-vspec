@@ -4,7 +4,7 @@ function! s:bootstrap()
   enew
 
   if len(args) == 0 || args[0] ==# '-h' || args[0] ==# '--help'
-    verbose echon "Usage: vspec [{non-standard-runtimepath} ...] {input-script}\n"
+    verbose echon "Usage: vspec [{dependency-path} ...] {test-script}\n"
     qall!
   endif
 
