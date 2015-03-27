@@ -324,7 +324,7 @@ function! s:run_suites(all_suites)
               endfor
             elseif type ==# 'TODO'
               echo printf(
-              \   '%s %d - # TODO %s %s',
+              \   '%s %d - %s %s # TODO',
               \   'not ok',
               \   total_count_of_examples,
               \   suite.pretty_subject,
