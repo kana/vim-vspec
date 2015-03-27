@@ -532,6 +532,15 @@ BUGS						*vspec-bugs*
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.5.0	2015-03-27T23:29:59+09:00		*vspec-changelog-1.5.0*
+	- Revise |bin/vspec|:
+	  - Reduce the number of temporary file generations.
+	  - Fix not to be stuck while running {test-script} by swap files.
+	  - Support relative {dependency-path}.
+	  - Support *.t, arbitrary executable files, for complex tests.
+	  - Add path to vspec as {dependency-path} automatically.
+	- Add |bin/prove-vspec| to run many test scripts at once.
+
 1.4.1	2014-11-19T19:28:39+09:00		*vspec-changelog-1.4.1*
 	- Fix |bin/vspec| not to output CR on Mac OS X 10.9.
 
