@@ -332,7 +332,7 @@ function! s:run_suites(all_suites)
               \ )
             elseif type ==# 'SKIP'
               echo printf(
-              \   '%s %d - # SKIP %s %s - %s',
+              \   '%s %d - %s %s # SKIP - %s',
               \   'ok',
               \   total_count_of_examples,
               \   suite.pretty_subject,
