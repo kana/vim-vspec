@@ -498,13 +498,6 @@ endfunction
 
 
 
-function! s:get_current_suite()  "{{{2
-  return s:current_suites[0]
-endfunction
-
-
-
-
 function! s:pop_current_suite()  "{{{2
   return remove(s:current_suites, 0)
 endfunction
