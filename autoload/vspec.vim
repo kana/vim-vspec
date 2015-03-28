@@ -292,72 +292,61 @@ endfunction
 function! s:run_suites(all_suites)
   let total_count_of_examples = 0
   for suite in a:all_suites
-    call s:push_current_suite(suite)
-      for example_index in range(len(suite.example_list))
-        let total_count_of_examples += 1
-        let example = suite.example_list[example_index]
-        call suite.run_before_blocks()
-        try
-          call suite.example_dict[
-          \   suite.generate_example_function_name(example_index)
-          \ ]()
-          echo printf(
-          \   '%s %d - %s %s',
-          \   'ok',
-          \   total_count_of_examples,
-          \   suite.pretty_subject,
-          \   example
-          \ )
-        catch /^vspec:/
-          let xs = matchlist(v:exception, '^vspec:\(\a\+\):\(.*\)$')
-          let type = xs[1]
-          let i = eval(xs[2])
-          if type ==# 'ExpectationFailure'
-            let subtype = i.type
-            if subtype ==# 'MismatchedValues'
-              echo printf(
-              \   '%s %d - %s %s',
-              \   'not ok',
-              \   total_count_of_examples,
-              \   suite.pretty_subject,
-              \   example
-              \ )
-              echo '# Expected' join(filter([
-              \   i.expr_actual,
-              \   i.expr_not,
-              \   i.expr_matcher,
-              \   i.expr_expected,
-              \ ], 'v:val != ""'))
-              for line in s:generate_failure_message(i)
-                echo '#     ' . line
-              endfor
-            elseif subtype ==# 'TODO'
-              echo printf(
-              \   '%s %d - %s %s # TODO',
-              \   'not ok',
-              \   total_count_of_examples,
-              \   suite.pretty_subject,
-              \   example
-              \ )
-            elseif subtype ==# 'SKIP'
-              echo printf(
-              \   '%s %d - %s %s # SKIP - %s',
-              \   'ok',
-              \   total_count_of_examples,
-              \   suite.pretty_subject,
-              \   example,
-              \   i.message
-              \ )
-            else
-              echo printf(
-              \   '%s %d - %s %s',
-              \   'not ok',
-              \   total_count_of_examples,
-              \   suite.pretty_subject,
-              \   example
-              \ )
-              echo printf('# %s: %s', type, i.message)
-            endif
+    for example_index in range(len(suite.example_list))
+      let total_count_of_examples += 1
+      let example = suite.example_list[example_index]
+      call suite.run_before_blocks()
+      try
+        call suite.example_dict[
+        \   suite.generate_example_function_name(example_index)
+        \ ]()
+        echo printf(
+        \   '%s %d - %s %s',
+        \   'ok',
+        \   total_count_of_examples,
+        \   suite.pretty_subject,
+        \   example
+        \ )
+      catch /^vspec:/
+        let xs = matchlist(v:exception, '^vspec:\(\a\+\):\(.*\)$')
+        let type = xs[1]
+        let i = eval(xs[2])
+        if type ==# 'ExpectationFailure'
+          let subtype = i.type
+          if subtype ==# 'MismatchedValues'
+            echo printf(
+            \   '%s %d - %s %s',
+            \   'not ok',
+            \   total_count_of_examples,
+            \   suite.pretty_subject,
+            \   example
+            \ )
+            echo '# Expected' join(filter([
+            \   i.expr_actual,
+            \   i.expr_not,
+            \   i.expr_matcher,
+            \   i.expr_expected,
+            \ ], 'v:val != ""'))
+            for line in s:generate_failure_message(i)
+              echo '#     ' . line
+            endfor
+          elseif subtype ==# 'TODO'
+            echo printf(
+            \   '%s %d - %s %s # TODO',
+            \   'not ok',
+            \   total_count_of_examples,
+            \   suite.pretty_subject,
+            \   example
+            \ )
+          elseif subtype ==# 'SKIP'
+            echo printf(
+            \   '%s %d - %s %s # SKIP - %s',
+            \   'ok',
+            \   total_count_of_examples,
+            \   suite.pretty_subject,
+            \   example,
+            \   i.message
+            \ )
           else
             echo printf(
             \   '%s %d - %s %s',
@@ -368,7 +357,7 @@ function! s:run_suites(all_suites)
             \ )
             echo printf('# %s: %s', type, i.message)
           endif
-        catch
+        else
           echo printf(
           \   '%s %d - %s %s',
           \   'not ok',
@@ -376,14 +365,23 @@ function! s:run_suites(all_suites)
           \   suite.pretty_subject,
           \   example
           \ )
-          echo '#' s:simplify_call_stack(v:throwpoint, expand('<sfile>'), 'it')
-          for exception_line in split(v:exception, '\n')
-            echo '#' exception_line
-          endfor
-        endtry
-        call suite.run_after_blocks()
-      endfor
-    call s:pop_current_suite()
+          echo printf('# %s: %s', type, i.message)
+        endif
+      catch
+        echo printf(
+        \   '%s %d - %s %s',
+        \   'not ok',
+        \   total_count_of_examples,
+        \   suite.pretty_subject,
+        \   example
+        \ )
+        echo '#' s:simplify_call_stack(v:throwpoint, expand('<sfile>'), 'it')
+        for exception_line in split(v:exception, '\n')
+          echo '#' exception_line
+        endfor
+      endtry
+      call suite.run_after_blocks()
+    endfor
   endfor
   echo printf('1..%d', total_count_of_examples)
 endfunction
