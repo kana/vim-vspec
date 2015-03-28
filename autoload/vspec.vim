@@ -496,13 +496,6 @@ endfunction
 
 
 
-function! s:push_current_suite(suite)  "{{{2
-  call insert(s:current_suites, a:suite, 0)
-endfunction
-
-
-
-
 function! vspec#add_suite(suite)  "{{{2
   call add(s:all_suites, a:suite)
 endfunction
