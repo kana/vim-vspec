@@ -951,6 +951,13 @@ endfunction
 
 
 
+function! s:throw(type, values)  "{{{2
+  throw printf('vspec:%s:%s', a:type, string(a:values))
+endfunction
+
+
+
+
 function! vspec#scope()  "{{{2
   return s:
 endfunction
