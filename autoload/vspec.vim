@@ -128,7 +128,7 @@ command! -bar -nargs=0 SaveContext
 
 
 " :SKIP  "{{{2
-command! -bar -nargs=+ SKIP
+command! -nargs=+ SKIP
 \ call s:throw('ExpectationFailure', {'type': 'SKIP', 'message': <q-args>})
 
 
