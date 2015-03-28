@@ -14,7 +14,7 @@ describe 'vspec#customize_matcher'
     try
       Expect [] to_be_empty
       let caught = !!0
-    catch /^vspec:InvalidOperation:Unknown custom matcher - 'to_be_empty'$/
+    catch /^vspec:InvalidOperation:.*\<Unknown custom matcher\>.*\<to_be_empty\>.*$/
       let caught = !0
     endtry
     Expect caught to_be_true
@@ -29,7 +29,7 @@ describe 'vspec#customize_matcher'
     try
       Expect [] to_be_empty
       let caught = !!0
-    catch /^vspec:InvalidOperation:Unknown custom matcher - 'to_be_empty'$/
+    catch /^vspec:InvalidOperation:.*\<Unknown custom matcher\>.*\<to_be_empty\>.*$/
       let caught = !0
     endtry
     Expect caught to_be_true
@@ -50,7 +50,7 @@ describe 'vspec#customize_matcher'
     try
       Expect [] to_be_empty
       let caught = !!0
-    catch /^vspec:InvalidOperation:Custom matcher does not have match function - 'to_be_empty'$/
+    catch /^vspec:InvalidOperation:.*\<Custom matcher does not have match function\>.*\<to_be_empty\>.*$/
       let caught = !0
     endtry
     Expect caught to_be_true
