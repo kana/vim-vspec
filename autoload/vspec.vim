@@ -910,6 +910,13 @@ endfunction
 
 
 
+function! s:parse_string(string_expression)  "{{{2
+  return a:string_expression  " TODO: Implement.
+endfunction
+
+
+
+
 function! s:simplify_call_stack(throwpoint, base_call_stack, type)  "{{{2
   if a:type ==# 'it'
     return substitute(
