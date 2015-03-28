@@ -54,13 +54,17 @@ let s:custom_matchers = {}  "{{{2
 
 
 
-let s:expr_hinted_scope = 's:fail("Scope hint is not given")'  "{{{2
+" s:expr_hinted_scope  "{{{2
+let s:expr_hinted_scope =
+\ 's:throw("InvalidOperation", {"message": "Scope hint is not given"})'
 " An expression which is evaluated to a script-local scope for Ref()/Set().
 
 
 
 
-let s:expr_hinted_sid = 's:fail("SID hint is not given")'  "{{{2
+" s:expr_hinted_sid  "{{{2
+let s:expr_hinted_sid =
+\ 's:throw("InvalidOperation", {"message": "SID hint is not given"})'
 " An expression which is evaluated to a <SID> for Call().
 
 
