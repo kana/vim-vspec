@@ -41,13 +41,6 @@ let s:all_suites = []  "{{{2
 
 
 
-let s:current_suites = []  "{{{2
-" :: [Suite]
-" The stack to manage the currently active suite while running all suites.
-
-
-
-
 let s:custom_matchers = {}  "{{{2
 " :: MatcherNameString -> Matcher
 
