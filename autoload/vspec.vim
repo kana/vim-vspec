@@ -926,13 +926,6 @@ endfunction
 
 
 
-function! s:fail(message)  "{{{2
-  call s:throw('InvalidOperation', {'message': a:message})
-endfunction
-
-
-
-
 function! s:get_hinted_scope()  "{{{2
   return eval(s:expr_hinted_scope)
 endfunction
