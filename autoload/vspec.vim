@@ -305,11 +305,12 @@ function! s:run_suites(all_suites)
           \   example
           \ )
         catch /^vspec:/
-          if v:exception =~# '^vspec:ExpectationFailure:'
-            let xs = matchlist(v:exception, '^vspec:ExpectationFailure:\(\a\+\):\(.*\)$')
-            let type = xs[1]
-            let i = eval(xs[2])
-            if type ==# 'MismatchedValues'
+          let xs = matchlist(v:exception, '^vspec:\(\a\+\):\(.*\)$')
+          let type = xs[1]
+          let i = eval(xs[2])
+          if type ==# 'ExpectationFailure'
+            let subtype = i.type
+            if subtype ==# 'MismatchedValues'
               echo printf(
               \   '%s %d - %s %s',
               \   'not ok',
@@ -326,7 +327,7 @@ function! s:run_suites(all_suites)
               for line in s:generate_failure_message(i)
                 echo '#     ' . line
               endfor
-            elseif type ==# 'TODO'
+            elseif subtype ==# 'TODO'
               echo printf(
               \   '%s %d - %s %s # TODO',
               \   'not ok',
@@ -334,7 +335,7 @@ function! s:run_suites(all_suites)
               \   suite.pretty_subject,
               \   example
               \ )
-            elseif type ==# 'SKIP'
+            elseif subtype ==# 'SKIP'
               echo printf(
               \   '%s %d - %s %s # SKIP - %s',
               \   'ok',
@@ -351,7 +352,7 @@ function! s:run_suites(all_suites)
               \   suite.pretty_subject,
               \   example
               \ )
-              echo '#' substitute(v:exception, '^vspec:', '', '')
+              echo printf('# %s: %s', type, i.message)
             endif
           else
             echo printf(
@@ -361,7 +362,7 @@ function! s:run_suites(all_suites)
             \   suite.pretty_subject,
             \   example
             \ )
-            echo '#' substitute(v:exception, '^vspec:', '', '')
+            echo printf('# %s: %s', type, i.message)
           endif
         catch
           echo printf(
