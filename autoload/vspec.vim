@@ -496,13 +496,6 @@ endfunction
 
 
 
-function! s:pop_current_suite()  "{{{2
-  return remove(s:current_suites, 0)
-endfunction
-
-
-
-
 function! s:push_current_suite(suite)  "{{{2
   call insert(s:current_suites, a:suite, 0)
 endfunction
