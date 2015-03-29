@@ -911,7 +911,12 @@ endfunction
 
 
 function! s:parse_string(string_expression)  "{{{2
-  return a:string_expression  " TODO: Implement.
+  let s = substitute(a:string_expression, '^\s*\(.\{-}\)\s*$', '\1', '')
+  if s =~# '^''\(''''\|[^'']\)*''$' || s =~# '^"\(\\.\|[^"]\)*"$'
+    return eval(s)
+  else
+    call s:throw('SyntaxError', {'message': 'Invalid string - ' . string(s)})
+  endif
 endfunction
 
 
