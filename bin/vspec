@@ -28,7 +28,7 @@ if [[ $# != 0 && "${args[$#-1]%%*.t}" == '' ]]
 then
   "${args[$#-1]}"
 else
-  vim -u NONE -i NONE -N -n -e -s -S "$0-bootstrap.vim" "$@" 2>&1 |
+  vim -u NONE -i NONE -N -n -e -s --cmd "source $0-bootstrap.vim" "$@" 2>&1 |
     sed $'s/\r$//;1{/^$/d;}'
 fi
 

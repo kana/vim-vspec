@@ -1,6 +1,21 @@
 #!/bin/bash
 
-diff="$(diff --unified "$2" <(./bin/vspec "$PWD" "$1"))"
+dep_dirs=()
+while [[ $# -ge 1 ]]
+do
+  case "$1" in
+    -d)
+      [[ $# -lt 2 ]] && echo "Option $1 requires a value" >&2 && exit 1
+      dep_dirs+=("$2")
+      shift 2
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+diff="$(diff --unified "$2" <(./bin/vspec "${dep_dirs[@]}" "$1"))"
 if [ $? = 0 ]
 then
   echo 'ok 1'
