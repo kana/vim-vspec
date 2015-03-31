@@ -1,8 +1,8 @@
 *vspec.txt*	Testing framework for Vim script
 
-Version 1.4.1
+Version 1.5.0
 Script ID: 3012
-Copyright (C) 2009-2014 Kana Natsuno <http://whileimautomaton.net/>
+Copyright (C) 2009-2015 Kana Natsuno <http://whileimautomaton.net/>
 License: MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -505,17 +505,17 @@ FAQ						*vspec-faq*
 	scrambled -- you have to feedkeys() before :normal.
 
 (e) plugin/*.vim must be explicitly |:source|d.
-	This is an intentional behavior to set up configuration variables, key
-	mappings, etc before loading plugin/*.vim.
+	This is an intentional design.
 
 	Several plugins behave differently depending on the current
 	configuration.  Some plugins define key mappings based on their
 	configuration variables.  Some plugins try not to override
 	user-defined key mappings.
 
-	If plugin/*.vim are automatically :source'd, we have to provide a way
-	to emulate user's vimrc to reproduce such situations.  It makes things
-	complicated.
+	If plugin/*.vim are automatically :source'd by vspec before running
+	test script, we have to provide a way to emulate user's vimrc to
+	reproduce such situations.  In addition, the content of vimrc might be
+	different for each test script.  It makes things complicated.
 
 
 
@@ -531,6 +531,15 @@ BUGS						*vspec-bugs*
 
 ==============================================================================
 CHANGELOG					*vspec-changelog*
+
+1.5.0	2015-03-27T23:29:59+09:00		*vspec-changelog-1.5.0*
+	- Revise |bin/vspec|:
+	  - Reduce the number of temporary file generations.
+	  - Fix not to be stuck while running {test-script} by swap files.
+	  - Support relative {dependency-path}.
+	  - Support *.t, arbitrary executable files, for complex tests.
+	  - Add path to vspec as {dependency-path} automatically.
+	- Add |bin/prove-vspec| to run many test scripts at once.
 
 1.4.1	2014-11-19T19:28:39+09:00		*vspec-changelog-1.4.1*
 	- Fix |bin/vspec| not to output CR on Mac OS X 10.9.
