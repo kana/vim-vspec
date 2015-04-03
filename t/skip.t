@@ -7,12 +7,27 @@ describe ':SKIP'
     SKIP 'This is a test'
     echo '# Lines after :SKIP will never be reached.'
   end
+  it 'accepts a double-quoted string'
+    SKIP "This is a test"
+  end
+  it 'denies an unquoted string'
+    SKIP This is a test
+  end
+  it 'cannot take no message'
+    SKIP
+  end
 end
 END
 ) <(cat <<'END'
 # Lines before :SKIP will be executed.
 ok 1 - :SKIP stops the current example as a success # SKIP - This is a test
-1..1
+ok 2 - :SKIP accepts a double-quoted string # SKIP - This is a test
+not ok 3 - :SKIP denies an unquoted string
+# SyntaxError: Invalid string - 'This is a test'
+not ok 4 - :SKIP cannot take no message
+# {example}, line 1
+# Vim:E471: Argument required:     SKIP
+1..4
 END
 )
 
