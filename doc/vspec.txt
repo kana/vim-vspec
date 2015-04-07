@@ -306,8 +306,7 @@ COMMANDS					*vspec-commands*
 
 			{message} is a string which will be displayed as an
 			additional message to provide a hint about the skipped
-			example.  Note that single-quoted strings are only
-			supported at the moment.
+			example.
 
 
 ------------------------------------------------------------------------------

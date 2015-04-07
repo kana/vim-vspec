@@ -128,8 +128,9 @@ command! -bar -nargs=0 SaveContext
 
 
 " :SKIP  "{{{2
-command! -bar -nargs=+ SKIP
-\ call s:throw('ExpectationFailure', {'type': 'SKIP', 'message': <q-args>})
+command! -nargs=+ SKIP
+\ call s:throw('ExpectationFailure',
+\              {'type': 'SKIP', 'message': s:parse_string(<q-args>)})
 
 
 
@@ -905,6 +906,18 @@ endfunction
 
 function! s:get_hinted_sid()  "{{{2
   return eval(s:expr_hinted_sid)
+endfunction
+
+
+
+
+function! s:parse_string(string_expression)  "{{{2
+  let s = substitute(a:string_expression, '^\s*\(.\{-}\)\s*$', '\1', '')
+  if s =~# '^''\(''''\|[^'']\)*''$' || s =~# '^"\(\\.\|[^"]\)*"$'
+    return eval(s)
+  else
+    call s:throw('SyntaxError', {'message': 'Invalid string - ' . string(s)})
+  endif
 endfunction
 
 
