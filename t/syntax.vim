@@ -10,27 +10,7 @@ describe 'Syntax highlighting'
     tabnew
     tabonly!
 
-    silent put =[
-    \   'describe ''Syntax highlighting''',
-    \   '  before',
-    \   '    set ignorecase',
-    \   '  end',
-    \   '  after',
-    \   '    set ignorecase&',
-    \   '  end',
-    \   '  it ''highlights vspec-specific keywords''',
-    \   '    Expect type(s) ==# type('''')',
-    \   '    Expect type(s) not ==# type(0)',
-    \   '    SKIP',
-    \   '    TODO',
-    \   '  end',
-    \   '  context ''with a nested suite''',
-    \   '    it ''is supported''',
-    \   '    end',
-    \   '  end',
-    \   'end',
-    \ ]
-    1 delete _
+    read t/fixtures/sample.vim
 
     setfiletype vim
   end
