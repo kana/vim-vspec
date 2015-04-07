@@ -44,4 +44,9 @@ describe 'Syntax highlighting'
     Expect HighlightingOf('t/fixtures/sample.vim')
     \  ==# Like('t/fixtures/sample.vim.expected')
   end
+
+  it 'does not work in invalid context'
+    Expect HighlightingOf('t/fixtures/invalid.vim')
+    \  ==# Like('t/fixtures/invalid.vim.expected')
+  end
 end
