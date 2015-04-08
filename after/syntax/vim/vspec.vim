@@ -34,11 +34,17 @@ syntax keyword vimVspecCommand Expect skipwhite nextgroup=vimVspecExpectation
 syntax match vimVspecExpectation /\S.*$/ contained contains=@vimOperGroup
 
 syntax keyword vimVspecOperator not contained containedin=vimVspecExpectation
+syntax keyword vimVspecLambda expr
+\ contained containedin=vimVspecExpectation
+\ skipwhite nextgroup=vimVspecLambdaBody
+syntax region vimVspecLambdaBody start=/{/ms=e+1 end=/}/me=s-1
+\ contained contains=@vimOperGroup
 
 
 
 
 highlight default link vimVspecCommand  vimCommand
+highlight default link vimVspecLambda  vimCommand
 highlight default link vimVspecOperator  vimOper
 
 " __END__

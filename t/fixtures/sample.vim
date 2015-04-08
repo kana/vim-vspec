@@ -8,6 +8,7 @@ describe 'Syntax highlighting'
   it 'highlights vspec-specific keywords'
     Expect type(s) ==# type('')
     Expect type(s) not ==# type(0)
+    Expect expr { {'': '}'} } to_throw
     SKIP
     TODO
   end

@@ -9,6 +9,8 @@ let s:symbol_table = {
 \   'vimString': 'S',
 \   'vimVspecCommand': 'c',
 \   'vimVspecExpectation': '_',
+\   'vimVspecLambda': 'l',
+\   'vimVspecLambdaBody': 'b',
 \   'vimVspecOperator': 'o',
 \ }
 
