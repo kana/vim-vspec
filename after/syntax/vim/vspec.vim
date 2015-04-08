@@ -26,9 +26,9 @@ syntax keyword vimVspecCommand
 \ contained containedin=vimIsCommand
 \ after before end ResetContext SaveContext SKIP TODO
 
-syntax keyword vimVspecCommand context skipwhite nextgroup=vimString
-syntax keyword vimVspecCommand describe skipwhite nextgroup=vimString
-syntax keyword vimVspecCommand it skipwhite nextgroup=vimString
+syntax keyword vimVspecCommand
+\ contained containedin=vimIsCommand skipwhite nextgroup=vimString
+\ context describe it
 
 syntax keyword vimVspecCommand Expect skipwhite
 
