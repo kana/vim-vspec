@@ -30,7 +30,8 @@ syntax keyword vimVspecCommand
 \ contained containedin=vimIsCommand skipwhite nextgroup=vimString
 \ context describe it
 
-syntax keyword vimVspecCommand Expect skipwhite
+syntax keyword vimVspecCommand Expect skipwhite nextgroup=vimVspecExpectation
+syntax match vimVspecExpectation /\S.*$/ contained contains=@vimOperGroup
 
 syntax keyword vimVspecOperator not skipwhite
 
