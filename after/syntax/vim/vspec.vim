@@ -22,13 +22,9 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-syntax keyword vimVspecCommand after
-syntax keyword vimVspecCommand before
-syntax keyword vimVspecCommand end
-syntax keyword vimVspecCommand ResetContext
-syntax keyword vimVspecCommand SaveContext
-syntax keyword vimVspecCommand SKIP
-syntax keyword vimVspecCommand TODO
+syntax keyword vimVspecCommand
+\ contained containedin=vimIsCommand
+\ after before end ResetContext SaveContext SKIP TODO
 
 syntax keyword vimVspecCommand context skipwhite nextgroup=vimString
 syntax keyword vimVspecCommand describe skipwhite nextgroup=vimString
