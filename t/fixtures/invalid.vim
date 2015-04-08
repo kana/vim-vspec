@@ -3,4 +3,7 @@ describe 'Syntax highlighting'
     Expect before != after
     Expect context != describe
   end
+  it 'does not work for operators not in expectations'
+    not in a valid situation
+  end
 end
