@@ -8,6 +8,7 @@ let s:symbol_table = {
 \   'vimSet': ' ',
 \   'vimString': 'S',
 \   'vimVspecCommand': 'c',
+\   'vimVspecExpectation': '_',
 \   'vimVspecOperator': 'o',
 \ }
 
