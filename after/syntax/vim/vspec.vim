@@ -24,16 +24,19 @@
 
 syntax keyword vimVspecCommand after
 syntax keyword vimVspecCommand before
-syntax keyword vimVspecCommand context skipwhite nextgroup=vimString
-syntax keyword vimVspecCommand describe skipwhite nextgroup=vimString
 syntax keyword vimVspecCommand end
-syntax keyword vimVspecCommand Expect skipwhite
-syntax keyword vimVspecCommand it skipwhite nextgroup=vimString
-syntax keyword vimVspecOperator not skipwhite
 syntax keyword vimVspecCommand ResetContext
 syntax keyword vimVspecCommand SaveContext
 syntax keyword vimVspecCommand SKIP
 syntax keyword vimVspecCommand TODO
+
+syntax keyword vimVspecCommand context skipwhite nextgroup=vimString
+syntax keyword vimVspecCommand describe skipwhite nextgroup=vimString
+syntax keyword vimVspecCommand it skipwhite nextgroup=vimString
+
+syntax keyword vimVspecCommand Expect skipwhite
+
+syntax keyword vimVspecOperator not skipwhite
 
 
 
