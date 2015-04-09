@@ -22,23 +22,29 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-syntax keyword vimVspecCommand after
-syntax keyword vimVspecCommand before
-syntax keyword vimVspecCommand context skipwhite nextgroup=vimString
-syntax keyword vimVspecCommand describe skipwhite nextgroup=vimString
-syntax keyword vimVspecCommand end
-syntax keyword vimVspecCommand Expect skipwhite
-syntax keyword vimVspecCommand it skipwhite nextgroup=vimString
-syntax keyword vimVspecOperator not skipwhite
-syntax keyword vimVspecCommand ResetContext
-syntax keyword vimVspecCommand SaveContext
-syntax keyword vimVspecCommand SKIP
-syntax keyword vimVspecCommand TODO
+syntax keyword vimVspecCommand
+\ contained containedin=vimIsCommand
+\ after before end ResetContext SaveContext SKIP TODO
+
+syntax keyword vimVspecCommand
+\ contained containedin=vimIsCommand skipwhite nextgroup=vimString
+\ context describe it
+
+syntax keyword vimVspecCommand Expect skipwhite nextgroup=vimVspecExpectation
+syntax match vimVspecExpectation /\S.*$/ contained contains=@vimOperGroup
+
+syntax keyword vimVspecOperator not contained containedin=vimVspecExpectation
+syntax keyword vimVspecLambda expr
+\ contained containedin=vimVspecExpectation
+\ skipwhite nextgroup=vimVspecLambdaBody
+syntax region vimVspecLambdaBody start=/{/ms=e+1 end=/}/me=s-1
+\ contained contains=@vimOperGroup
 
 
 
 
 highlight default link vimVspecCommand  vimCommand
+highlight default link vimVspecLambda  vimCommand
 highlight default link vimVspecOperator  vimOper
 
 " __END__
