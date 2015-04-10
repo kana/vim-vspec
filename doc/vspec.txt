@@ -1,6 +1,6 @@
 *vspec.txt*	Testing framework for Vim script
 
-Version 1.5.0
+Version 1.6.0
 Script ID: 3012
 Copyright (C) 2009-2015 Kana Natsuno <http://whileimautomaton.net/>
 License: MIT license  {{{
@@ -530,6 +530,15 @@ BUGS						*vspec-bugs*
 
 ==============================================================================
 CHANGELOG					*vspec-changelog*
+
+1.6.0	2015-04-10T23:45:09+09:00		*vspec-changelog-1.6.0*
+	- Revise syntax highlighting:
+	  - Support highlighting of "expr" in |:Expect|.
+	  - Fix to highlight "not" only if it is used in |:Expect|.
+	  - Fix |:Expect| arguments to be highlighted as expressions.
+	- Revise output of |:SKIP| and |:TODO|.
+	- Support also a double-quoted string for |:SKIP|.
+	- Tidy up the internal structure a bit.
 
 1.5.0	2015-03-27T23:29:59+09:00		*vspec-changelog-1.5.0*
 	- Revise |bin/vspec|:
