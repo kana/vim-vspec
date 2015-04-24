@@ -20,8 +20,8 @@ end
 END
 ) <(cat <<'END'
 # Lines before :SKIP will be executed.
-ok 1 - :SKIP stops the current example as a success # SKIP - This is a test
-ok 2 - :SKIP accepts a double-quoted string # SKIP - This is a test
+ok 1 - # SKIP :SKIP stops the current example as a success - This is a test
+ok 2 - # SKIP :SKIP accepts a double-quoted string - This is a test
 not ok 3 - :SKIP denies an unquoted string
 # SyntaxError: Invalid string - 'This is a test'
 not ok 4 - :SKIP cannot take no message
