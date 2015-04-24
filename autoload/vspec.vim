@@ -326,7 +326,7 @@ function! s:run_suites(all_suites)
             endfor
           elseif subtype ==# 'TODO'
             echo printf(
-            \   '%s %d - %s %s # TODO',
+            \   '%s %d - # TODO %s %s',
             \   'not ok',
             \   total_count_of_examples,
             \   suite.pretty_subject,
@@ -334,7 +334,7 @@ function! s:run_suites(all_suites)
             \ )
           elseif subtype ==# 'SKIP'
             echo printf(
-            \   '%s %d - %s %s # SKIP - %s',
+            \   '%s %d - # SKIP %s %s - %s',
             \   'ok',
             \   total_count_of_examples,
             \   suite.pretty_subject,

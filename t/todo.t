@@ -8,7 +8,7 @@ describe ':TODO'
 end
 END
 ) <(cat <<'END'
-not ok 1 - :TODO stops the current example as a failure # TODO
+not ok 1 - # TODO :TODO stops the current example as a failure
 1..1
 END
 )
