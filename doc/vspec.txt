@@ -531,6 +531,11 @@ BUGS						*vspec-bugs*
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.6.1	2015-04-25T01:26:07+09:00		*vspec-changelog-1.6.1*
+	- Revert changes of |:SKIP| and |:TODO| output format.  The change
+	  caused errors for "prove" command if |:describe| {subject} or |:it|
+	  {example} contains "#".
+
 1.6.0	2015-04-10T23:45:09+09:00		*vspec-changelog-1.6.0*
 	- Revise syntax highlighting:
 	  - Support highlighting of "expr" in |:Expect|.
