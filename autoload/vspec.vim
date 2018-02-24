@@ -384,21 +384,29 @@ endfunction
 
 
 " Predefined custom matchers - to_be_false  "{{{2
-function! vspec#_matcher_false(value)
+
+let s:to_be_false = {}
+
+function! s:to_be_false.match(value)
   return type(a:value) == type(0) ? !(a:value) : s:FALSE
 endfunction
-call vspec#customize_matcher('to_be_false', function('vspec#_matcher_false'))
-call vspec#customize_matcher('toBeFalse', function('vspec#_matcher_false'))
+
+call vspec#customize_matcher('to_be_false', s:to_be_false)
+call vspec#customize_matcher('toBeFalse', s:to_be_false)
 
 
 
 
 " Predefined custom matchers - to_be_true  "{{{2
-function! vspec#_matcher_true(value)
+
+let s:to_be_true = {}
+
+function! s:to_be_true.match(value)
   return type(a:value) == type(0) ? !!(a:value) : s:FALSE
 endfunction
-call vspec#customize_matcher('to_be_true', function('vspec#_matcher_true'))
-call vspec#customize_matcher('toBeTrue', function('vspec#_matcher_true'))
+
+call vspec#customize_matcher('to_be_true', s:to_be_true)
+call vspec#customize_matcher('toBeTrue', s:to_be_true)
 
 
 
