@@ -536,6 +536,14 @@ BUGS						*vspec-bugs*
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.7.0	2018-02-24T12:29:05+09:00		*vspec-changelog-1.7.0*
+	- Add |VSPEC_VIM| to select a Vim binary to run test scripts.
+	- Fix stack trace simplification, broken for Vim 7.4.879 or later.
+	- Update required version of Vim 8.0 or later.  Though vspec is still
+	  compatible with Vim 7.3 or later, except stack trace simplification.
+	- Improve failure messages for |vspec-to_be_true| and
+	  |vspec-to_be_false|.  The old one is somewhat strange.
+
 1.6.1	2015-04-25T01:26:07+09:00		*vspec-changelog-1.6.1*
 	- Revert changes of |:SKIP| and |:TODO| output format.  The change
 	  caused errors for "prove" command if |:describe| {subject} or |:it|
