@@ -1,6 +1,6 @@
 *vspec.txt*	Testing framework for Vim script
 
-Version 1.7.0
+Version 1.7.1
 Script ID: 3012
 Copyright (C) 2009-2018 Kana Natsuno <https://whileimautomaton.net/>
 License: MIT license  {{{
@@ -535,6 +535,11 @@ BUGS						*vspec-bugs*
 
 ==============================================================================
 CHANGELOG					*vspec-changelog*
+
+1.7.1	2018-02-24T13:19:54+09:00		*vspec-changelog-1.7.1*
+	- Fix to output a valid test result even if |:redraw| is used second
+	  or later |:it| block in a test script.  :redraw caused a parse error
+	  for `prove`.
 
 1.7.0	2018-02-24T12:29:05+09:00		*vspec-changelog-1.7.0*
 	- Add |VSPEC_VIM| to select a Vim binary to run test scripts.
