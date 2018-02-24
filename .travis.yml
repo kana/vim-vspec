@@ -1,4 +1,4 @@
-language: ruby
+language: vim
 cache:
   directories:
     - $HOME/.rvm
