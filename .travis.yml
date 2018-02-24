@@ -1,12 +1,14 @@
-language: ruby
-rvm:
-  - 2.5.0
+language: vim
+cache:
+  directories:
+    - $HOME/.rvm
+    - $HOME/.vvm
 before_install:
-  - curl -LO https://github.com/vim/vim/archive/v8.0.1529.tar.gz
-  - tar zxf v8.0.1529.tar.gz
-  - cd vim-8.0.1529
-  - ./configure --with-features=huge
-  - make
-  - sudo make install
-  - cd -
+  - curl https://raw.githubusercontent.com/kana/vim-version-manager/master/bin/vvm | python - setup; true
+  - source ~/.vvm/etc/login
+  - vvm update_itself
+  - vvm install vimorg--v8.0.1529 --with-features=huge
+  - vvm use vimorg--v8.0.1529
+  -
+  - rvm use 2.5.0 --install --binary --fuzzy
 script: rake ci
