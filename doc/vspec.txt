@@ -66,7 +66,7 @@ See also:
 
 
 Requirements:
-- Vim 7.3 or later
+- Vim 8.0 or later
 
 Latest version:
 https://github.com/kana/vim-vspec

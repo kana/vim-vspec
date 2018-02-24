@@ -29,7 +29,7 @@ END
 ) <(cat <<'END'
 ok 1 - Suite 1 is executed
 not ok 2 - Suite 2 is executed and failed
-# {example}..A..B..C, line 1
+# {example}..A[1]..B[1]..C, line 1
 # Vim:E492: Not an editor command:       ThisLineIsNotAValidVimScriptStatement
 ok 3 - Suite 3 is executed
 1..3
