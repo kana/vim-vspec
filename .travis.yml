@@ -8,6 +8,7 @@ cache:
 before_install:
   - curl https://raw.githubusercontent.com/kana/vim-version-manager/master/bin/vvm | python - setup; true
   - source ~/.vvm/etc/login
+  - vvm update_itself
   - vvm install vimorg--v8.0.1529 --with-features=huge
   - vvm use vimorg--v8.0.1529
 script: rake ci
