@@ -1,8 +1,8 @@
 *vspec.txt*	Testing framework for Vim script
 
-Version 1.6.1
+Version 1.7.0
 Script ID: 3012
-Copyright (C) 2009-2015 Kana Natsuno <http://whileimautomaton.net/>
+Copyright (C) 2009-2018 Kana Natsuno <https://whileimautomaton.net/>
 License: MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -61,8 +61,8 @@ running tests.
 See also:
 
 * http://vimcasts.org/episodes/an-introduction-to-vspec/
-* http://whileimautomaton.net/2013/02/13211500  Typical usage of vspec
-* http://whileimautomaton.net/2013/02/08211255  How to use vspec on Travis CI
+* https://whileimautomaton.net/2013/02/13211500  Typical usage of vspec
+* https://whileimautomaton.net/2013/02/08211255  How to use vspec on Travis CI
 
 
 Requirements:
@@ -85,7 +85,7 @@ bin/vspec [{dependency-path} ...] {test-script}
 			A utility to run {test-script} to test Vim script.
 
 			Output format is Test Anything Protocol version 12.
-			See also http://testanything.org/ for the details.
+			See also https://testanything.org/ for the details.
 
 			{test-script} is the path to a Vim script file written
 			with vspec.
@@ -124,7 +124,7 @@ bin/vspec [{dependency-path} ...] {test-script}
 bin/prove-vspec [{option} ...] [--] {file-or-directory} ...
 			A utility to run many tests at once.  This is
 			a wrapper of "prove" to run test scripts written with
-			vspec.  See also: http://perldoc.perl.org/prove.html
+			vspec.  See also: https://perldoc.perl.org/prove.html
 
 			If no {file-or-directory} is specified, t/*.vim and
 			t/*.t are run by default.
@@ -527,7 +527,7 @@ FAQ						*vspec-faq*
 ==============================================================================
 BUGS						*vspec-bugs*
 
-- See http://github.com/kana/vim-vspec/issues for known issues and planned
+- See https://github.com/kana/vim-vspec/issues for known issues and planned
   features.
 
 
@@ -535,6 +535,14 @@ BUGS						*vspec-bugs*
 
 ==============================================================================
 CHANGELOG					*vspec-changelog*
+
+1.7.0	2018-02-24T12:29:05+09:00		*vspec-changelog-1.7.0*
+	- Add |VSPEC_VIM| to select a Vim binary to run test scripts.
+	- Fix stack trace simplification, broken for Vim 7.4.879 or later.
+	- Update required version of Vim 8.0 or later.  Though vspec is still
+	  compatible with Vim 7.3 or later, except stack trace simplification.
+	- Improve failure messages for |vspec-to_be_true| and
+	  |vspec-to_be_false|.  The old one is somewhat strange.
 
 1.6.1	2015-04-25T01:26:07+09:00		*vspec-changelog-1.6.1*
 	- Revert changes of |:SKIP| and |:TODO| output format.  The change
