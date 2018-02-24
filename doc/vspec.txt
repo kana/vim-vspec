@@ -313,6 +313,10 @@ COMMANDS					*vspec-commands*
 			additional message to provide a hint about the skipped
 			example.
 
+:Debug {expr}..					*:Debug*
+			Similar to |:echo|, but output values as a diagnostic
+			line for `prove`.
+
 
 ------------------------------------------------------------------------------
 FUNCTIONS					*vspec-functions*
@@ -373,6 +377,9 @@ vspec#customize_matcher({alias}, {matcher})	*vspec#customize_matcher()*
 vspec#customize_matcher({alias}, {function})   *vspec#customize_matcher()-old*
 			Deprecated.  Use |vspec#customize_matcher()| instead.
 			This style is remiained for backward compatibility.
+
+vspec#echo_debug({expr}, ..)			*vspec#echo_debug()*
+			Function version of |:Debug|.
 
 vspec#hint({info})				*vspec#hint()*
 			Tell vspec "hint" information to use useful API to
