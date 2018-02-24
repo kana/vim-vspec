@@ -290,6 +290,12 @@ function! s:run_suites(all_suites)
       let total_count_of_examples += 1
       let example = suite.example_list[example_index]
       call suite.run_before_blocks()
+
+      " Hack to ensure test result ('ok' and 'not ok') lines are not merged
+      " into a same line.  Because :echo usually writes "\n{message}", but
+      " :echo preceded by :redraw omits "\n".  See also t/redraw.vim.
+      echo ''
+
       try
         call suite.example_dict[
         \   suite.generate_example_function_name(example_index)
