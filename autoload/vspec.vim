@@ -391,6 +391,13 @@ function! s:to_be_false.match(value)
   return type(a:value) == type(0) ? !(a:value) : s:FALSE
 endfunction
 
+function! s:to_be_false.failure_message_for_should(value)
+  return 'Actual value: ' . vspec#pretty_string(a:value)
+endfunction
+
+let s:to_be_false.failure_message_for_should_not =
+\ s:to_be_false.failure_message_for_should
+
 call vspec#customize_matcher('to_be_false', s:to_be_false)
 call vspec#customize_matcher('toBeFalse', s:to_be_false)
 
@@ -404,6 +411,13 @@ let s:to_be_true = {}
 function! s:to_be_true.match(value)
   return type(a:value) == type(0) ? !!(a:value) : s:FALSE
 endfunction
+
+function! s:to_be_true.failure_message_for_should(value)
+  return 'Actual value: ' . vspec#pretty_string(a:value)
+endfunction
+
+let s:to_be_true.failure_message_for_should_not =
+\ s:to_be_true.failure_message_for_should
 
 call vspec#customize_matcher('to_be_true', s:to_be_true)
 call vspec#customize_matcher('toBeTrue', s:to_be_true)
