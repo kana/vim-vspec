@@ -1,6 +1,4 @@
 language: ruby
-rvm:
-  - 2.5.0
 cache:
   directories:
     - $HOME/.rvm
@@ -11,4 +9,6 @@ before_install:
   - vvm update_itself
   - vvm install vimorg--v8.0.1529 --with-features=huge
   - vvm use vimorg--v8.0.1529
+  -
+  - rvm use 2.5.0 --install --binary --fuzzy
 script: rake ci
