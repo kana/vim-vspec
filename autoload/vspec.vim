@@ -925,9 +925,22 @@ endfunction
 
 function! s:simplify_call_stack(throwpoint, base_call_stack, type)  "{{{2
   if a:type ==# 'it'
+    " If an error occurs in :it rather than functions called from :it,
+    " this part is not included in a:throwpoint. ____________
+    "                                                        |
+    "                                               _________|_________
+    "                                              |                   |
+    "   {a:base_call_stack}[#]..{dict-func-for-:it}[#]..{user-func}[#]..
+    "   |____________________|  |____________________|
+    "              |                      |
+    "              |                      |_______________________
+    "              |                                              |
+    "    __________|__________________________________    ________|_______
+    "   |                                             |  |                |
+    "   '\V' . escape(a:base_call_stack, '\') . '[\d\+]..\d\+\%([\d\+]\)\?'
     return substitute(
     \   a:throwpoint,
-    \   '\V' . escape(a:base_call_stack, '\') . '..\d\+',
+    \   '\V' . escape(a:base_call_stack, '\') . '[\d\+]..\d\+\%([\d\+]\)\?',
     \   '{example}',
     \   ''
     \ )

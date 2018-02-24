@@ -31,7 +31,7 @@ not ok 1 - vspec omits uninteresting parts from a stack trace
 # {example}, line 3
 # Vim(let):E121: Undefined variable: baz
 not ok 2 - vspec keeps interesting parts of a stack trace
-# {example}..Foo..Bar..Baz, line 2
+# {example}..Foo[1]..Bar[1]..Baz, line 2
 # Unexpected error
 1..2
 END
