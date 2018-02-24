@@ -193,6 +193,13 @@ endfunction
 
 
 
+function! vspec#echo_debug(...)  "{{{2
+  echo '#' join(a:000, ' ')
+endfunction
+
+
+
+
 function! vspec#hint(info)  "{{{2
   if has_key(a:info, 'scope')
     let s:expr_hinted_scope = a:info.scope
