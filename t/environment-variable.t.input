@@ -1,0 +1,7 @@
+describe 'VSPEC_VIM'
+  it 'is used to run as a Vim binary'
+    throw 'So that this script must not be executed!'
+  end
+end
+
+" vim: filetype=vim

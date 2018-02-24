@@ -115,6 +115,11 @@ bin/vspec [{dependency-path} ...] {test-script}
 			which requires full control on Vim.  In this case
 			{test-script} can be any executable file.
 
+						*VSPEC_VIM*
+			By default, bin/vspec uses `vim` to run {test-script}.
+			If the environment variable `VSPEC_VIM` is defined,
+			its value is used to run {test-script} instead.
+
 						*bin/prove-vspec*
 bin/prove-vspec [{option} ...] [--] {file-or-directory} ...
 			A utility to run many tests at once.  This is
