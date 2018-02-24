@@ -80,6 +80,17 @@ let s:suite = {}  "{{{2
 
 
 " Interface  "{{{1
+" :Debug  "{{{2
+command! -complete=expression -nargs=+ Debug
+\ call s:cmd_Debug(<q-args>)
+
+function! s:cmd_Debug(q_args)
+  execute 'echo' '"#"' a:q_args
+endfunction
+
+
+
+
 " :Expect  "{{{2
 command! -complete=expression -nargs=+ Expect
 \   if <q-args> =~# '^expr\s*{'
