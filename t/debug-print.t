@@ -10,10 +10,10 @@ describe 'Debug'
     Debug 3 '.1' [4, '159'] {'26': '53'}
 
     edit ,baz
-    call vspec#echo_debug("\<lt>\<Bar>37")
+    call vspec#debug("\<lt>\<Bar>37")
     edit ,qux
     redraw
-    call vspec#echo_debug(3, '.1', [4, '159'], {'26': '53'})
+    call vspec#debug(3, '.1', [4, '159'], {'26': '53'})
   end
 end
 END

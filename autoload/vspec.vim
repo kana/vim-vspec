@@ -194,7 +194,7 @@ endfunction
 
 
 
-function! vspec#echo_debug(...)  "{{{2
+function! vspec#debug(...)  "{{{2
   call s:break_line_forcibly()
   echo '#' join(a:000, ' ')
 endfunction

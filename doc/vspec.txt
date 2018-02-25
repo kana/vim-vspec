@@ -383,7 +383,7 @@ vspec#customize_matcher({alias}, {function})   *vspec#customize_matcher()-old*
 			Deprecated.  Use |vspec#customize_matcher()| instead.
 			This style is remiained for backward compatibility.
 
-vspec#echo_debug({expr}, ..)			*vspec#echo_debug()*
+vspec#debug({expr}, ..)				*vspec#debug()*
 			Function version of |:Debug|.
 
 vspec#hint({info})				*vspec#hint()*
