@@ -275,9 +275,7 @@ function! vspec#test(specfile_path)  "{{{2
     endfor
     echo 'Bail out!  Unexpected error happened while processing a test script.'
   finally
-    " This :echo is required to terminate the whole message with a new line.
-    " Because :echo writes a message as "\n{message}", not "{message}\n".
-    echo ''
+    call s:break_line_forcibly()
   endtry
 
   call delete(compiled_specfile_path)
@@ -291,15 +289,11 @@ function! s:run_suites(all_suites)
       let example = suite.example_list[example_index]
       call suite.run_before_blocks()
 
-      " Hack to ensure test result ('ok' and 'not ok') lines are not merged
-      " into a same line.  Because :echo usually writes "\n{message}", but
-      " :echo preceded by :redraw omits "\n".  See also t/redraw.vim.
-      echo ''
-
       try
         call suite.example_dict[
         \   suite.generate_example_function_name(example_index)
         \ ]()
+        call s:break_line_forcibly()  " anti-:redraw
         echo printf(
         \   '%s %d - %s %s',
         \   'ok',
@@ -308,6 +302,7 @@ function! s:run_suites(all_suites)
         \   example
         \ )
       catch /^vspec:/
+        call s:break_line_forcibly()  " anti-:redraw
         let xs = matchlist(v:exception, '^vspec:\(\a\+\):\(.*\)$')
         let type = xs[1]
         let i = eval(xs[2])
@@ -368,6 +363,7 @@ function! s:run_suites(all_suites)
           echo printf('# %s: %s', type, i.message)
         endif
       catch
+        call s:break_line_forcibly()  " anti-:redraw
         echo printf(
         \   '%s %d - %s %s',
         \   'not ok',
@@ -920,6 +916,27 @@ endfunction
 
 function! s:cmd_SaveContext()  "{{{2
   let s:saved_scope = deepcopy(s:get_hinted_scope())
+endfunction
+
+
+
+
+function! s:break_line_forcibly()  "{{{2
+  " - :echo {message} outputs "\n{message}" rather than "{message}\n".
+  " - :echo preceded by :redraw does not output "\n", because the screen is
+  "   expected to be redrawn.  "\n" is not necessary in this situation.
+  "
+  " This behavior is reasonable as long as Vim is used interactively.  But
+  " it is problematic for a batch process.  It seems that there is no way to
+  " forcibly break a line in pure Vim script without side effect.  For example
+  " :echo 'foo' | redraw | echo '' | echo 'bar' outputs "\nfoobar".
+  "
+  " So that output from Vim script will be filtered by bin/vspec:
+  "
+  " - Lines including only "\r" are removed.
+  " - Trailing "\r"s in each line are removed.  This filter is also useful to
+  "   ensure final output is Unix-stlye line ending.
+  echo "\r"
 endfunction
 
 
