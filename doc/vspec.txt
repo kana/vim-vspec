@@ -548,6 +548,10 @@ BUGS						*vspec-bugs*
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.8.0	2018-02-25T12:35:45+09:00		*vspec-changelog-1.8.0*
+	- Add |:Debug| and |vspec#debug()| to inspect values in a test script.
+	- Fix more cases that |:redraw| interferes output format.
+
 1.7.1	2018-02-24T13:19:54+09:00		*vspec-changelog-1.7.1*
 	- Fix to output a valid test result even if |:redraw| is used second
 	  or later |:it| block in a test script.  :redraw caused a parse error
