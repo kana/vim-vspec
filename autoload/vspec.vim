@@ -80,6 +80,18 @@ let s:suite = {}  "{{{2
 
 
 " Interface  "{{{1
+" :Debug  "{{{2
+command! -complete=expression -nargs=+ Debug
+\ call s:cmd_Debug(<q-args>)
+
+function! s:cmd_Debug(q_args)
+  call s:break_line_forcibly()
+  execute 'echo' '"#"' a:q_args
+endfunction
+
+
+
+
 " :Expect  "{{{2
 command! -complete=expression -nargs=+ Expect
 \   if <q-args> =~# '^expr\s*{'
@@ -177,6 +189,14 @@ function! vspec#customize_matcher(matcher_name, maybe_matcher)  "{{{2
     let matcher = {'match': a:maybe_matcher}
   endif
   let s:custom_matchers[a:matcher_name] = matcher
+endfunction
+
+
+
+
+function! vspec#debug(...)  "{{{2
+  call s:break_line_forcibly()
+  echo '#' join(a:000, ' ')
 endfunction
 
 
