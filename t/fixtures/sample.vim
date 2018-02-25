@@ -11,6 +11,7 @@ describe 'Syntax highlighting'
     Expect expr { {'': '}'} } to_throw
     SKIP
     TODO
+    Debug b:filetype
   end
   context 'with a nested suite'
     it 'is supported'
