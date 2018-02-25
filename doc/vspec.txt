@@ -317,6 +317,11 @@ COMMANDS					*vspec-commands*
 			Similar to |:echo|, but output values as a diagnostic
 			line for `prove`.
 
+			Vim outputs varisous messages by default, for example,
+			`:edit {file}` shows the filename and its size.
+			Sometimes it is hard to output proper diagnostic lines
+			because of these messages.
+
 
 ------------------------------------------------------------------------------
 FUNCTIONS					*vspec-functions*
