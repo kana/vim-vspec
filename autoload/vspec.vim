@@ -82,12 +82,8 @@ let s:suite = {}  "{{{2
 " Interface  "{{{1
 " :Debug  "{{{2
 command! -complete=expression -nargs=+ Debug
-\ call s:cmd_Debug(<q-args>)
-
-function! s:cmd_Debug(q_args)
-  call s:break_line_forcibly()
-  execute 'echo' '"#"' a:q_args
-endfunction
+\   call s:break_line_forcibly()
+\ | echo '#' <args>
 
 
 
