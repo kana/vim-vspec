@@ -548,6 +548,9 @@ BUGS						*vspec-bugs*
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.8.1	2018-02-27T21:28:46+09:00		*vspec-changelog-1.8.1*
+	- Fix |:Debug| to properly evaluate local variables.
+
 1.8.0	2018-02-25T12:35:45+09:00		*vspec-changelog-1.8.0*
 	- Add |:Debug| and |vspec#debug()| to inspect values in a test script.
 	- Fix more cases that |:redraw| interferes output format.
