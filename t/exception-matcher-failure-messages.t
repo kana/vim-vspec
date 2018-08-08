@@ -35,19 +35,19 @@ end
 END
 ) <(cat <<'END'
 not ok 1 - to_throw without a pattern fails if any exception is not thrown
-# Expected expr { 0 } to_throw
+# Expected expr { 0 } to_throw at line 1
 #     But nothing was thrown
 not ok 2 - not to_throw without a pattern fails if any exception is thrown
-# Expected expr { Fail('foo') } not to_throw
+# Expected expr { Fail('foo') } not to_throw at line 1
 #     But 'foo' was thrown
 not ok 3 - to_throw with a pattern fails if any exception is not thrown
-# Expected expr { 0 } to_throw '^fo\+$'
+# Expected expr { 0 } to_throw '^fo\+$' at line 1
 #     But nothing was thrown
 not ok 4 - to_throw with a pattern fails if a specific exception is not thrown
-# Expected expr { Fail('bar') } to_throw '^fo\+$'
+# Expected expr { Fail('bar') } to_throw '^fo\+$' at line 1
 #     But 'bar' was thrown
 not ok 5 - not to_throw with a pattern fails if a specific exception is thrown
-# Expected expr { Fail('foo') } not to_throw '^fo\+$'
+# Expected expr { Fail('foo') } not to_throw '^fo\+$' at line 1
 #     But 'foo' was thrown
 1..5
 END

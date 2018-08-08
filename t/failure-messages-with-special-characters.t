@@ -29,27 +29,27 @@ end
 END
 ) <(cat <<'END'
 not ok 1 - vspec shows strings with CR/LF in a decodable style
-# Expected "foo\nbar\rbaz" ==# 'foo\nbar\rbaz'
+# Expected "foo\nbar\rbaz" ==# 'foo\nbar\rbaz' at line 1
 #       Actual value: "foo\nbar\rbaz"
 #     Expected value: "foo\\nbar\\rbaz"
 not ok 2 - vspec shows strings with other control characters in a decodable style
-# Expected "\b\e\f\t" ==# '\b\e\f\t'
+# Expected "\b\e\f\t" ==# '\b\e\f\t' at line 1
 #       Actual value: "\b\e\f\t"
 #     Expected value: "\\b\\e\\f\\t"
 not ok 3 - vspec shows strings with single quotes in a decodable style
-# Expected "foo'bar" ==# 'baz''qux'
+# Expected "foo'bar" ==# 'baz''qux' at line 1
 #       Actual value: "foo'bar"
 #     Expected value: "baz'qux"
 not ok 4 - vspec shows strings with double quotes in a decodable style
-# Expected "foo\"bar" ==# 'foo\"bar'
+# Expected "foo\"bar" ==# 'foo\"bar' at line 1
 #       Actual value: "foo\"bar"
 #     Expected value: "foo\\\"bar"
 not ok 5 - vspec shows strings with backslashes in a decodable style
-# Expected "foo\\bar" ==# 'foo\\bar'
+# Expected "foo\\bar" ==# 'foo\\bar' at line 1
 #       Actual value: "foo\\bar"
 #     Expected value: "foo\\\\bar"
 not ok 6 - vspec shows strings with other special characters in a decodable style
-# Expected "foo\x1d\X7fbar" ==# 'foo\x1d\X7fbar'
+# Expected "foo\x1d\X7fbar" ==# 'foo\x1d\X7fbar' at line 1
 #       Actual value: "foo\x1D\x7Fbar"
 #     Expected value: "foo\\x1d\\X7fbar"
 1..6
