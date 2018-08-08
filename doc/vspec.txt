@@ -548,6 +548,9 @@ BUGS						*vspec-bugs*
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.9.0	2018-08-08T21:20:52+09:00		*vspec-changelog-1.9.0*
+	- Show also a line number relative to |:it| whenever |:Expect| fails.
+
 1.8.1	2018-02-27T21:28:46+09:00		*vspec-changelog-1.8.1*
 	- Fix |:Debug| to properly evaluate local variables.
 
