@@ -338,6 +338,7 @@ function! s:run_suites(all_suites)
             \   i.expr_matcher,
             \   i.expr_expected,
             \ ], 'v:val != ""'))
+            \ 'at line' s:simplify_call_stack(v:throwpoint, '', 'expect')
             for line in s:generate_failure_message(i)
               echo '#     ' . line
             endfor
