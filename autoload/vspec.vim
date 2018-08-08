@@ -958,6 +958,28 @@ endfunction
 
 
 
+function! s:get_expect_stack()  "{{{2
+  if exists('s:expect_stack')
+    return s:expect_stack
+  endif
+
+  try
+    Expect 0 == 1
+  catch
+    let base_call_stack = expand('<sfile>')
+    let s:expect_stack = substitute(
+    \   v:throwpoint,
+    \   '\V' . escape(base_call_stack, '\') . '[\d\+]..',
+    \   '',
+    \   ''
+    \ )
+  endtry
+  return s:expect_stack
+endfunction
+
+
+
+
 function! s:get_hinted_scope()  "{{{2
   return eval(s:expr_hinted_scope)
 endfunction
@@ -985,7 +1007,17 @@ endfunction
 
 
 function! s:simplify_call_stack(throwpoint, base_call_stack, type)  "{{{2
-  if a:type ==# 'it'
+  if a:type ==# 'expect'
+    " Where the last :Expect is called _____________
+    "                                               |
+    "   {a:base_call_stack}[#]..{dict-func-for-:it}[#]..{:Expect-stack}[#]
+    return substitute(
+    \   a:throwpoint,
+    \   '\V\.\*[\(\d\+\)]..' . escape(s:get_expect_stack(), '\') . '\$',
+    \   '\1',
+    \   ''
+    \ )
+  elseif a:type ==# 'it'
     " If an error occurs in :it rather than functions called from :it,
     " this part is not included in a:throwpoint. ____________
     "                                                        |
