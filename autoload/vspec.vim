@@ -1,5 +1,5 @@
 " vspec - Testing framework for Vim script
-" Version: 1.8.1
+" Version: 1.9.0
 " Copyright (C) 2009-2018 Kana Natsuno <https://whileimautomaton.net/>
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
