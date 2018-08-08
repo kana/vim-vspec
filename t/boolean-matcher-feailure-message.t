@@ -27,16 +27,16 @@ end
 END
 ) <(cat <<'END'
 not ok 1 - to_be_true outputs a reasonable failure message
-# Expected x to_be_true
+# Expected x to_be_true at line 2
 #     Actual value: 0
 not ok 2 - to_be_true outputs a reasonable failure message even if inverted
-# Expected x not to_be_true
+# Expected x not to_be_true at line 2
 #     Actual value: 1
 not ok 3 - to_be_false outputs a reasonable failure message
-# Expected x to_be_false
+# Expected x to_be_false at line 2
 #     Actual value: 1
 not ok 4 - to_be_false outputs a reasonable failure message even if inverted
-# Expected x not to_be_false
+# Expected x not to_be_false at line 2
 #     Actual value: 0
 1..4
 END

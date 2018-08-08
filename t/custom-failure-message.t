@@ -81,22 +81,22 @@ end
 END
 ) <(cat <<'END'
 not ok 1 - vspec#customize_matcher supports custom failure message for positive case with 0 argument
-# Expected xs to_be_empty
+# Expected xs to_be_empty at line 2
 #     Actual value is [1]
 not ok 2 - vspec#customize_matcher supports custom failure message for negative case with 0 argument
-# Expected xs not to_be_empty
+# Expected xs not to_be_empty at line 2
 #     Actual value is empty
 not ok 3 - vspec#customize_matcher supports custom failure message for positive case with 1 argument
-# Expected m to_be_multiple_of n
+# Expected m to_be_multiple_of n at line 4
 #     Actual value is 17, not multiple of 4
 not ok 4 - vspec#customize_matcher supports custom failure message for negative case with 1 argument
-# Expected m not to_be_multiple_of n
+# Expected m not to_be_multiple_of n at line 4
 #     Actual value is 16, multiple of 4
 not ok 5 - vspec#customize_matcher supports custom failure message for positive case with 2 arguments
-# Expected s to_be_surrounded l, r
+# Expected s to_be_surrounded l, r at line 5
 #     Actual value '(foo)' is not surrounded by < and >
 not ok 6 - vspec#customize_matcher supports custom failure message for negative case with 2 arguments
-# Expected s not to_be_surrounded l, r
+# Expected s not to_be_surrounded l, r at line 5
 #     Actual value '(foo)' is surrounded by ( and )
 1..6
 END
