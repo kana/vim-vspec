@@ -24,7 +24,7 @@ end
 END
 ) <(cat <<'END'
 # -----------------------------------------------------------------------------
-# function A[1]..B[1]..C, line 1
+# {vspec}..function A[1]..B[1]..C, line 1
 # Vim:E492: Not an editor command:   ThisLineIsNotAValidVimScriptStatement
 Bail out!  Unexpected error happened while processing a test script.
 END

@@ -1039,9 +1039,10 @@ function! s:simplify_call_stack(throwpoint, base_call_stack, type)  "{{{2
     \   ''
     \ )
   else
+    " TODO: Show the location in an original file instead of the transpiled one.
     return substitute(
     \   a:throwpoint,
-    \   '\V' . escape(a:base_call_stack, '\'),
+    \   '\V' . escape(a:base_call_stack, '\') . '\%([\d\+]..script \S\+\ze..\)\?',
     \   '{vspec}',
     \   ''
     \ )
