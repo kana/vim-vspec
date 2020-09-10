@@ -24,7 +24,15 @@
 
 syntax keyword vimVspecCommand
 \ contained containedin=vimIsCommand
-\ after before Debug end ResetContext SaveContext SKIP TODO
+\ after before end
+
+syntax keyword vimVspecCommand
+\ contained containedin=vimIsCommand,vimUsrCmd
+\ ResetContext SaveContext SKIP TODO
+
+syntax keyword vimVspecCommand
+\ contained containedin=vimIsCommand,vimUsrCmd skipwhite nextgroup=vimString,vimVar
+\ Debug
 
 syntax keyword vimVspecCommand
 \ contained containedin=vimIsCommand skipwhite nextgroup=vimString

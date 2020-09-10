@@ -29,7 +29,7 @@ then
   "${args[$#-1]}"
 else
   "${VSPEC_VIM:-vim}" -u NONE -i NONE -N -n -e -s --cmd "source $0-bootstrap.vim" -- "$@" 2>&1 |
-    sed $'/^\r\+$/d;s/\r\+$//;1{/^$/d;}'
+    sed $'/^\r\+$/d;s/^\r\+//;s/\r\+$//;1{/^$/d;}'
 fi
 
 # __END__

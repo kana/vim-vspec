@@ -101,7 +101,7 @@ command! -complete=expression -nargs=+ Expect
 \ |   let s:_.ax = 0
 \ |   let s:_.at = 0
 \ |   try
-\ |     let s:_.av = eval(substitute(s:_.ae, '^expr\s*{\(.*\)}$', '\1', ''))
+\ |     let s:_.av = eval(substitute(s:_.ae, '^expr\s*{\s*\(.*\S\)\s*}$', '\1', ''))
 \ |   catch
 \ |     let s:_.ax = v:exception
 \ |     let s:_.at = v:throwpoint
@@ -1039,9 +1039,10 @@ function! s:simplify_call_stack(throwpoint, base_call_stack, type)  "{{{2
     \   ''
     \ )
   else
+    " TODO: Show the location in an original file instead of the transpiled one.
     return substitute(
     \   a:throwpoint,
-    \   '\V' . escape(a:base_call_stack, '\'),
+    \   '\V' . escape(a:base_call_stack, '\') . '\%([\d\+]..script \S\+\ze..\)\?',
     \   '{vspec}',
     \   ''
     \ )

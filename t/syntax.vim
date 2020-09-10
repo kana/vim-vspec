@@ -7,6 +7,8 @@ let s:symbol_table = {
 \   'vimOper': 'O',
 \   'vimSet': ' ',
 \   'vimString': 'S',
+\   'vimUsrCmd': 'U',
+\   'vimVar': 'V',
 \   'vimVspecCommand': 'c',
 \   'vimVspecExpectation': '_',
 \   'vimVspecLambda': 'l',
