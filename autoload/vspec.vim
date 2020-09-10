@@ -101,7 +101,7 @@ command! -complete=expression -nargs=+ Expect
 \ |   let s:_.ax = 0
 \ |   let s:_.at = 0
 \ |   try
-\ |     let s:_.av = eval(substitute(s:_.ae, '^expr\s*{\(.*\)}$', '\1', ''))
+\ |     let s:_.av = eval(substitute(s:_.ae, '^expr\s*{\s*\(.*\S\)\s*}$', '\1', ''))
 \ |   catch
 \ |     let s:_.ax = v:exception
 \ |     let s:_.at = v:throwpoint
