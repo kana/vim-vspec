@@ -27,16 +27,16 @@ describe 'Debug'
 end
 END
 ) <(cat <<'END'
-",foo" [New File]
+",foo" [New]
 # vi m
-",bar" [New File]
+",bar" [New]
 # 3 .1 [4, '159'] {'26': '53'}
 # function-local
 # buffer-local
 # function-argument
-",baz" [New File]
+",baz" [New]
 # <|37
-",qux" [New File]
+",qux" [New]
 # 3 .1 [4, '159'] {'26': '53'}
 ok 1 - Debug outputs debug log just before ok/not ok line
 1..1

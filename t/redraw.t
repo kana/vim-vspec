@@ -22,7 +22,7 @@ END
 ok 1 - :redraw does not affect TAP format (1)
 foobar <-- unexpectedly merged, but not controlled by vspec
 ok 2 - :redraw does not affect TAP format (2)
-",foo" [New File]
+",foo" [New]
 ok 3 - :redraw does not affect TAP format (3)
 1..3
 END
