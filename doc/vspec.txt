@@ -548,6 +548,12 @@ BUGS						*vspec-bugs*
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.9.1	2020-09-11T21:18:05+09:00		*vspec-changelog-1.9.1*
+	- Fix E488 while evaluating {expr} in ":Expect expr { {expr} } ...".
+	  This occurs for recent version of Vim, at least 8.2.1652 or later.
+	- Fix not to output uexpected <CR>.
+	- Fix not to include a temporary file path in stack trace.
+
 1.9.0	2018-08-08T21:20:52+09:00		*vspec-changelog-1.9.0*
 	- Show also a line number relative to |:it| whenever |:Expect| fails.
 
