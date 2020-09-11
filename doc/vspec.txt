@@ -1,8 +1,8 @@
 *vspec.txt*	Testing framework for Vim script
 
-Version 1.9.0
+Version 1.9.1
 Script ID: 3012
-Copyright (C) 2009-2018 Kana Natsuno <https://whileimautomaton.net/>
+Copyright (C) 2009-2020 Kana Natsuno <https://whileimautomaton.net/>
 License: MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -547,6 +547,12 @@ BUGS						*vspec-bugs*
 
 ==============================================================================
 CHANGELOG					*vspec-changelog*
+
+1.9.1	2020-09-11T21:18:05+09:00		*vspec-changelog-1.9.1*
+	- Fix E488 while evaluating {expr} in ":Expect expr { {expr} } ...".
+	  This occurs for recent version of Vim, at least 8.2.1652 or later.
+	- Fix not to output uexpected <CR>.
+	- Fix not to include a temporary file path in stack trace.
 
 1.9.0	2018-08-08T21:20:52+09:00		*vspec-changelog-1.9.0*
 	- Show also a line number relative to |:it| whenever |:Expect| fails.
