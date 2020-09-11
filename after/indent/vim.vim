@@ -1,5 +1,5 @@
 " Vim additional indent settings: vim/vspec - indent vspec commands
-" Version: 1.9.0
+" Version: 1.9.1
 " Copyright (C) 2012-2020 Kana Natsuno <https://whileimautomaton.net/>
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
