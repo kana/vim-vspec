@@ -8,6 +8,12 @@ function! s:bootstrap(vspec_path)
     qall!
   endif
 
+  let test_func = ''
+  if args[-2] == '--grep' 
+    let test_func = args[-1]
+    let args = args[0:-3]
+  endif
+
   let test_script = args[-1]
   let standard_paths = split(&runtimepath, ',')[1:-2]
   let dependency_paths =
@@ -22,7 +28,7 @@ function! s:bootstrap(vspec_path)
   \ + map(reverse(copy(dependency_paths)), 'v:val . "/after"')
   let &runtimepath = join(all_paths, ',')
 
-  1 verbose call vspec#test(test_script)
+  1 verbose call vspec#test(test_script, test_func)
   qall!
 endfunction
 call s:bootstrap(expand('<sfile>:p:h:h'))

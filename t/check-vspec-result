@@ -1,6 +1,7 @@
 #!/bin/bash
 
 dep_dirs=()
+test_func=''
 while [[ $# -ge 1 ]]
 do
   case "$1" in
@@ -9,13 +10,22 @@ do
       dep_dirs+=("$2")
       shift 2
       ;;
+    --grep)
+      test_func="$2"
+      shift 2
+      ;;
     *)
       break
       ;;
   esac
 done
 
-diff="$(diff --unified "$2" <(./bin/vspec "${dep_dirs[@]}" "$1"))"
+if [ -z "$test_func" ]; then
+  diff="$(diff --unified "$2" <(./bin/vspec "${dep_dirs[@]}" "$1"))"
+else
+  diff="$(diff --unified "$2" <(./bin/vspec "${dep_dirs[@]}" "$1" '--grep' "$test_func"))"
+fi
+
 if [ $? = 0 ]
 then
   echo 'ok 1'

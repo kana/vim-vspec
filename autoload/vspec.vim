@@ -276,13 +276,14 @@ endfunction
 
 
 
-function! vspec#test(specfile_path)  "{{{2
+function! vspec#test(specfile_path, ...)  "{{{2
   let compiled_specfile_path = tempname()
+  let test_func = get(a:, 1, '')
   call s:compile_specfile(a:specfile_path, compiled_specfile_path)
 
   try
     execute 'source' compiled_specfile_path
-    call s:run_suites(s:all_suites)
+    call s:run_suites(s:all_suites, test_func)
   catch
     echo '#' repeat('-', 77)
     echo '#' s:simplify_call_stack(v:throwpoint, expand('<sfile>'), 'unknown')
@@ -297,10 +298,13 @@ function! vspec#test(specfile_path)  "{{{2
   call delete(compiled_specfile_path)
 endfunction
 
-function! s:run_suites(all_suites)
+function! s:run_suites(all_suites, test_func)
   let total_count_of_examples = 0
   for suite in a:all_suites
     for example_index in range(len(suite.example_list))
+      if !empty(a:test_func) && suite.example_list[example_index] != a:test_func
+        continue
+      end
       let total_count_of_examples += 1
       let example = suite.example_list[example_index]
       call suite.run_before_blocks()
