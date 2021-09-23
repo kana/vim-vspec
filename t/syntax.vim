@@ -3,9 +3,17 @@ syntax enable
 
 let s:symbol_table = {
 \   ' ': ' ',
+\   'vimCommand': 'C',
+\   'vimFuncName': 'F',
+\   'vimIsCommand': '?',
 \   'vimNumber': 'N',
 \   'vimOper': 'O',
+\   'vimOperParen': '.',
+\   'vimOption': '.',
+\   'vimParenSep': '(',
+\   'vimSep': '{',
 \   'vimSet': ' ',
+\   'vimSetMod': '&',
 \   'vimString': 'S',
 \   'vimUsrCmd': 'U',
 \   'vimVar': 'V',
@@ -18,7 +26,7 @@ let s:symbol_table = {
 
 function! s:syntax_at(lnum, col)
   let name = synIDattr(synID(a:lnum, a:col, 0), 'name')
-  return get(s:symbol_table, name != '' ? name : ' ', '.')
+  return get(s:symbol_table, name != '' ? name : ' ', name)
 endfunction
 
 function! HighlightingOf(file)

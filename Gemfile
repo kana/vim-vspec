@@ -1,3 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'vim-flavor', '~> 2.0'
+# vim-vspec doesn't depend on other plugins and must use its own test runner.
+# So that it doesn't need vim-flavor.
+#
+# gem 'vim-flavor', '~> 4.0'
