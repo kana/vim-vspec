@@ -1,6 +1,6 @@
 *vspec.txt*	Testing framework for Vim script
 
-Version 1.9.1
+Version 1.9.2
 Script ID: 3012
 Copyright (C) 2009-2020 Kana Natsuno <https://whileimautomaton.net/>
 License: MIT license  {{{
