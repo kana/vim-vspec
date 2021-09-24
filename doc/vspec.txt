@@ -550,6 +550,11 @@ BUGS						*vspec-bugs*
 ==============================================================================
 CHANGELOG					*vspec-changelog*
 
+1.9.2	2021-09-24T09:33:56+09:00		*vspec-changelog-1.9.2*
+	- Fix 'shellredir' to include stderr.  This change affects use of
+	  |system()| and |systemlist()| in tests.  Typically these functions
+	  are expected to return both stdout and stderr.
+
 1.9.1	2020-09-11T21:18:05+09:00		*vspec-changelog-1.9.1*
 	- Fix E488 while evaluating {expr} in ":Expect expr { {expr} } ...".
 	  This occurs for recent version of Vim, at least 8.2.1652 or later.
