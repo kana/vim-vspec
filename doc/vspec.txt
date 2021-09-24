@@ -61,9 +61,11 @@ running tests.
 See also:
 
 * http://vimcasts.org/episodes/an-introduction-to-vspec/
-* https://whileimautomaton.net/2013/02/13211500  Typical usage of vspec
-* https://whileimautomaton.net/2013/02/08211255  How to use vspec on Travis CI
-
+  for a tutorial by Vimcasts.org
+* https://whileimautomaton.net/2012/02/13211500
+  for typical usage
+* https://github.com/kana/vim-g/blob/v1.1.0/.github/workflows/ci.yml
+  for a sample configuration to use GitHub Actions as CI
 
 Requirements:
 - Vim 8.0 or later

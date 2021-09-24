@@ -19,7 +19,7 @@ See also:
 
 * [A tutorial to use vim-vspec by Vimcasts.org](http://vimcasts.org/episodes/an-introduction-to-vspec/)
 * [Introduce unit testing to Vim plugin development with vim-vspec](https://whileimautomaton.net/2013/02/13211500)
-* [Use Travis CI for Vim plugin development](https://whileimautomaton.net/2013/02/08211255)
+* [A sample configuration to use GitHub Actions as CI for Vim plugin development](https://github.com/kana/vim-g/blob/v1.1.0/.github/workflows/ci.yml)
 
 
 
