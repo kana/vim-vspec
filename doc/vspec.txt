@@ -1,8 +1,8 @@
 *vspec.txt*	Testing framework for Vim script
 
-Version 1.9.1
+Version 1.9.2
 Script ID: 3012
-Copyright (C) 2009-2020 Kana Natsuno <https://whileimautomaton.net/>
+Copyright (C) 2009-2021 Kana Natsuno <https://whileimautomaton.net/>
 License: MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -61,9 +61,11 @@ running tests.
 See also:
 
 * http://vimcasts.org/episodes/an-introduction-to-vspec/
-* https://whileimautomaton.net/2013/02/13211500  Typical usage of vspec
-* https://whileimautomaton.net/2013/02/08211255  How to use vspec on Travis CI
-
+  for a tutorial by Vimcasts.org
+* https://whileimautomaton.net/2012/02/13211500
+  for typical usage
+* https://github.com/kana/vim-g/blob/v1.1.0/.github/workflows/ci.yml
+  for a sample configuration to use GitHub Actions as CI
 
 Requirements:
 - Vim 8.0 or later
@@ -547,6 +549,11 @@ BUGS						*vspec-bugs*
 
 ==============================================================================
 CHANGELOG					*vspec-changelog*
+
+1.9.2	2021-09-24T09:33:56+09:00		*vspec-changelog-1.9.2*
+	- Fix 'shellredir' to include stderr.  This change affects use of
+	  |system()| and |systemlist()| in tests.  Typically these functions
+	  are expected to return both stdout and stderr.
 
 1.9.1	2020-09-11T21:18:05+09:00		*vspec-changelog-1.9.1*
 	- Fix E488 while evaluating {expr} in ":Expect expr { {expr} } ...".

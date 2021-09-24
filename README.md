@@ -1,6 +1,6 @@
 # vim-vspec - Testing framework for Vim script
 
-[![Build Status](https://travis-ci.org/kana/vim-vspec.svg)](https://travis-ci.org/kana/vim-vspec)
+[![CI](https://github.com/kana/vim-vspec/actions/workflows/ci.yml/badge.svg)](https://github.com/kana/vim-vspec/actions/workflows/ci.yml)
 
 vim-vspec is a testing framework for Vim script.  It consists of:
 
@@ -19,7 +19,7 @@ See also:
 
 * [A tutorial to use vim-vspec by Vimcasts.org](http://vimcasts.org/episodes/an-introduction-to-vspec/)
 * [Introduce unit testing to Vim plugin development with vim-vspec](https://whileimautomaton.net/2013/02/13211500)
-* [Use Travis CI for Vim plugin development](https://whileimautomaton.net/2013/02/08211255)
+* [A sample configuration to use GitHub Actions as CI for Vim plugin development](https://github.com/kana/vim-g/blob/v1.1.0/.github/workflows/ci.yml)
 
 
 
