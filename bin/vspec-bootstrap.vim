@@ -22,6 +22,14 @@ function! s:bootstrap(vspec_path)
   \ + map(reverse(copy(dependency_paths)), 'v:val . "/after"')
   let &runtimepath = join(all_paths, ',')
 
+  " Adjust &shellredir to include both stdout and stderr to emulate typical
+  " environment.  This script is executed in the middle of --cmd, and
+  " &shellredir is set to '>' in that context.
+  "
+  " Another solution is to use -c instead of --cmd.  But it causes a side
+  " effect -- loading the test script as the first buffer.
+  set shellredir=>%s\ 2>&1
+
   1 verbose call vspec#test(test_script)
   qall!
 endfunction
