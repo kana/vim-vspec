@@ -100,6 +100,6 @@ See also:
 
 * [A tutorial to use vim-vspec by Vimcasts.org](http://vimcasts.org/episodes/an-introduction-to-vspec/)
 * [Introduce unit testing to Vim plugin development with vim-vspec](https://whileimautomaton.net/2013/02/13211500)
-* [A sample configuration to use GitHub Actions as CI for Vim plugin development](https://github.com/kana/vim-textobj-line/blob/1a6780d29adcf7e464e8ddbcd0be0a9df1a37339/.github/workflows/ci.yml)
+* [How to set up GitHub Actios as CI for Vim plugin development](./TUTORIAL-CI.md)
 
 <!-- vim: set expandtab shiftwidth=4 softtabstop=4 textwidth=78 : -->
