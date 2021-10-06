@@ -22,6 +22,42 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
+" NB: Script-local variables created by the following :import syntax behave
+" differently from normal ones.  For example:
+" {{{
+"     import * as Vim9 from '../import/vspec.vim'
+"
+"     let s:Normal = {}
+"     let s:Normal.Return42 = s:Vim9.Return42
+"
+"     echo s:Normal
+"     " ==> {'Return42': function('<80><fd>R2_Return42')}
+"     echo s:Vim9
+"     " ==> E1029: Expected '.' but got
+"
+"     echo s:Normal.Return42
+"     " ==> <80><fd>R2_Return42
+"     echo s:Vim9.Return42
+"     " ==> <80><fd>R2_Return42
+"
+"     echo s:Normal.Return42()
+"     " ==> 42
+"     echo s:Vim9.Return42()
+"     " ==> 42
+"
+"     call s:Normal.Return42()
+"     " ==> No error.
+"     call s:Vim9.Return42()
+"     " ==> E121: Undefined variable: s:Vim9
+"     " This variable seems to be available only in a context where arbitrary
+"     " expressions are available.  (:call basically takes a function 'name'.)
+"
+"     eval s:Normal.Return42()
+"     " ==> No error.
+"     eval s:Vim9.Return42()
+"     " ==> No error.
+" }}}
+
 import * as Vim9 from '../import/vspec.vim'
 
 " Constants  "{{{1
