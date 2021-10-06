@@ -58,7 +58,9 @@
 "     " ==> No error.
 " }}}
 
-import * as Vim9 from '../import/vspec.vim'
+import {
+\   ThrowInternalException
+\ } from '../import/vspec.vim'
 
 " Constants  "{{{1
 " Fundamentals  "{{{2
@@ -88,7 +90,7 @@ let s:custom_matchers = {}  "{{{2
 
 " s:expr_hinted_scope  "{{{2
 let s:expr_hinted_scope =
-\ 's:throw("InvalidOperation", {"message": "Scope hint is not given"})'
+\ 's:ThrowInternalException("InvalidOperation", {"message": "Scope hint is not given"})'
 " An expression which is evaluated to a script-local scope for Ref()/Set().
 
 
@@ -96,7 +98,7 @@ let s:expr_hinted_scope =
 
 " s:expr_hinted_sid  "{{{2
 let s:expr_hinted_sid =
-\ 's:throw("InvalidOperation", {"message": "SID hint is not given"})'
+\ 's:ThrowInternalException("InvalidOperation", {"message": "SID hint is not given"})'
 " An expression which is evaluated to a <SID> for Call().
 
 
@@ -176,7 +178,7 @@ command! -bar -nargs=0 SaveContext
 
 " :SKIP  "{{{2
 command! -nargs=+ SKIP
-\ call s:throw('ExpectationFailure',
+\ call s:ThrowInternalException('ExpectationFailure',
 \              {'type': 'SKIP', 'message': s:parse_string(<q-args>)})
 
 
@@ -184,7 +186,7 @@ command! -nargs=+ SKIP
 
 " :TODO  "{{{2
 command! -bar -nargs=0 TODO
-\ call s:throw('ExpectationFailure', {'type': 'TODO'})
+\ call s:ThrowInternalException('ExpectationFailure', {'type': 'TODO'})
 
 
 
@@ -290,7 +292,7 @@ function! vspec#ref(variable_name)  "{{{2
   if a:variable_name =~# '^s:'
     return s:get_hinted_scope()[a:variable_name[2:]]
   else
-    call s:throw(
+    call s:ThrowInternalException(
     \   'InvalidOperation',
     \   {'message': 'Invalid variable_name - ' . string(a:variable_name)}
     \ )
@@ -305,7 +307,7 @@ function! vspec#set(variable_name, value)  "{{{2
     let _ = s:get_hinted_scope()
     let _[a:variable_name[2:]] = a:value
   else
-    call s:throw(
+    call s:ThrowInternalException(
     \   'InvalidOperation',
     \   {'message': 'Invalid variable_name - ' . string(a:variable_name)}
     \ )
@@ -702,7 +704,7 @@ function! s:cmd_Expect(exprs, vals)  "{{{2
   let truth = d.value_not ==# ''
   if truth != s:are_matched(d.value_actual, d.value_matcher, d.value_expected)
     let d.type = 'MismatchedValues'
-    call s:throw('ExpectationFailure', d)
+    call s:ThrowInternalException('ExpectationFailure', d)
   endif
 endfunction
 
@@ -794,7 +796,7 @@ function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
     let custom_matcher_name = a:expr_matcher
     let matcher = get(s:custom_matchers, custom_matcher_name, 0)
     if matcher is 0
-      call s:throw(
+      call s:ThrowInternalException(
       \   'InvalidOperation',
       \   {'message': 'Unknown custom matcher - '
       \               . string(custom_matcher_name)}
@@ -802,7 +804,7 @@ function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
     endif
     let Match = get(matcher, 'match', 0)
     if Match is 0
-      call s:throw(
+      call s:ThrowInternalException(
       \   'InvalidOperation',
       \   {'message': 'Custom matcher does not have match function - '
       \               . string(custom_matcher_name)}
@@ -833,7 +835,7 @@ function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
     endif
     return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
   else
-    call s:throw(
+    call s:ThrowInternalException(
     \   'InvalidOperation',
     \   {'message': 'Unknown matcher - ' . string(a:expr_matcher)}
     \ )
@@ -1039,7 +1041,7 @@ function! s:parse_string(string_expression)  "{{{2
   if s =~# '^''\(''''\|[^'']\)*''$' || s =~# '^"\(\\.\|[^"]\)*"$'
     return eval(s)
   else
-    call s:throw('SyntaxError', {'message': 'Invalid string - ' . string(s)})
+    call s:ThrowInternalException('SyntaxError', {'message': 'Invalid string - ' . string(s)})
   endif
 endfunction
 
@@ -1086,13 +1088,6 @@ function! s:simplify_call_stack(throwpoint, base_call_stack, type)  "{{{2
     \   ''
     \ )
   endif
-endfunction
-
-
-
-
-function! s:throw(type, values)  "{{{2
-  eval s:Vim9.ThrowInternalException(a:type, a:values)
 endfunction
 
 
