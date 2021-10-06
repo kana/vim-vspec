@@ -1092,7 +1092,7 @@ endfunction
 
 
 function! s:throw(type, values)  "{{{2
-  eval s:Vim9.Throw(a:type, a:values)
+  eval s:Vim9.ThrowInternalException(a:type, a:values)
 endfunction
 
 

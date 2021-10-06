@@ -24,7 +24,7 @@ vim9script
 # }}}
 
 # Misc. utilities  # {{{1
-export def Throw(type: string, values: any): void  # {{{2
+export def ThrowInternalException(type: string, values: any): void  # {{{2
   throw printf('vspec:%s:%s', type, string(values))
 enddef
 
