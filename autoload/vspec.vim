@@ -21,6 +21,9 @@
 "     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
+
+import * as Vim9 from '../import/vspec.vim'
+
 " Constants  "{{{1
 " Fundamentals  "{{{2
 
@@ -1053,7 +1056,7 @@ endfunction
 
 
 function! s:throw(type, values)  "{{{2
-  throw printf('vspec:%s:%s', a:type, string(a:values))
+  eval s:Vim9.Throw(a:type, a:values)
 endfunction
 
 

@@ -23,5 +23,10 @@ vim9script
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
+# Misc. utilities  # {{{1
+export def Throw(type: string, values: any): void  # {{{2
+  throw printf('vspec:%s:%s', type, string(values))
+enddef
+
 # __END__  # {{{1
 # vim: foldmethod=marker
