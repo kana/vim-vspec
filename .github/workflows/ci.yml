@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, vim9 ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, vim9 ]
   schedule:
     - cron: 0 0 * * *
 
