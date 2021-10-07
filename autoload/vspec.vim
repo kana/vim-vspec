@@ -180,7 +180,7 @@ command! -bar -nargs=0 SaveContext
 " :SKIP  "{{{2
 command! -nargs=+ SKIP
 \ call s:ThrowInternalException('ExpectationFailure',
-\              {'type': 'SKIP', 'message': s:parse_string(<q-args>)})
+\              {'type': 'SKIP', 'message': s:ParseString(<q-args>)})
 
 
 
@@ -1032,13 +1032,6 @@ endfunction
 
 function! s:get_hinted_sid()  "{{{2
   return eval(s:expr_hinted_sid)
-endfunction
-
-
-
-
-function! s:parse_string(string_expression)  "{{{2
-  return s:ParseString(a:string_expression)
 endfunction
 
 
