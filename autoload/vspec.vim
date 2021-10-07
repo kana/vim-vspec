@@ -59,6 +59,7 @@
 " }}}
 
 import {
+\   ParseString,
 \   ThrowInternalException
 \ } from '../import/vspec.vim'
 
@@ -1037,12 +1038,7 @@ endfunction
 
 
 function! s:parse_string(string_expression)  "{{{2
-  let s = substitute(a:string_expression, '^\s*\(.\{-}\)\s*$', '\1', '')
-  if s =~# '^''\(''''\|[^'']\)*''$' || s =~# '^"\(\\.\|[^"]\)*"$'
-    return eval(s)
-  else
-    call s:ThrowInternalException('SyntaxError', {'message': 'Invalid string - ' . string(s)})
-  endif
+  return s:ParseString(a:string_expression)
 endfunction
 
 
