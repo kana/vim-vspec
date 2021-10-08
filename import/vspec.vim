@@ -24,6 +24,24 @@ vim9script
 # }}}
 
 # Misc. utilities  # {{{1
+export def BreakLineForcibly(): void  # {{{2
+  # - :echo {message} outputs "\n{message}" rather than "{message}\n".
+  # - :echo preceded by :redraw does not output "\n", because the screen is
+  #   expected to be redrawn.  "\n" is not necessary in this situation.
+  #
+  # This behavior is reasonable as long as Vim is used interactively.  But
+  # it is problematic for a batch process.  It seems that there is no way to
+  # forcibly break a line in pure Vim script without side effect.  For example
+  # :echo 'foo' | redraw | echo '' | echo 'bar' outputs "\nfoobar".
+  #
+  # So that output from Vim script will be filtered by bin/vspec:
+  #
+  # - Lines including only "\r" are removed.
+  # - Trailing "\r"s in each line are removed.  This filter is also useful to
+  #   ensure final output is Unix-stlye line ending.
+  echo "\r"
+enddef
+
 export def ParseString(string_expression: string): any  # {{{2
   const s = substitute(string_expression, '^\s*\(.\{-}\)\s*$', '\1', '')
   if !(s =~ '^''\(''''\|[^'']\)*''$' || s =~ '^"\(\\.\|[^"]\)*"$')
