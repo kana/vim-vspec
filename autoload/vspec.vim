@@ -125,7 +125,7 @@ let s:suite = {}  "{{{2
 " Interface  "{{{1
 " :Debug  "{{{2
 command! -complete=expression -nargs=+ Debug
-\   call s:break_line_forcibly()
+\   call s:BreakLineForcibly()
 \ | echo '#' <args>
 
 
@@ -234,7 +234,7 @@ endfunction
 
 
 function! vspec#debug(...)  "{{{2
-  call s:break_line_forcibly()
+  call s:BreakLineForcibly()
   echo '#' join(a:000, ' ')
 endfunction
 
@@ -334,7 +334,7 @@ function! vspec#test(specfile_path)  "{{{2
     endfor
     echo 'Bail out!  Unexpected error happened while processing a test script.'
   finally
-    call s:break_line_forcibly()
+    call s:BreakLineForcibly()
   endtry
 
   call delete(compiled_specfile_path)
@@ -352,7 +352,7 @@ function! s:run_suites(all_suites)
         call suite.example_dict[
         \   suite.generate_example_function_name(example_index)
         \ ]()
-        call s:break_line_forcibly()  " anti-:redraw
+        call s:BreakLineForcibly()  " anti-:redraw
         echo printf(
         \   '%s %d - %s %s',
         \   'ok',
@@ -361,7 +361,7 @@ function! s:run_suites(all_suites)
         \   example
         \ )
       catch /^vspec:/
-        call s:break_line_forcibly()  " anti-:redraw
+        call s:BreakLineForcibly()  " anti-:redraw
         let xs = matchlist(v:exception, '^vspec:\(\a\+\):\(.*\)$')
         let type = xs[1]
         let i = eval(xs[2])
@@ -423,7 +423,7 @@ function! s:run_suites(all_suites)
           echo printf('# %s: %s', type, i.message)
         endif
       catch
-        call s:break_line_forcibly()  " anti-:redraw
+        call s:BreakLineForcibly()  " anti-:redraw
         echo printf(
         \   '%s %d - %s %s',
         \   'not ok',
@@ -976,13 +976,6 @@ endfunction
 
 function! s:cmd_SaveContext()  "{{{2
   let s:saved_scope = deepcopy(s:get_hinted_scope())
-endfunction
-
-
-
-
-function! s:break_line_forcibly()  "{{{2
-  call s:BreakLineForcibly()
 endfunction
 
 
