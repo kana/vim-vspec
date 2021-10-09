@@ -43,6 +43,14 @@ export def BreakLineForcibly(): void  # {{{2
 enddef
 
 export def GetExpectStack(): string  # {{{2
+  # expand('<sfile>') ==> "script a.vim[123]..function B[456]..function C"
+  # expand('<stack>') ==> "script a.vim[123]..function B[456]..function C[789]"
+  # v:throwpoint      ==> "script a.vim[123]..function B[456]..function C[333]..{...}, line 1"
+  #                                                                             |___________|
+  #                                                                                  (A)
+  # This function returns (A) to remove this noise part later.
+  # <stack> is not useful here, because it includes the line number (789),
+  # and that line number doesn't match v:throwpoint (333).
   if s:expect_stack != ''
     return s:expect_stack
   endif
