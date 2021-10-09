@@ -982,13 +982,6 @@ endfunction
 
 
 
-function! s:get_expect_stack()  "{{{2
-  return s:GetInternalCallStackForExpect()
-endfunction
-
-
-
-
 function! s:get_hinted_scope()  "{{{2
   return eval(s:expr_hinted_scope)
 endfunction
@@ -1010,7 +1003,7 @@ function! s:simplify_call_stack(throwpoint, base_call_stack, type)  "{{{2
     "   {a:base_call_stack}[#]..{dict-func-for-:it}[#]..{:Expect-stack}[#]
     return substitute(
     \   a:throwpoint,
-    \   '\V\.\*[\(\d\+\)]..' . escape(s:get_expect_stack(), '\') . '\$',
+    \   '\V\.\*[\(\d\+\)]..' . escape(s:GetInternalCallStackForExpect(), '\') . '\$',
     \   '\1',
     \   ''
     \ )
