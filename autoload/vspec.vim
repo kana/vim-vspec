@@ -60,6 +60,7 @@
 
 import {
 \   BreakLineForcibly,
+\   GetExpectStack,
 \   ParseString,
 \   ThrowInternalException
 \ } from '../import/vspec.vim'
@@ -982,22 +983,7 @@ endfunction
 
 
 function! s:get_expect_stack()  "{{{2
-  if exists('s:expect_stack')
-    return s:expect_stack
-  endif
-
-  try
-    Expect 0 == 1
-  catch
-    let base_call_stack = expand('<sfile>')
-    let s:expect_stack = substitute(
-    \   v:throwpoint,
-    \   '\V' . escape(base_call_stack, '\') . '[\d\+]..',
-    \   '',
-    \   ''
-    \ )
-  endtry
-  return s:expect_stack
+  return s:GetExpectStack()
 endfunction
 
 

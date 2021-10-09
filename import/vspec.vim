@@ -42,6 +42,27 @@ export def BreakLineForcibly(): void  # {{{2
   echo "\r"
 enddef
 
+export def GetExpectStack(): string  # {{{2
+  if s:expect_stack != ''
+    return s:expect_stack
+  endif
+
+  try
+    Expect 0 == 1
+  catch
+    const base_call_stack = expand('<sfile>')
+    s:expect_stack = substitute(
+    \   v:throwpoint,
+    \   '\V' .. escape(base_call_stack, '\') .. '[\d\+]..',
+    \   '',
+    \   ''
+    \ )
+  endtry
+  return s:expect_stack
+enddef
+
+var s:expect_stack: string
+
 export def ParseString(string_expression: string): any  # {{{2
   const s = substitute(string_expression, '^\s*\(.\{-}\)\s*$', '\1', '')
   if !(s =~ '^''\(''''\|[^'']\)*''$' || s =~ '^"\(\\.\|[^"]\)*"$')
