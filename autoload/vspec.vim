@@ -60,7 +60,7 @@
 
 import {
 \   BreakLineForcibly,
-\   GetExpectStack,
+\   GetInternalCallStackForExpect,
 \   ParseString,
 \   ThrowInternalException
 \ } from '../import/vspec.vim'
@@ -983,7 +983,7 @@ endfunction
 
 
 function! s:get_expect_stack()  "{{{2
-  return s:GetExpectStack()
+  return s:GetInternalCallStackForExpect()
 endfunction
 
 

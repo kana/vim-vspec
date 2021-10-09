@@ -42,7 +42,7 @@ export def BreakLineForcibly(): void  # {{{2
   echo "\r"
 enddef
 
-export def GetExpectStack(): string  # {{{2
+export def GetInternalCallStackForExpect(): string  # {{{2
   # expand('<sfile>') ==> "script a.vim[123]..function B[456]..function C"
   # expand('<stack>') ==> "script a.vim[123]..function B[456]..function C[789]"
   # v:throwpoint      ==> "script a.vim[123]..function B[456]..function C[333]..{...}, line 1"
@@ -51,25 +51,25 @@ export def GetExpectStack(): string  # {{{2
   # This function returns (A) to remove this noise part later.
   # <stack> is not useful here, because it includes the line number (789),
   # and that line number doesn't match v:throwpoint (333).
-  if s:expect_stack != ''
-    return s:expect_stack
+  if s:internal_call_stack_for_expect != ''
+    return s:internal_call_stack_for_expect
   endif
 
   try
     Expect 0 == 1
   catch
     const base_call_stack = expand('<sfile>')
-    s:expect_stack = substitute(
+    s:internal_call_stack_for_expect = substitute(
     \   v:throwpoint,
     \   '\V' .. escape(base_call_stack, '\') .. '[\d\+]..',
     \   '',
     \   ''
     \ )
   endtry
-  return s:expect_stack
+  return s:internal_call_stack_for_expect
 enddef
 
-var s:expect_stack: string
+var s:internal_call_stack_for_expect: string
 
 export def ParseString(string_expression: string): any  # {{{2
   const s = substitute(string_expression, '^\s*\(.\{-}\)\s*$', '\1', '')
