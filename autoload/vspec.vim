@@ -62,6 +62,7 @@ import {
 \   BreakLineForcibly,
 \   GetInternalCallStackForExpect,
 \   ParseString,
+\   SimplifyCallStack,
 \   ThrowInternalException
 \ } from '../import/vspec.vim'
 
@@ -997,45 +998,7 @@ endfunction
 
 
 function! s:simplify_call_stack(throwpoint, base_call_stack, type)  "{{{2
-  if a:type ==# 'expect'
-    " Where the last :Expect is called _____________
-    "                                               |
-    "   {a:base_call_stack}[#]..{dict-func-for-:it}[#]..{:Expect-stack}[#]
-    return substitute(
-    \   a:throwpoint,
-    \   '\V\.\*[\(\d\+\)]..' . escape(s:GetInternalCallStackForExpect(), '\') . '\$',
-    \   '\1',
-    \   ''
-    \ )
-  elseif a:type ==# 'it'
-    " If an error occurs in :it rather than functions called from :it,
-    " this part is not included in a:throwpoint. ____________
-    "                                                        |
-    "                                               _________|_________
-    "                                              |                   |
-    "   {a:base_call_stack}[#]..{dict-func-for-:it}[#]..{user-func}[#]..
-    "   |____________________|  |____________________|
-    "              |                      |
-    "              |                      |_______________________
-    "              |                                              |
-    "    __________|__________________________________    ________|_______
-    "   |                                             |  |                |
-    "   '\V' . escape(a:base_call_stack, '\') . '[\d\+]..\d\+\%([\d\+]\)\?'
-    return substitute(
-    \   a:throwpoint,
-    \   '\V' . escape(a:base_call_stack, '\') . '[\d\+]..\d\+\%([\d\+]\)\?',
-    \   '{example}',
-    \   ''
-    \ )
-  else
-    " TODO: Show the location in an original file instead of the transpiled one.
-    return substitute(
-    \   a:throwpoint,
-    \   '\V' . escape(a:base_call_stack, '\') . '\%([\d\+]..script \S\+\ze..\)\?',
-    \   '{vspec}',
-    \   ''
-    \ )
-  endif
+  return s:SimplifyCallStack(a:throwpoint, a:base_call_stack, a:type)
 endfunction
 
 

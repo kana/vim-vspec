@@ -79,6 +79,48 @@ export def ParseString(string_expression: string): any  # {{{2
   return eval(s)
 enddef
 
+export def SimplifyCallStack(throwpoint: string, base_call_stack: string, type: string): string  # {{{2
+  if type == 'expect'
+    # Where the last :Expect is called ___________
+    #                                             |
+    #   {base_call_stack}[#]..{dict-func-for-:it}[#]..{:Expect-stack}[#]
+    return substitute(
+      throwpoint,
+      '\V\.\*[\(\d\+\)]..' .. escape(s:GetInternalCallStackForExpect(), '\') .. '\$',
+      '\1',
+      ''
+    )
+  elseif type == 'it'
+    # If an error occurs in :it rather than functions called from :it,
+    # this part is not included in throwpoint. __________
+    #                                                    |
+    #                                           _________|_________
+    #                                          |                   |
+    # {base_call_stack}[#]..{dict-func-for-:it}[#]..{user-func}[#]..
+    # |__________________|  |____________________|
+    #          |                      |
+    #          |                      |_________________________
+    #          |                                                |
+    #  ________|____________________________________    ________|_______
+    # |                                             |  |                |
+    # '\V' .. escape(base_call_stack, '\') .. '[\d\+]..\d\+\%([\d\+]\)\?'
+    return substitute(
+      throwpoint,
+      '\V' .. escape(base_call_stack, '\') .. '[\d\+]..\d\+\%([\d\+]\)\?',
+      '{example}',
+      ''
+    )
+  else
+    # TODO: Show the location in an original file instead of the transpiled one.
+    return substitute(
+      throwpoint,
+      '\V' .. escape(base_call_stack, '\') .. '\%([\d\+]..script \S\+\ze..\)\?',
+      '{vspec}',
+      ''
+    )
+  endif
+enddef
+
 export def ThrowInternalException(type: string, values: any): void  # {{{2
   throw printf('vspec:%s:%s', type, string(values))
 enddef
