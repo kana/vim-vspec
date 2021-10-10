@@ -330,7 +330,7 @@ function! vspec#test(specfile_path)  "{{{2
     call s:run_suites(s:all_suites)
   catch
     echo '#' repeat('-', 77)
-    echo '#' s:simplify_call_stack(v:throwpoint, expand('<sfile>'), 'unknown')
+    echo '#' s:SimplifyCallStack(v:throwpoint, expand('<sfile>'), 'unknown')
     for exception_line in split(v:exception, '\n')
       echo '#' exception_line
     endfor
@@ -383,7 +383,7 @@ function! s:run_suites(all_suites)
             \   i.expr_matcher,
             \   i.expr_expected,
             \ ], 'v:val != ""'))
-            \ 'at line' s:simplify_call_stack(v:throwpoint, '', 'expect')
+            \ 'at line' s:SimplifyCallStack(v:throwpoint, '', 'expect')
             for line in s:generate_failure_message(i)
               echo '#     ' . line
             endfor
@@ -433,7 +433,7 @@ function! s:run_suites(all_suites)
         \   suite.pretty_subject,
         \   example
         \ )
-        echo '#' s:simplify_call_stack(v:throwpoint, expand('<sfile>'), 'it')
+        echo '#' s:SimplifyCallStack(v:throwpoint, expand('<sfile>'), 'it')
         for exception_line in split(v:exception, '\n')
           echo '#' exception_line
         endfor
@@ -992,13 +992,6 @@ endfunction
 
 function! s:get_hinted_sid()  "{{{2
   return eval(s:expr_hinted_sid)
-endfunction
-
-
-
-
-function! s:simplify_call_stack(throwpoint, base_call_stack, type)  "{{{2
-  return s:SimplifyCallStack(a:throwpoint, a:base_call_stack, a:type)
 endfunction
 
 
