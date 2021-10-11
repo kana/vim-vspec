@@ -295,7 +295,7 @@ endfunction
 
 function! vspec#ref(variable_name)  "{{{2
   if a:variable_name =~# '^s:'
-    return s:get_hinted_scope()[a:variable_name[2:]]
+    return s:GetHintedScope()[a:variable_name[2:]]
   else
     call s:ThrowInternalException(
     \   'InvalidOperation',
@@ -309,7 +309,7 @@ endfunction
 
 function! vspec#set(variable_name, value)  "{{{2
   if a:variable_name =~# '^s:'
-    let _ = s:get_hinted_scope()
+    let _ = s:GetHintedScope()
     let _[a:variable_name[2:]] = a:value
   else
     call s:ThrowInternalException(
@@ -970,22 +970,15 @@ let s:RE_SPLIT_AT_MATCHER =
 
 " Tools  "{{{1
 function! s:cmd_ResetContext()  "{{{2
-  call filter(s:get_hinted_scope(), string(s:FALSE))
-  call extend(s:get_hinted_scope(), deepcopy(s:saved_scope), 'force')
+  call filter(s:GetHintedScope(), string(s:FALSE))
+  call extend(s:GetHintedScope(), deepcopy(s:saved_scope), 'force')
 endfunction
 
 
 
 
 function! s:cmd_SaveContext()  "{{{2
-  let s:saved_scope = deepcopy(s:get_hinted_scope())
-endfunction
-
-
-
-
-function! s:get_hinted_scope()  "{{{2
-  return s:GetHintedScope()
+  let s:saved_scope = deepcopy(s:GetHintedScope())
 endfunction
 
 
