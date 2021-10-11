@@ -60,6 +60,7 @@
 
 import {
 \   BreakLineForcibly,
+\   GetHintedScope,
 \   GetInternalCallStackForExpect,
 \   ParseString,
 \   SimplifyCallStack,
@@ -984,7 +985,7 @@ endfunction
 
 
 function! s:get_hinted_scope()  "{{{2
-  return eval(s:expr_hinted_scope)
+  return s:GetHintedScope()
 endfunction
 
 

@@ -42,6 +42,10 @@ export def BreakLineForcibly(): void  # {{{2
   echo "\r"
 enddef
 
+export def GetHintedScope(): dict<any>  # {{{2
+  return eval(vspec#scope()['expr_hinted_scope'])
+enddef
+
 export def GetInternalCallStackForExpect(): string  # {{{2
   # expand('<sfile>') ==> "script a.vim[123]..function B[456]..function C"
   # expand('<stack>') ==> "script a.vim[123]..function B[456]..function C[789]"
