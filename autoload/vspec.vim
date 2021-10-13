@@ -219,7 +219,7 @@ endfunction
 
 
 function! vspec#call(function_name, ...)  "{{{2
-  return call(substitute(a:function_name, '^s:', s:get_hinted_sid(), ''), a:000)
+  return call(substitute(a:function_name, '^s:', s:GetHintedSid(), ''), a:000)
 endfunction
 
 
@@ -980,13 +980,6 @@ endfunction
 
 function! s:cmd_SaveContext()  "{{{2
   let s:saved_scope = deepcopy(s:GetHintedScope())
-endfunction
-
-
-
-
-function! s:get_hinted_sid()  "{{{2
-  return s:GetHintedSid()
 endfunction
 
 
