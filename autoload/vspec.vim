@@ -61,6 +61,7 @@
 import {
 \   BreakLineForcibly,
 \   GetHintedScope,
+\   GetHintedSid,
 \   GetInternalCallStackForExpect,
 \   ParseString,
 \   SimplifyCallStack,
@@ -985,7 +986,7 @@ endfunction
 
 
 function! s:get_hinted_sid()  "{{{2
-  return eval(s:expr_hinted_sid)
+  return s:GetHintedSid()
 endfunction
 
 
