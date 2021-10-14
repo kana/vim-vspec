@@ -64,6 +64,7 @@ import {
 \   GetHintedSid,
 \   GetInternalCallStackForExpect,
 \   ParseString,
+\   ResetContext,
 \   SimplifyCallStack,
 \   ThrowInternalException
 \ } from '../import/vspec.vim'
@@ -971,8 +972,7 @@ let s:RE_SPLIT_AT_MATCHER =
 
 " Tools  "{{{1
 function! s:cmd_ResetContext()  "{{{2
-  call filter(s:GetHintedScope(), string(s:FALSE))
-  call extend(s:GetHintedScope(), deepcopy(s:saved_scope), 'force')
+  eval s:ResetContext()
 endfunction
 
 

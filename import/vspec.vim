@@ -32,6 +32,11 @@ export def GetHintedSid(): string  # {{{2
   return eval(vspec#scope()['expr_hinted_sid'])
 enddef
 
+export def ResetContext()  # {{{2
+  call filter(s:GetHintedScope(), string(false))
+  call extend(s:GetHintedScope(), deepcopy(vspec#scope()['saved_scope']), 'force')
+enddef
+
 # Misc. utilities  # {{{1
 export def BreakLineForcibly(): void  # {{{2
   # - :echo {message} outputs "\n{message}" rather than "{message}\n".
