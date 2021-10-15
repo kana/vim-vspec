@@ -33,7 +33,7 @@ export def GetHintedSid(): string  # {{{2
 enddef
 
 export def ResetContext()  # {{{2
-  call filter(s:GetHintedScope(), string(false))
+  call filter(s:GetHintedScope(), '0') # Empty the given scope.
   call extend(s:GetHintedScope(), deepcopy(vspec#scope()['saved_scope']), 'force')
 enddef
 
