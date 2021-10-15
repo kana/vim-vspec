@@ -171,7 +171,7 @@ command! -complete=expression -nargs=+ Expect
 
 " :ResetContext  "{{{2
 command! -bar -nargs=0 ResetContext
-\ call s:cmd_ResetContext()
+\ call s:ResetContext()
 
 
 
@@ -971,13 +971,6 @@ let s:RE_SPLIT_AT_MATCHER =
 
 
 " Tools  "{{{1
-function! s:cmd_ResetContext()  "{{{2
-  eval s:ResetContext()
-endfunction
-
-
-
-
 function! s:cmd_SaveContext()  "{{{2
   let s:saved_scope = deepcopy(s:GetHintedScope())
 endfunction
