@@ -37,6 +37,11 @@ export def ResetContext()  # {{{2
   call extend(s:GetHintedScope(), deepcopy(vspec#scope()['saved_scope']), 'force')
 enddef
 
+export def SaveContext()  # {{{2
+  final scope = vspec#scope()
+  scope['saved_scope'] = deepcopy(s:GetHintedScope())
+enddef
+
 # Misc. utilities  # {{{1
 export def BreakLineForcibly(): void  # {{{2
   # - :echo {message} outputs "\n{message}" rather than "{message}\n".

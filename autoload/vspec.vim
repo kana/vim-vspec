@@ -65,6 +65,7 @@ import {
 \   GetInternalCallStackForExpect,
 \   ParseString,
 \   ResetContext,
+\   SaveContext,
 \   SimplifyCallStack,
 \   ThrowInternalException
 \ } from '../import/vspec.vim'
@@ -972,7 +973,7 @@ let s:RE_SPLIT_AT_MATCHER =
 
 " Tools  "{{{1
 function! s:cmd_SaveContext()  "{{{2
-  let s:saved_scope = deepcopy(s:GetHintedScope())
+  call s:SaveContext()
 endfunction
 
 
