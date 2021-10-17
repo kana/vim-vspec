@@ -179,7 +179,7 @@ command! -bar -nargs=0 ResetContext
 
 " :SaveContext  "{{{2
 command! -bar -nargs=0 SaveContext
-\ call s:cmd_SaveContext()
+\ call s:SaveContext()
 
 
 
@@ -250,7 +250,7 @@ endfunction
 function! vspec#hint(info)  "{{{2
   if has_key(a:info, 'scope')
     let s:expr_hinted_scope = a:info.scope
-    call s:cmd_SaveContext()
+    call s:SaveContext()
   endif
 
   if has_key(a:info, 'sid')
@@ -972,13 +972,6 @@ let s:RE_SPLIT_AT_MATCHER =
 
 
 " Tools  "{{{1
-function! s:cmd_SaveContext()  "{{{2
-  call s:SaveContext()
-endfunction
-
-
-
-
 function! vspec#scope()  "{{{2
   return s:
 endfunction
