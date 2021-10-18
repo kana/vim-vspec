@@ -60,6 +60,7 @@
 
 import {
 \   BreakLineForcibly,
+\   Call,
 \   GetHintedScope,
 \   GetHintedSid,
 \   GetInternalCallStackForExpect,
@@ -221,7 +222,7 @@ endfunction
 
 
 function! vspec#call(function_name, ...)  "{{{2
-  return call(substitute(a:function_name, '^s:', s:GetHintedSid(), ''), a:000)
+  return s:Call(a:function_name, a:000)
 endfunction
 
 

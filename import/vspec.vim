@@ -24,6 +24,10 @@ vim9script
 # }}}
 
 # Interface  # {{{1
+export def Call(function_name: string, args: list<any>): any  # {{{2
+  return call(substitute(function_name, '^s:', s:GetHintedSid(), ''), args)
+enddef
+
 export def ResetContext()  # {{{2
   call filter(s:GetHintedScope(), '0') # Empty the given scope.
   call extend(s:GetHintedScope(), deepcopy(vspec#scope()['saved_scope']), 'force')
