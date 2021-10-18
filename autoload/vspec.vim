@@ -68,6 +68,7 @@ import {
 \   Ref,
 \   ResetContext,
 \   SaveContext,
+\   Set,
 \   SimplifyCallStack,
 \   ThrowInternalException
 \ } from '../import/vspec.vim'
@@ -309,15 +310,7 @@ endfunction
 
 
 function! vspec#set(variable_name, value)  "{{{2
-  if a:variable_name =~# '^s:'
-    let _ = s:GetHintedScope()
-    let _[a:variable_name[2:]] = a:value
-  else
-    call s:ThrowInternalException(
-    \   'InvalidOperation',
-    \   {'message': 'Invalid variable_name - ' . string(a:variable_name)}
-    \ )
-  endif
+  call s:Set(a:variable_name, a:value)
 endfunction
 
 

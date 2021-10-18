@@ -48,6 +48,17 @@ export def SaveContext()  # {{{2
   scope['saved_scope'] = deepcopy(s:GetHintedScope())
 enddef
 
+export def Set(variable_name: string, value: any): void  # {{{2
+  if variable_name !~ '^s:'
+    ThrowInternalException(
+      'InvalidOperation',
+      {'message': 'Invalid variable_name - ' .. string(variable_name)}
+    )
+  endif
+  final scope = GetHintedScope()
+  scope[variable_name[2 : ]] = value
+enddef
+
 # Misc. utilities  # {{{1
 export def BreakLineForcibly(): void  # {{{2
   # - :echo {message} outputs "\n{message}" rather than "{message}\n".
