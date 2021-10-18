@@ -23,15 +23,7 @@ vim9script
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-# Tools to deal with script-local stuffs  # {{{1
-export def GetHintedScope(): dict<any>  # {{{2
-  return eval(vspec#scope()['expr_hinted_scope'])
-enddef
-
-export def GetHintedSid(): string  # {{{2
-  return eval(vspec#scope()['expr_hinted_sid'])
-enddef
-
+# Interface  # {{{1
 export def ResetContext()  # {{{2
   call filter(s:GetHintedScope(), '0') # Empty the given scope.
   call extend(s:GetHintedScope(), deepcopy(vspec#scope()['saved_scope']), 'force')
@@ -59,6 +51,14 @@ export def BreakLineForcibly(): void  # {{{2
   # - Trailing "\r"s in each line are removed.  This filter is also useful to
   #   ensure final output is Unix-stlye line ending.
   echo "\r"
+enddef
+
+export def GetHintedScope(): dict<any>  # {{{2
+  return eval(vspec#scope()['expr_hinted_scope'])
+enddef
+
+export def GetHintedSid(): string  # {{{2
+  return eval(vspec#scope()['expr_hinted_sid'])
 enddef
 
 export def GetInternalCallStackForExpect(): string  # {{{2
