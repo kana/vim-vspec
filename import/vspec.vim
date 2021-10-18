@@ -28,6 +28,16 @@ export def Call(function_name: string, args: list<any>): any  # {{{2
   return call(substitute(function_name, '^s:', s:GetHintedSid(), ''), args)
 enddef
 
+export def Ref(variable_name: string): any  # {{{2
+  if variable_name !~ '^s:'
+    ThrowInternalException(
+      'InvalidOperation',
+      {'message': 'Invalid variable_name - ' .. string(variable_name)}
+    )
+  endif
+  return GetHintedScope()[variable_name[2 :]]
+enddef
+
 export def ResetContext()  # {{{2
   call filter(s:GetHintedScope(), '0') # Empty the given scope.
   call extend(s:GetHintedScope(), deepcopy(vspec#scope()['saved_scope']), 'force')

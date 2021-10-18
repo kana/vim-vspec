@@ -65,6 +65,7 @@ import {
 \   GetHintedSid,
 \   GetInternalCallStackForExpect,
 \   ParseString,
+\   Ref,
 \   ResetContext,
 \   SaveContext,
 \   SimplifyCallStack,
@@ -300,14 +301,7 @@ endfunction
 
 
 function! vspec#ref(variable_name)  "{{{2
-  if a:variable_name =~# '^s:'
-    return s:GetHintedScope()[a:variable_name[2:]]
-  else
-    call s:ThrowInternalException(
-    \   'InvalidOperation',
-    \   {'message': 'Invalid variable_name - ' . string(a:variable_name)}
-    \ )
-  endif
+  return s:Ref(a:variable_name)
 endfunction
 
 
