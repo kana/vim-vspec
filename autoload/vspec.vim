@@ -216,8 +216,8 @@ endfunction
 
 
 
-function! Set(...)  "{{{2
-  return call('vspec#set', a:000)
+function! Set(variable_name, value)  "{{{2
+  call s:Set(a:variable_name, a:value)
 endfunction
 
 
@@ -310,6 +310,7 @@ endfunction
 
 
 function! vspec#set(variable_name, value)  "{{{2
+  " Deprecated.  Kept for backward compatibility.
   call s:Set(a:variable_name, a:value)
 endfunction
 
