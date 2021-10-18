@@ -200,8 +200,8 @@ command! -bar -nargs=0 TODO
 
 
 
-function! Call(function_name, ...)  "{{{2
-  return s:Call(a:function_name, a:000)
+function! Call(function_name, args)  "{{{2
+  return s:Call(a:function_name, a:args)
 endfunction
 
 
@@ -221,9 +221,9 @@ endfunction
 
 
 
-function! vspec#call(function_name, ...)  "{{{2
+function! vspec#call(function_name, args)  "{{{2
   " Deprecated.  Kept for backward compatibility.
-  return s:Call(a:function_name, a:000)
+  return s:Call(a:function_name, a:args)
 endfunction
 
 

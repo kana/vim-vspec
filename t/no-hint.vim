@@ -24,7 +24,7 @@ end
 
 describe 'Call'
   it 'fails without vspec#hint()'
-    Expect Do('echo Call(''s:foo'')') == 101
+    Expect Do('echo Call(''s:foo'', [])') == 101
   end
 end
 

@@ -24,11 +24,11 @@ end
 
 describe 'Call'
   it 'can call a script-local function'
-    Expect Call('s:is_matcher', '==') to_be_true
-    Expect Call('s:is_matcher', '=?') to_be_false
+    Expect Call('s:is_matcher', ['==']) to_be_true
+    Expect Call('s:is_matcher', ['=?']) to_be_false
   end
 
   it 'can call a non-script-local function'
-    Expect Call('function', 'type') ==# function('type')
+    Expect Call('function', ['type']) ==# function('type')
   end
 end
