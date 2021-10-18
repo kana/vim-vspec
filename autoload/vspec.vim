@@ -208,8 +208,8 @@ endfunction
 
 
 
-function! Ref(...)  "{{{2
-  return call('vspec#ref', a:000)
+function! Ref(variable_name)  "{{{2
+  return s:Ref(a:variable_name)
 endfunction
 
 
@@ -301,6 +301,7 @@ endfunction
 
 
 function! vspec#ref(variable_name)  "{{{2
+  " Deprecated.  Kept for backward compatibility.
   return s:Ref(a:variable_name)
 endfunction
 
