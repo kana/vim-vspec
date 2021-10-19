@@ -64,6 +64,7 @@ import {
 \   GetHintedScope,
 \   GetHintedSid,
 \   GetInternalCallStackForExpect,
+\   Hint,
 \   ParseString,
 \   Ref,
 \   ResetContext,
@@ -253,14 +254,7 @@ endfunction
 
 
 function! vspec#hint(info)  "{{{2
-  if has_key(a:info, 'scope')
-    let s:expr_hinted_scope = a:info.scope
-    call s:SaveContext()
-  endif
-
-  if has_key(a:info, 'sid')
-    let s:expr_hinted_sid = a:info.sid
-  endif
+  call s:Hint(a:info)
 endfunction
 
 

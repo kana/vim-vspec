@@ -38,6 +38,19 @@ export def Ref(variable_name: string): any  # {{{2
   return GetHintedScope()[variable_name[2 :]]
 enddef
 
+export def Hint(info: dict<string>): void  # {{{2
+  final scope = vspec#scope()
+
+  if has_key(info, 'scope')
+    scope['expr_hinted_scope'] = info.scope
+    SaveContext()
+  endif
+
+  if has_key(info, 'sid')
+    scope['expr_hinted_sid'] = info.sid
+  endif
+enddef
+
 export def ResetContext()  # {{{2
   call filter(s:GetHintedScope(), '0') # Empty the given scope.
   call extend(s:GetHintedScope(), deepcopy(vspec#scope()['saved_scope']), 'force')
