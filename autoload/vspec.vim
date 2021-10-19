@@ -242,6 +242,7 @@ endfunction
 
 
 function! vspec#debug(...)  "{{{2
+  " Deprecated.  Kept for backward compatibility.
   call s:BreakLineForcibly()
   echo '#' join(a:000, ' ')
 endfunction
