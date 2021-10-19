@@ -51,6 +51,42 @@ export def Hint(info: dict<string>): void  # {{{2
   endif
 enddef
 
+export def PrettyString(value: any): string  # {{{2
+  return substitute(
+    string(value),
+    '''\(\%([^'']\|''''\)*\)''',
+    '\=ReescapeStringContent(submatch(1))',
+    'g'
+  )
+enddef
+
+def ReescapeStringContent(s: string): string
+  if !s:REESCAPE_TABLE
+    for i in range(0x01, 0xFF)
+      const c = nr2char(i)
+      s:REESCAPE_TABLE[c] = c =~ '\p' ? c : printf('\x%02X', i)
+    endfor
+    call extend(s:REESCAPE_TABLE, {
+      "\"": '\"',
+      "\\": '\\',
+      "\b": '\b',
+      "\e": '\e',
+      "\f": '\f',
+      "\n": '\n',
+      "\r": '\r',
+      "\t": '\t',
+    })
+  endif
+
+  const cs = s
+    ->substitute("''", "'", 'g')
+    ->split('\ze.')
+    ->map('get(s:REESCAPE_TABLE, v:val, v:val)')
+  return '"' .. join(cs, '') .. '"'
+enddef
+
+final s:REESCAPE_TABLE: dict<string> = {}
+
 export def ResetContext()  # {{{2
   call filter(s:GetHintedScope(), '0') # Empty the given scope.
   call extend(s:GetHintedScope(), deepcopy(vspec#scope()['saved_scope']), 'force')
