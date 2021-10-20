@@ -262,6 +262,7 @@ endfunction
 
 
 function! vspec#pretty_string(value)  "{{{2
+  " Deprecated.  Kept for backward compatibility.
   return s:PrettyString(a:value)
 endfunction
 
@@ -419,7 +420,7 @@ function! s:to_be_false.match(value)
 endfunction
 
 function! s:to_be_false.failure_message_for_should(value)
-  return 'Actual value: ' . vspec#pretty_string(a:value)
+  return 'Actual value: ' . s:PrettyString(a:value)
 endfunction
 
 let s:to_be_false.failure_message_for_should_not =
@@ -440,7 +441,7 @@ function! s:to_be_true.match(value)
 endfunction
 
 function! s:to_be_true.failure_message_for_should(value)
-  return 'Actual value: ' . vspec#pretty_string(a:value)
+  return 'Actual value: ' . s:PrettyString(a:value)
 endfunction
 
 let s:to_be_true.failure_message_for_should_not =
@@ -814,8 +815,8 @@ endfunction
 
 function! s:generate_default_failure_message(i)  "{{{2
   return [
-  \   '  Actual value: ' . vspec#pretty_string(a:i.value_actual),
-  \   'Expected value: ' . vspec#pretty_string(a:i.value_expected),
+  \   '  Actual value: ' . s:PrettyString(a:i.value_actual),
+  \   'Expected value: ' . s:PrettyString(a:i.value_expected),
   \ ]
 endfunction
 
