@@ -112,6 +112,10 @@ export def Skip(reason: string): void  # {{{2
   ThrowInternalException('ExpectationFailure', {'type': 'SKIP', 'message': reason})
 enddef
 
+export def Todo(): void  # {{{2
+  ThrowInternalException('ExpectationFailure', {'type': 'TODO'})
+enddef
+
 # Misc. utilities  # {{{1
 export def BreakLineForcibly(): void  # {{{2
   # - :echo {message} outputs "\n{message}" rather than "{message}\n".

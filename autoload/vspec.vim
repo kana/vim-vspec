@@ -73,7 +73,8 @@ import {
 \   Set,
 \   SimplifyCallStack,
 \   Skip,
-\   ThrowInternalException
+\   ThrowInternalException,
+\   Todo
 \ } from '../import/vspec.vim'
 
 " Constants  "{{{1
@@ -199,7 +200,7 @@ command! -nargs=+ SKIP
 
 " :TODO  "{{{2
 command! -bar -nargs=0 TODO
-\ call s:ThrowInternalException('ExpectationFailure', {'type': 'TODO'})
+\ call s:Todo()
 
 
 
