@@ -108,6 +108,10 @@ export def Set(variable_name: string, value: any): void  # {{{2
   scope[variable_name[2 : ]] = value
 enddef
 
+export def Skip(reason: string): void  # {{{2
+  ThrowInternalException('ExpectationFailure', {'type': 'SKIP', 'message': reason})
+enddef
+
 # Misc. utilities  # {{{1
 export def BreakLineForcibly(): void  # {{{2
   # - :echo {message} outputs "\n{message}" rather than "{message}\n".

@@ -72,6 +72,7 @@ import {
 \   SaveContext,
 \   Set,
 \   SimplifyCallStack,
+\   Skip,
 \   ThrowInternalException
 \ } from '../import/vspec.vim'
 
@@ -191,8 +192,7 @@ command! -bar -nargs=0 SaveContext
 
 " :SKIP  "{{{2
 command! -nargs=+ SKIP
-\ call s:ThrowInternalException('ExpectationFailure',
-\              {'type': 'SKIP', 'message': s:ParseString(<q-args>)})
+\ call s:Skip(s:ParseString(<q-args>))
 
 
 
