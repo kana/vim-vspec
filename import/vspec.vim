@@ -116,6 +116,14 @@ export def Todo(): void  # {{{2
   ThrowInternalException('ExpectationFailure', {'type': 'TODO'})
 enddef
 
+# Matchers  # {{{1
+export def GenerateDefaultFailureMessage(expectation: dict<any>): list<string>  # {{{2
+  return [
+    '  Actual value: ' .. s:PrettyString(expectation.value_actual),
+    'Expected value: ' .. s:PrettyString(expectation.value_expected),
+  ]
+enddef
+
 # Misc. utilities  # {{{1
 export def BreakLineForcibly(): void  # {{{2
   # - :echo {message} outputs "\n{message}" rather than "{message}\n".

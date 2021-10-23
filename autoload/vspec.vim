@@ -61,6 +61,7 @@
 import {
 \   BreakLineForcibly,
 \   Call,
+\   GenerateDefaultFailureMessage,
 \   GetHintedScope,
 \   GetHintedSid,
 \   GetInternalCallStackForExpect,
@@ -815,10 +816,7 @@ endfunction
 
 
 function! s:generate_default_failure_message(i)  "{{{2
-  return [
-  \   '  Actual value: ' . s:PrettyString(a:i.value_actual),
-  \   'Expected value: ' . s:PrettyString(a:i.value_expected),
-  \ ]
+  return s:GenerateDefaultFailureMessage(a:i)
 endfunction
 
 
