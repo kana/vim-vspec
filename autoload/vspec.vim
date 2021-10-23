@@ -815,17 +815,10 @@ endfunction
 
 
 
-function! s:generate_default_failure_message(i)  "{{{2
-  return s:GenerateDefaultFailureMessage(a:i)
-endfunction
-
-
-
-
 function! s:generate_failure_message(i)  "{{{2
   let matcher = get(s:custom_matchers, a:i.value_matcher, 0)
   if matcher is 0
-    return s:generate_default_failure_message(a:i)
+    return s:GenerateDefaultFailureMessage(a:i)
   else
     let method_name =
     \ a:i.value_not == ''
@@ -837,7 +830,7 @@ function! s:generate_failure_message(i)  "{{{2
     \   0
     \ )
     if Generate is 0
-      return s:generate_default_failure_message(a:i)
+      return s:GenerateDefaultFailureMessage(a:i)
     else
       let values = [a:i.value_actual]
       if a:i.expr_expected != ''
