@@ -351,7 +351,7 @@ function! s:run_suites(all_suites)
             \   i.expr_expected,
             \ ], 'v:val != ""'))
             \ 'at line' s:SimplifyCallStack(v:throwpoint, '', 'expect')
-            for line in s:generate_failure_message(i)
+            for line in s:GenerateFailureMessage(i)
               echo '#     ' . line
             endfor
           elseif subtype ==# 'TODO'
@@ -811,13 +811,6 @@ function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
     \   {'message': 'Unknown matcher - ' . string(a:expr_matcher)}
     \ )
   endif
-endfunction
-
-
-
-
-function! s:generate_failure_message(i)  "{{{2
-  return s:GenerateFailureMessage(a:i)
 endfunction
 
 
