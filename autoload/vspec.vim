@@ -692,7 +692,7 @@ function! s:parse_should_arguments(s, mode)  "{{{2
     if s:is_matcher(_matcher)
       let matcher = string(_matcher)
     endif
-    if s:is_custom_matcher(_matcher)
+    if s:IsCustomMatcher(_matcher)
       let expected = '[' . _expected . ']'
     endif
     let not = string(_not)
@@ -764,7 +764,7 @@ let s:VALID_MATCHERS = (s:VALID_MATCHERS_EQUALITY
 
 
 function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
-  if s:is_custom_matcher(a:expr_matcher)
+  if s:IsCustomMatcher(a:expr_matcher)
     let custom_matcher_name = a:expr_matcher
     let matcher = get(s:custom_matchers, custom_matcher_name, 0)
     if matcher is 0
@@ -817,13 +817,6 @@ endfunction
 
 
 
-function! s:is_custom_matcher(expr_matcher)  "{{{2
-  return s:IsCustomMatcher(a:expr_matcher)
-endfunction
-
-
-
-
 function! s:is_equality_matcher(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_EQUALITY, a:expr_matcher)
 endfunction
@@ -832,7 +825,7 @@ endfunction
 
 
 function! s:is_matcher(expr_matcher)  "{{{2
-  return 0 <= index(s:VALID_MATCHERS, a:expr_matcher) || s:is_custom_matcher(a:expr_matcher)
+  return 0 <= index(s:VALID_MATCHERS, a:expr_matcher) || s:IsCustomMatcher(a:expr_matcher)
 endfunction
 
 
