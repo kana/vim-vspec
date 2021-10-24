@@ -62,6 +62,7 @@ import {
 \   BreakLineForcibly,
 \   Call,
 \   GenerateDefaultFailureMessage,
+\   GenerateFailureMessage,
 \   GetHintedScope,
 \   GetHintedSid,
 \   GetInternalCallStackForExpect,
@@ -816,33 +817,7 @@ endfunction
 
 
 function! s:generate_failure_message(i)  "{{{2
-  let matcher = get(s:custom_matchers, a:i.value_matcher, 0)
-  if matcher is 0
-    return s:GenerateDefaultFailureMessage(a:i)
-  else
-    let method_name =
-    \ a:i.value_not == ''
-    \ ? 'failure_message_for_should'
-    \ : 'failure_message_for_should_not'
-    let Generate = get(
-    \   matcher,
-    \   method_name,
-    \   0
-    \ )
-    if Generate is 0
-      return s:GenerateDefaultFailureMessage(a:i)
-    else
-      let values = [a:i.value_actual]
-      if a:i.expr_expected != ''
-        call extend(values, a:i.value_expected)
-      endif
-      let maybe_message = call(Generate, values, matcher)
-      return
-      \ type(maybe_message) == type('')
-      \ ? [maybe_message]
-      \ : maybe_message
-    endif
-  endif
+  return s:GenerateFailureMessage(a:i)
 endfunction
 
 

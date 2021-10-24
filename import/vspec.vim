@@ -124,6 +124,40 @@ export def GenerateDefaultFailureMessage(expectation: dict<any>): list<string>  
   ]
 enddef
 
+export def GenerateFailureMessage(expectation: dict<any>): list<string>  # {{{2
+  const custom_matchers = vspec#scope()['custom_matchers']
+  const matcher = get(custom_matchers, expectation.value_matcher, 0)
+  if matcher is 0
+    return GenerateDefaultFailureMessage(expectation)
+  else
+    const method_name = expectation.value_not == ''
+      ? 'failure_message_for_should'
+      : 'failure_message_for_should_not'
+    const Generate = get(matcher, method_name, 0)
+    if Generate is 0
+      return GenerateDefaultFailureMessage(expectation)
+    else
+      # For some reason, list<any> in assignment is overridden by more
+      # specific type.  For example:
+      #
+      #     final values: list<any> = [expectation.value_actual]
+      #     echo typename(expectation.value_actual)
+      #     #==> dict<number>
+      #     echo typename(values)
+      #     #==> list<dict<number>> instead of list<any>
+      final values: list<any> = []
+      call add(values, expectation.value_actual)
+      if expectation.expr_expected != ''
+        call extend(values, expectation.value_expected)
+      endif
+      const maybe_message = call(Generate, values, matcher)
+      return type(maybe_message) == v:t_string
+        ? [maybe_message]
+        : maybe_message
+    endif
+  endif
+enddef
+
 # Misc. utilities  # {{{1
 export def BreakLineForcibly(): void  # {{{2
   # - :echo {message} outputs "\n{message}" rather than "{message}\n".
