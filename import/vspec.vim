@@ -158,6 +158,10 @@ export def GenerateFailureMessage(expectation: dict<any>): list<string>  # {{{2
   endif
 enddef
 
+export def IsCustomMatcher(expr_matcher: string): bool  # {{{2
+  return expr_matcher =~ '^to'
+enddef
+
 # Misc. utilities  # {{{1
 export def BreakLineForcibly(): void  # {{{2
   # - :echo {message} outputs "\n{message}" rather than "{message}\n".

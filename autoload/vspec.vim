@@ -67,6 +67,7 @@ import {
 \   GetHintedSid,
 \   GetInternalCallStackForExpect,
 \   Hint,
+\   IsCustomMatcher,
 \   ParseString,
 \   PrettyString,
 \   Ref,
@@ -817,7 +818,7 @@ endfunction
 
 
 function! s:is_custom_matcher(expr_matcher)  "{{{2
-  return a:expr_matcher =~# '^to'
+  return s:IsCustomMatcher(a:expr_matcher)
 endfunction
 
 
