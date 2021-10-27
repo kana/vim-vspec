@@ -117,6 +117,23 @@ export def Todo(): void  # {{{2
 enddef
 
 # Matchers  # {{{1
+const VALID_MATCHERS_EQUALITY = [  # {{{2
+  '!=',
+  '==',
+  'is',
+  'isnot',
+
+  '!=?',
+  '==?',
+  'is?',
+  'isnot?',
+
+  '!=#',
+  '==#',
+  'is#',
+  'isnot#',
+]
+
 export def GenerateDefaultFailureMessage(expectation: dict<any>): list<string>  # {{{2
   return [
     '  Actual value: ' .. s:PrettyString(expectation.value_actual),
@@ -160,6 +177,10 @@ enddef
 
 export def IsCustomMatcher(expr_matcher: string): bool  # {{{2
   return expr_matcher =~ '^to'
+enddef
+
+export def IsEqualityMatcher(expr_matcher: string): bool  # {{{2
+  return 0 <= index(VALID_MATCHERS_EQUALITY, expr_matcher)
 enddef
 
 # Misc. utilities  # {{{1

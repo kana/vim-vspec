@@ -68,6 +68,7 @@ import {
 \   GetInternalCallStackForExpect,
 \   Hint,
 \   IsCustomMatcher,
+\   IsEqualityMatcher,
 \   ParseString,
 \   PrettyString,
 \   Ref,
@@ -818,7 +819,7 @@ endfunction
 
 
 function! s:is_equality_matcher(expr_matcher)  "{{{2
-  return 0 <= index(s:VALID_MATCHERS_EQUALITY, a:expr_matcher)
+  return s:IsEqualityMatcher(a:expr_matcher)
 endfunction
 
 
