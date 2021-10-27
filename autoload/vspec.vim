@@ -803,7 +803,7 @@ function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
       return s:FALSE
     endif
     return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
-  elseif s:is_regexp_matcher(a:expr_matcher)
+  elseif s:IsRegexpMatcher(a:expr_matcher)
     if type(a:value_actual) != type('') || type(a:value_expected) != type('')
       return s:FALSE
     endif
@@ -844,13 +844,6 @@ endfunction
 
 function! s:is_ordering_matcher(expr_matcher)  "{{{2
   return 0 <= index(s:VALID_MATCHERS_ORDERING, a:expr_matcher)
-endfunction
-
-
-
-
-function! s:is_regexp_matcher(expr_matcher)  "{{{2
-  return s:IsRegexpMatcher(a:expr_matcher)
 endfunction
 
 
