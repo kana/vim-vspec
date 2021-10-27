@@ -69,6 +69,7 @@ import {
 \   Hint,
 \   IsCustomMatcher,
 \   IsEqualityMatcher,
+\   IsRegexpMatcher,
 \   ParseString,
 \   PrettyString,
 \   Ref,
@@ -849,7 +850,7 @@ endfunction
 
 
 function! s:is_regexp_matcher(expr_matcher)  "{{{2
-  return 0 <= index(s:VALID_MATCHERS_REGEXP, a:expr_matcher)
+  return s:IsRegexpMatcher(a:expr_matcher)
 endfunction
 
 

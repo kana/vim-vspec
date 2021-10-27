@@ -134,6 +134,17 @@ const VALID_MATCHERS_EQUALITY = [  # {{{2
   'isnot#',
 ]
 
+const VALID_MATCHERS_REGEXP = [  # {{{2
+  '!~',
+  '=~',
+
+  '!~?',
+  '=~?',
+
+  '!~#',
+  '=~#',
+]
+
 export def GenerateDefaultFailureMessage(expectation: dict<any>): list<string>  # {{{2
   return [
     '  Actual value: ' .. s:PrettyString(expectation.value_actual),
@@ -181,6 +192,10 @@ enddef
 
 export def IsEqualityMatcher(expr_matcher: string): bool  # {{{2
   return 0 <= index(VALID_MATCHERS_EQUALITY, expr_matcher)
+enddef
+
+export def IsRegexpMatcher(expr_matcher: string): bool  # {{{2
+  return 0 <= index(VALID_MATCHERS_REGEXP, expr_matcher)
 enddef
 
 # Misc. utilities  # {{{1
