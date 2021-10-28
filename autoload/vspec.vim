@@ -797,7 +797,7 @@ function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
     else
       return type_equality && eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
     endif
-  elseif s:is_ordering_matcher(a:expr_matcher)
+  elseif s:IsOrderingMatcher(a:expr_matcher)
     if (type(a:value_actual) != type(a:value_expected)
     \   || !s:is_orderable_type(a:value_actual)
     \   || !s:is_orderable_type(a:value_expected))
@@ -838,13 +838,6 @@ endfunction
 function! s:is_orderable_type(value)  "{{{2
   " FIXME: +float
   return type(a:value) == type(0) || type(a:value) == type('')
-endfunction
-
-
-
-
-function! s:is_ordering_matcher(expr_matcher)  "{{{2
-  return s:IsOrderingMatcher(a:expr_matcher)
 endfunction
 
 
