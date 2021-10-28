@@ -134,6 +134,23 @@ const VALID_MATCHERS_EQUALITY = [  # {{{2
   'isnot#',
 ]
 
+const VALID_MATCHERS_ORDERING = [  # {{{2
+  '<',
+  '<=',
+  '>',
+  '>=',
+
+  '<?',
+  '<=?',
+  '>?',
+  '>=?',
+
+  '<#',
+  '<=#',
+  '>#',
+  '>=#',
+]
+
 const VALID_MATCHERS_REGEXP = [  # {{{2
   '!~',
   '=~',
@@ -192,6 +209,10 @@ enddef
 
 export def IsEqualityMatcher(expr_matcher: string): bool  # {{{2
   return 0 <= index(VALID_MATCHERS_EQUALITY, expr_matcher)
+enddef
+
+export def IsOrderingMatcher(expr_matcher: string): bool  # {{{2
+  return 0 <= index(VALID_MATCHERS_ORDERING, expr_matcher)
 enddef
 
 export def IsRegexpMatcher(expr_matcher: string): bool  # {{{2

@@ -69,6 +69,7 @@ import {
 \   Hint,
 \   IsCustomMatcher,
 \   IsEqualityMatcher,
+\   IsOrderingMatcher,
 \   IsRegexpMatcher,
 \   ParseString,
 \   PrettyString,
@@ -843,7 +844,7 @@ endfunction
 
 
 function! s:is_ordering_matcher(expr_matcher)  "{{{2
-  return 0 <= index(s:VALID_MATCHERS_ORDERING, a:expr_matcher)
+  return s:IsOrderingMatcher(a:expr_matcher)
 endfunction
 
 
