@@ -228,6 +228,22 @@ export def IsRegexpMatcher(expr_matcher: string): bool  # {{{2
   return 0 <= index(VALID_MATCHERS_REGEXP, expr_matcher)
 enddef
 
+export def SplitAtMatcher(s: string): list<string>  # {{{2
+  const tokens = matchlist(s, RE_SPLIT_AT_MATCHER)
+  return tokens[1 : 4]
+enddef
+
+const s:RE_SPLIT_AT_MATCHER = printf(
+  '\C\v^(.{-})\s+%%((not)\s+)?(%%(%%(%s)[#?]?)|to\w+>)\s*(.*)$',
+  join(
+    map(
+      reverse(sort(copy(VALID_MATCHERS))),
+      'escape(v:val, "=!<>~#?")'
+    ),
+    '|'
+  )
+)
+
 # Misc. utilities  # {{{1
 export def BreakLineForcibly(): void  # {{{2
   # - :echo {message} outputs "\n{message}" rather than "{message}\n".

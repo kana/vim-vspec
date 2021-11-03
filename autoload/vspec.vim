@@ -80,6 +80,7 @@ import {
 \   Set,
 \   SimplifyCallStack,
 \   Skip,
+\   SplitAtMatcher,
 \   ThrowInternalException,
 \   Todo
 \ } from '../import/vspec.vim'
@@ -838,21 +839,8 @@ endfunction
 
 
 function! s:split_at_matcher(s)  "{{{2
-  let tokens = matchlist(a:s, s:RE_SPLIT_AT_MATCHER)
-  return tokens[1:4]
+  return s:SplitAtMatcher(a:s)
 endfunction
-
-let s:RE_SPLIT_AT_MATCHER =
-\ printf(
-\   '\C\v^(.{-})\s+%%((not)\s+)?(%%(%%(%s)[#?]?)|to\w+>)\s*(.*)$',
-\   join(
-\     map(
-\       reverse(sort(copy(s:VALID_MATCHERS))),
-\       'escape(v:val, "=!<>~#?")'
-\     ),
-\     '|'
-\   )
-\ )
 
 
 
