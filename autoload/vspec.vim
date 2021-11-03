@@ -689,7 +689,7 @@ endfunction
 
 
 function! s:parse_should_arguments(s, mode)  "{{{2
-  let tokens = s:split_at_matcher(a:s)
+  let tokens = s:SplitAtMatcher(a:s)
   let [_actual, _not, _matcher, _expected] = tokens
   let [actual, not, matcher, expected] = tokens
 
@@ -834,17 +834,6 @@ function! s:is_orderable_type(value)  "{{{2
   " FIXME: +float
   return type(a:value) == type(0) || type(a:value) == type('')
 endfunction
-
-
-
-
-function! s:split_at_matcher(s)  "{{{2
-  return s:SplitAtMatcher(a:s)
-endfunction
-
-
-
-
 
 
 
