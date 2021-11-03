@@ -693,7 +693,7 @@ function! s:parse_should_arguments(s, mode)  "{{{2
   let [actual, not, matcher, expected] = tokens
 
   if a:mode ==# 'eval'
-    if s:is_matcher(_matcher)
+    if s:IsMatcher(_matcher)
       let matcher = string(_matcher)
     endif
     if s:IsCustomMatcher(_matcher)
@@ -821,16 +821,9 @@ endfunction
 
 
 
-function! s:is_matcher(expr_matcher)  "{{{2
-  return s:IsMatcher(a:expr_matcher)
-endfunction
-
-
-
-
 function! s:is_negative_matcher(expr_matcher)  "{{{2
   " FIXME: Ad hoc way.
-  return s:is_matcher(a:expr_matcher) && a:expr_matcher =~# '\(!\|not\)'
+  return s:IsMatcher(a:expr_matcher) && a:expr_matcher =~# '\(!\|not\)'
 endfunction
 
 

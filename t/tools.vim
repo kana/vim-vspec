@@ -24,8 +24,8 @@ end
 
 describe 'Call'
   it 'can call a script-local function'
-    Expect Call('s:is_matcher', ['==']) == v:true
-    Expect Call('s:is_matcher', ['=?']) == v:false
+    Expect Call('s:IsMatcher', ['==']) == v:true
+    Expect Call('s:IsMatcher', ['=?']) == v:false
   end
 
   it 'can call a non-script-local function'
