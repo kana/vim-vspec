@@ -69,6 +69,7 @@ import {
 \   Hint,
 \   IsCustomMatcher,
 \   IsEqualityMatcher,
+\   IsMatcher,
 \   IsOrderingMatcher,
 \   IsRegexpMatcher,
 \   ParseString,
@@ -821,7 +822,7 @@ endfunction
 
 
 function! s:is_matcher(expr_matcher)  "{{{2
-  return 0 <= index(s:VALID_MATCHERS, a:expr_matcher) || s:IsCustomMatcher(a:expr_matcher)
+  return s:IsMatcher(a:expr_matcher)
 endfunction
 
 

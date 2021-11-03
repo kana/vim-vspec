@@ -162,6 +162,11 @@ const VALID_MATCHERS_REGEXP = [  # {{{2
   '=~#',
 ]
 
+const VALID_MATCHERS = # {{{2
+  VALID_MATCHERS_EQUALITY
+  + VALID_MATCHERS_ORDERING
+  + VALID_MATCHERS_REGEXP
+
 export def GenerateDefaultFailureMessage(expectation: dict<any>): list<string>  # {{{2
   return [
     '  Actual value: ' .. s:PrettyString(expectation.value_actual),
@@ -209,6 +214,10 @@ enddef
 
 export def IsEqualityMatcher(expr_matcher: string): bool  # {{{2
   return 0 <= index(VALID_MATCHERS_EQUALITY, expr_matcher)
+enddef
+
+export def IsMatcher(expr_matcher: string): bool  # {{{2
+  return 0 <= index(VALID_MATCHERS, expr_matcher) || IsCustomMatcher(expr_matcher)
 enddef
 
 export def IsOrderingMatcher(expr_matcher: string): bool  # {{{2
