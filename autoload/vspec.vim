@@ -714,60 +714,6 @@ endfunction
 
 
 " Matchers  "{{{1
-" Constants  "{{{2
-
-let s:VALID_MATCHERS_EQUALITY = [
-\   '!=',
-\   '==',
-\   'is',
-\   'isnot',
-\
-\   '!=?',
-\   '==?',
-\   'is?',
-\   'isnot?',
-\
-\   '!=#',
-\   '==#',
-\   'is#',
-\   'isnot#',
-\ ]
-
-let s:VALID_MATCHERS_REGEXP = [
-\   '!~',
-\   '=~',
-\
-\   '!~?',
-\   '=~?',
-\
-\   '!~#',
-\   '=~#',
-\ ]
-
-let s:VALID_MATCHERS_ORDERING = [
-\   '<',
-\   '<=',
-\   '>',
-\   '>=',
-\
-\   '<?',
-\   '<=?',
-\   '>?',
-\   '>=?',
-\
-\   '<#',
-\   '<=#',
-\   '>#',
-\   '>=#',
-\ ]
-
-let s:VALID_MATCHERS = (s:VALID_MATCHERS_EQUALITY
-\                       + s:VALID_MATCHERS_ORDERING
-\                       + s:VALID_MATCHERS_REGEXP)
-
-
-
-
 function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
   if s:IsCustomMatcher(a:expr_matcher)
     let custom_matcher_name = a:expr_matcher
