@@ -741,7 +741,7 @@ function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
     \ )
   elseif s:IsEqualityMatcher(a:expr_matcher)
     let type_equality = type(a:value_actual) == type(a:value_expected)
-    if s:is_negative_matcher(a:expr_matcher) && !type_equality
+    if s:IsNegativeMatcher(a:expr_matcher) && !type_equality
       return s:TRUE
     else
       return type_equality && eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
@@ -764,13 +764,6 @@ function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
     \   {'message': 'Unknown matcher - ' . string(a:expr_matcher)}
     \ )
   endif
-endfunction
-
-
-
-
-function! s:is_negative_matcher(expr_matcher)  "{{{2
-  return s:IsNegativeMatcher(a:expr_matcher)
 endfunction
 
 
