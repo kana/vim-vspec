@@ -225,6 +225,11 @@ export def IsNegativeMatcher(expr_matcher: string): bool  # {{{2
   return IsMatcher(expr_matcher) && expr_matcher =~# '\(!\|not\)'
 enddef
 
+export def IsOrderableType(value: any): bool  # {{{2
+  # FIXME: +float
+  return type(value) == type(0) || type(value) == type('')
+enddef
+
 export def IsOrderingMatcher(expr_matcher: string): bool  # {{{2
   return 0 <= index(VALID_MATCHERS_ORDERING, expr_matcher)
 enddef

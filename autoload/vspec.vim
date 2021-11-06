@@ -71,6 +71,7 @@ import {
 \   IsEqualityMatcher,
 \   IsMatcher,
 \   IsNegativeMatcher,
+\   IsOrderableType,
 \   IsOrderingMatcher,
 \   IsRegexpMatcher,
 \   ParseString,
@@ -770,8 +771,7 @@ endfunction
 
 
 function! s:is_orderable_type(value)  "{{{2
-  " FIXME: +float
-  return type(a:value) == type(0) || type(a:value) == type('')
+  return s:IsOrderableType(a:value)
 endfunction
 
 
