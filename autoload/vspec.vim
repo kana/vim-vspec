@@ -749,8 +749,8 @@ function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
     endif
   elseif s:IsOrderingMatcher(a:expr_matcher)
     if (type(a:value_actual) != type(a:value_expected)
-    \   || !s:is_orderable_type(a:value_actual)
-    \   || !s:is_orderable_type(a:value_expected))
+    \   || !s:IsOrderableType(a:value_actual)
+    \   || !s:IsOrderableType(a:value_expected))
       return s:FALSE
     endif
     return eval('a:value_actual ' . a:expr_matcher . ' a:value_expected')
@@ -765,13 +765,6 @@ function! s:are_matched(value_actual, expr_matcher, value_expected)  "{{{2
     \   {'message': 'Unknown matcher - ' . string(a:expr_matcher)}
     \ )
   endif
-endfunction
-
-
-
-
-function! s:is_orderable_type(value)  "{{{2
-  return s:IsOrderableType(a:value)
 endfunction
 
 
