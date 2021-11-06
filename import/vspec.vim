@@ -220,6 +220,11 @@ export def IsMatcher(expr_matcher: string): bool  # {{{2
   return 0 <= index(VALID_MATCHERS, expr_matcher) || IsCustomMatcher(expr_matcher)
 enddef
 
+export def IsNegativeMatcher(expr_matcher: string): bool  # {{{2
+  # FIXME: Ad hoc way.
+  return IsMatcher(expr_matcher) && expr_matcher =~# '\(!\|not\)'
+enddef
+
 export def IsOrderingMatcher(expr_matcher: string): bool  # {{{2
   return 0 <= index(VALID_MATCHERS_ORDERING, expr_matcher)
 enddef

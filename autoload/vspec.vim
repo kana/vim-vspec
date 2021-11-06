@@ -70,6 +70,7 @@ import {
 \   IsCustomMatcher,
 \   IsEqualityMatcher,
 \   IsMatcher,
+\   IsNegativeMatcher,
 \   IsOrderingMatcher,
 \   IsRegexpMatcher,
 \   ParseString,
@@ -769,8 +770,7 @@ endfunction
 
 
 function! s:is_negative_matcher(expr_matcher)  "{{{2
-  " FIXME: Ad hoc way.
-  return s:IsMatcher(a:expr_matcher) && a:expr_matcher =~# '\(!\|not\)'
+  return s:IsNegativeMatcher(a:expr_matcher)
 endfunction
 
 
