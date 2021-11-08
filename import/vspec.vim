@@ -28,16 +28,6 @@ export def Call(function_name: string, args: list<any>): any  # {{{2
   return call(substitute(function_name, '^s:', s:GetHintedSid(), ''), args)
 enddef
 
-export def Ref(variable_name: string): any  # {{{2
-  if variable_name !~ '^s:'
-    ThrowInternalException(
-      'InvalidOperation',
-      {'message': 'Invalid variable_name - ' .. string(variable_name)}
-    )
-  endif
-  return GetHintedScope()[variable_name[2 :]]
-enddef
-
 export def Hint(info: dict<string>): void  # {{{2
   final scope = vspec#scope()
 
@@ -86,6 +76,16 @@ def ReescapeStringContent(s: string): string
 enddef
 
 final s:REESCAPE_TABLE: dict<string> = {}
+
+export def Ref(variable_name: string): any  # {{{2
+  if variable_name !~ '^s:'
+    ThrowInternalException(
+      'InvalidOperation',
+      {'message': 'Invalid variable_name - ' .. string(variable_name)}
+    )
+  endif
+  return GetHintedScope()[variable_name[2 :]]
+enddef
 
 export def ResetContext()  # {{{2
   call filter(s:GetHintedScope(), '0') # Empty the given scope.
