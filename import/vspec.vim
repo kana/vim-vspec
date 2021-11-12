@@ -254,6 +254,110 @@ const s:RE_SPLIT_AT_MATCHER = printf(
   )
 )
 
+# Test runner  # {{{1
+export def RunSuites(all_suites: list<dict<any>>): void  # {{{2
+  var total_count_of_examples = 0
+  for suite in all_suites
+    for example_index in range(len(suite.example_list))
+      total_count_of_examples += 1
+      const example = suite.example_list[example_index]
+      suite.run_before_blocks()
+
+      try
+        # For some reason, suite.example_dict[index]() fails by
+        # E725: Calling dict function without Dictionary: 17
+        const d1 = suite.example_dict
+        const d2 = {f: d1[suite.generate_example_function_name(example_index)]}
+        d2.f()
+        BreakLineForcibly()  # anti-:redraw
+        echo printf(
+          '%s %d - %s %s',
+          'ok',
+          total_count_of_examples,
+          suite.pretty_subject,
+          example
+        )
+      catch /^vspec:/
+        BreakLineForcibly()  # anti-:redraw
+        const xs = matchlist(v:exception, '^vspec:\(\a\+\):\(.*\)$')
+        const type = xs[1]
+        const i = eval(xs[2])
+        if type == 'ExpectationFailure'
+          const subtype = i.type
+          if subtype == 'MismatchedValues'
+            echo printf(
+              '%s %d - %s %s',
+              'not ok',
+              total_count_of_examples,
+              suite.pretty_subject,
+              example
+            )
+            echo '# Expected' join(filter([
+              i.expr_actual,
+              i.expr_not,
+              i.expr_matcher,
+              i.expr_expected,
+            ], 'v:val != ""')) 'at line' SimplifyCallStack(v:throwpoint, '', 'expect')
+            for line in GenerateFailureMessage(i)
+              echo '#     ' .. line
+            endfor
+          elseif subtype == 'TODO'
+            echo printf(
+              '%s %d - # TODO %s %s',
+              'not ok',
+              total_count_of_examples,
+              suite.pretty_subject,
+              example
+            )
+          elseif subtype == 'SKIP'
+            echo printf(
+              '%s %d - # SKIP %s %s - %s',
+              'ok',
+              total_count_of_examples,
+              suite.pretty_subject,
+              example,
+              i.message
+            )
+          else
+            echo printf(
+              '%s %d - %s %s',
+              'not ok',
+              total_count_of_examples,
+              suite.pretty_subject,
+              example
+            )
+            echo printf('# %s: %s', type, i.message)
+          endif
+        else
+          echo printf(
+            '%s %d - %s %s',
+            'not ok',
+            total_count_of_examples,
+            suite.pretty_subject,
+            example
+          )
+          echo printf('# %s: %s', type, i.message)
+        endif
+      catch
+        BreakLineForcibly()  # anti-:redraw
+        echo printf(
+          '%s %d - %s %s',
+          'not ok',
+          total_count_of_examples,
+          suite.pretty_subject,
+          example
+        )
+        echo '#' SimplifyCallStack(v:throwpoint, expand('<sfile>'), 'it')
+        for exception_line in split(v:exception, '\n')
+          echo '#' exception_line
+        endfor
+      endtry
+      suite.run_after_blocks()
+    endfor
+  endfor
+  echo printf('1..%d', total_count_of_examples)
+enddef
+
 # Misc. utilities  # {{{1
 export def BreakLineForcibly(): void  # {{{2
   # - :echo {message} outputs "\n{message}" rather than "{message}\n".

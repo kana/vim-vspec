@@ -78,6 +78,7 @@ import {
 \   PrettyString,
 \   Ref,
 \   ResetContext,
+\   RunSuites,
 \   SaveContext,
 \   Set,
 \   SimplifyCallStack,
@@ -318,105 +319,7 @@ function! vspec#test(specfile_path)  "{{{2
 endfunction
 
 function! s:run_suites(all_suites)
-  let total_count_of_examples = 0
-  for suite in a:all_suites
-    for example_index in range(len(suite.example_list))
-      let total_count_of_examples += 1
-      let example = suite.example_list[example_index]
-      call suite.run_before_blocks()
-
-      try
-        call suite.example_dict[
-        \   suite.generate_example_function_name(example_index)
-        \ ]()
-        call s:BreakLineForcibly()  " anti-:redraw
-        echo printf(
-        \   '%s %d - %s %s',
-        \   'ok',
-        \   total_count_of_examples,
-        \   suite.pretty_subject,
-        \   example
-        \ )
-      catch /^vspec:/
-        call s:BreakLineForcibly()  " anti-:redraw
-        let xs = matchlist(v:exception, '^vspec:\(\a\+\):\(.*\)$')
-        let type = xs[1]
-        let i = eval(xs[2])
-        if type ==# 'ExpectationFailure'
-          let subtype = i.type
-          if subtype ==# 'MismatchedValues'
-            echo printf(
-            \   '%s %d - %s %s',
-            \   'not ok',
-            \   total_count_of_examples,
-            \   suite.pretty_subject,
-            \   example
-            \ )
-            echo '# Expected' join(filter([
-            \   i.expr_actual,
-            \   i.expr_not,
-            \   i.expr_matcher,
-            \   i.expr_expected,
-            \ ], 'v:val != ""'))
-            \ 'at line' s:SimplifyCallStack(v:throwpoint, '', 'expect')
-            for line in s:GenerateFailureMessage(i)
-              echo '#     ' . line
-            endfor
-          elseif subtype ==# 'TODO'
-            echo printf(
-            \   '%s %d - # TODO %s %s',
-            \   'not ok',
-            \   total_count_of_examples,
-            \   suite.pretty_subject,
-            \   example
-            \ )
-          elseif subtype ==# 'SKIP'
-            echo printf(
-            \   '%s %d - # SKIP %s %s - %s',
-            \   'ok',
-            \   total_count_of_examples,
-            \   suite.pretty_subject,
-            \   example,
-            \   i.message
-            \ )
-          else
-            echo printf(
-            \   '%s %d - %s %s',
-            \   'not ok',
-            \   total_count_of_examples,
-            \   suite.pretty_subject,
-            \   example
-            \ )
-            echo printf('# %s: %s', type, i.message)
-          endif
-        else
-          echo printf(
-          \   '%s %d - %s %s',
-          \   'not ok',
-          \   total_count_of_examples,
-          \   suite.pretty_subject,
-          \   example
-          \ )
-          echo printf('# %s: %s', type, i.message)
-        endif
-      catch
-        call s:BreakLineForcibly()  " anti-:redraw
-        echo printf(
-        \   '%s %d - %s %s',
-        \   'not ok',
-        \   total_count_of_examples,
-        \   suite.pretty_subject,
-        \   example
-        \ )
-        echo '#' s:SimplifyCallStack(v:throwpoint, expand('<sfile>'), 'it')
-        for exception_line in split(v:exception, '\n')
-          echo '#' exception_line
-        endfor
-      endtry
-      call suite.run_after_blocks()
-    endfor
-  endfor
-  echo printf('1..%d', total_count_of_examples)
+  call s:RunSuites(a:all_suites)
 endfunction
 
 
