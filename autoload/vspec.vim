@@ -303,7 +303,7 @@ function! vspec#test(specfile_path)  "{{{2
 
   try
     execute 'source' compiled_specfile_path
-    call s:run_suites(s:all_suites)
+    call s:RunSuites(s:all_suites)
   catch
     echo '#' repeat('-', 77)
     echo '#' s:SimplifyCallStack(v:throwpoint, expand('<sfile>'), 'unknown')
@@ -316,10 +316,6 @@ function! vspec#test(specfile_path)  "{{{2
   endtry
 
   call delete(compiled_specfile_path)
-endfunction
-
-function! s:run_suites(all_suites)
-  call s:RunSuites(a:all_suites)
 endfunction
 
 
