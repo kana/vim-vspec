@@ -28,6 +28,10 @@ export def Call(function_name: string, args: list<any>): any  # {{{2
   return call(substitute(function_name, '^s:', s:GetHintedSid(), ''), args)
 enddef
 
+export def Expect(actual: any): dict<any>  # {{{2
+  return MakeExpectation(actual)
+enddef
+
 export def Hint(info: dict<string>): void  # {{{2
   final scope = vspec#scope()
 
@@ -114,6 +118,45 @@ enddef
 
 export def Todo(): void  # {{{2
   ThrowInternalException('ExpectationFailure', {'type': 'TODO'})
+enddef
+
+# Expectation  # {{{1
+function s:Expect_To(matcher) dict  # {{{2
+  return s:To(self, a:matcher)
+endfunction
+
+def To(self: dict<any>, matcher: dict<any>): void
+  if !matcher.Matches(self.actual)
+    ThrowInternalException(
+      'ExpectationFailureV2',
+      {
+        message: matcher.FailureMessage(self.actual),
+      }
+    )
+  endif
+enddef
+
+const ExpectationPrototype = {  # {{{2
+  actual: v:none,  # any
+  To: Expect_To,
+}
+
+def MakeExpectation(actual: any): dict<any>  # {{{2
+  final expectation = copy(ExpectationPrototype)
+  expectation.actual = actual
+  return expectation
+enddef
+
+# Matchers v2  # {{{1
+export def Equal(expected: any): dict<any>  # {{{2
+  return {
+    expected: expected,
+    Matches: (actual) => actual == expected,
+    FailureMessage: (actual) => [
+      'Expected value: ' .. expected,
+      '  Actual value: ' .. actual,
+    ],
+  }
 enddef
 
 # Matchers  # {{{1

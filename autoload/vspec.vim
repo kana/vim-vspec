@@ -61,6 +61,8 @@
 import {
 \   BreakLineForcibly,
 \   Call,
+\   Equal,
+\   Expect,
 \   GenerateDefaultFailureMessage,
 \   GenerateFailureMessage,
 \   GetHintedScope,
@@ -218,6 +220,20 @@ command! -bar -nargs=0 TODO
 
 function! Call(function_name, args)  "{{{2
   return s:Call(a:function_name, a:args)
+endfunction
+
+
+
+
+function! Equal(expected)  "{{{2
+  return s:Equal(a:expected)
+endfunction
+
+
+
+
+function! ExpectV2(actual)  "{{{2
+  return s:Expect(a:actual)
 endfunction
 
 
