@@ -333,7 +333,7 @@ export def RunSuites(all_suites: list<dict<any>>): void  # {{{2
             suite.pretty_subject,
             example
           )
-          echo '# Expected' 'XXX' 'at line' SimplifyCallStack(v:throwpoint, '', 'expect')
+          echo '# Expected' 'XXX' 'at line' SimplifyCallStack(v:throwpoint, '', 'expectv2')
           for line in i.message
             echo '#     ' .. line
           endfor
@@ -469,6 +469,27 @@ enddef
 
 var s:internal_call_stack_for_expect: string
 
+export def GetInternalCallStackForExpectV2(): string  # {{{2
+  if s:internal_call_stack_for_expect_v2 != ''
+    return s:internal_call_stack_for_expect_v2
+  endif
+
+  try
+    ExpectV2(0).To(Equal(1))
+  catch
+    const base_call_stack = expand('<sfile>')
+    s:internal_call_stack_for_expect_v2 = substitute(
+    \   v:throwpoint,
+    \   '\V' .. escape(base_call_stack, '\') .. '[\d\+]..',
+    \   '',
+    \   ''
+    \ )
+  endtry
+  return s:internal_call_stack_for_expect_v2
+enddef
+
+var s:internal_call_stack_for_expect_v2: string
+
 export def ParseString(string_expression: string): any  # {{{2
   const s = substitute(string_expression, '^\s*\(.\{-}\)\s*$', '\1', '')
   if !(s =~ '^''\(''''\|[^'']\)*''$' || s =~ '^"\(\\.\|[^"]\)*"$')
@@ -478,7 +499,17 @@ export def ParseString(string_expression: string): any  # {{{2
 enddef
 
 export def SimplifyCallStack(throwpoint: string, base_call_stack: string, type: string): string  # {{{2
-  if type == 'expect'
+  if type == 'expectv2'
+    # Where the last ExpectV2() is called _________
+    #                                             |
+    #   {base_call_stack}[#]..{dict-func-for-:it}[#]..{ExpectV2()-stack}[#]
+    return substitute(
+      throwpoint,
+      '\V\.\*[\(\d\+\)]..' .. escape(s:GetInternalCallStackForExpectV2(), '\') .. '\$',
+      '\1',
+      ''
+    )
+  elseif type == 'expect'
     # Where the last :Expect is called ___________
     #                                             |
     #   {base_call_stack}[#]..{dict-func-for-:it}[#]..{:Expect-stack}[#]
