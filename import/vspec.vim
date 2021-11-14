@@ -322,10 +322,22 @@ export def RunSuites(all_suites: list<dict<any>>): void  # {{{2
         )
       catch /^vspec:/
         BreakLineForcibly()  # anti-:redraw
-        const xs = matchlist(v:exception, '^vspec:\(\a\+\):\(.*\)$')
+        const xs = matchlist(v:exception, '^vspec:\(\w\+\):\(.*\)$')
         const type = xs[1]
         const i = eval(xs[2])
-        if type == 'ExpectationFailure'
+        if type == 'ExpectationFailureV2'
+          echo printf(
+            '%s %d - %s %s',
+            'not ok',
+            total_count_of_examples,
+            suite.pretty_subject,
+            example
+          )
+          echo '# Expected' 'XXX' 'at line' SimplifyCallStack(v:throwpoint, '', 'expect')
+          for line in i.message
+            echo '#     ' .. line
+          endfor
+        elseif type == 'ExpectationFailure'
           const subtype = i.type
           if subtype == 'MismatchedValues'
             echo printf(
