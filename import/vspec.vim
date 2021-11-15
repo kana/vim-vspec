@@ -325,6 +325,8 @@ export def RunSuites(all_suites: list<dict<any>>): void  # {{{2
         const xs = matchlist(v:exception, '^vspec:\(\w\+\):\(.*\)$')
         const type = xs[1]
         const i = eval(xs[2])
+        # v:throwpoint will be overwritten by GetInternalCallStackForExpectV2.
+        const throwpoint = v:throwpoint
         if type == 'ExpectationFailureV2'
           echo printf(
             '%s %d - %s %s',
@@ -333,7 +335,11 @@ export def RunSuites(all_suites: list<dict<any>>): void  # {{{2
             suite.pretty_subject,
             example
           )
-          echo '# Expected' 'XXX' 'at line' SimplifyCallStack(v:throwpoint, '', 'expectv2')
+          echo printf(
+            '# %s at line %s',
+            GetExpectV2Line(throwpoint),
+            SimplifyCallStack(throwpoint, '', 'expectv2')
+          )
           for line in i.message
             echo '#     ' .. line
           endfor
@@ -430,6 +436,39 @@ export def BreakLineForcibly(): void  # {{{2
   # - Trailing "\r"s in each line are removed.  This filter is also useful to
   #   ensure final output is Unix-stlye line ending.
   echo "\r"
+enddef
+
+def GetExpectV2Line(throwpoint: string): string  # {{{2
+  # Where the last ExpectV2() is called _________
+  #                                             |
+  #   {base_call_stack}[#]..{dict-func-for-:it}[#]..{ExpectV2()-stack}[#]
+  const xs = matchlist(
+    throwpoint,
+    '\V\.\*..\(\[^.]\+\)[\(\d\+\)]..' .. escape(s:GetInternalCallStackForExpectV2(), '\') .. '\$'
+  )
+
+  # Local variables can't be used for :redir.
+  #     silent redir => v
+  #     E1089: Unknown variable: v
+  #
+  # ":0 verbose" doesn't set &verbose to 0 while ":verbose source file.vim".
+  const old_verbose = &verbose
+  set verbose=0
+  try
+    silent redir => g:_vspec_output
+    execute 'function' 'g:' .. xs[1]
+    redir END
+  finally
+    &verbose = old_verbose
+  endtry
+  const output = g:_vspec_output
+  unlet g:_vspec_output
+
+  return output
+    ->split('\n')
+    ->filter((_, line) => line =~ ('^' .. xs[2] .. '\>'))[0]
+    ->substitute('^\d\+', '', '')
+    ->trim()
 enddef
 
 export def GetHintedScope(): dict<any>  # {{{2
