@@ -15,8 +15,8 @@ END
 ok 1 - ExpectV2() succeeds if an actual value matches to an expected value
 not ok 2 - ExpectV2() fails if an actual value does not match to an expected value
 # call ExpectV2('should').To(Equal('Expect')) at line 1
-#     Expected value: Expect
-#       Actual value: should
+#     Expected value: "Expect"
+#       Actual value: "should"
 1..2
 END
 )

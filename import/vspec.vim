@@ -153,8 +153,8 @@ export def Equal(expected: any): dict<any>  # {{{2
     expected: expected,
     Matches: (actual) => actual == expected,
     FailureMessage: (actual) => [
-      'Expected value: ' .. expected,
-      '  Actual value: ' .. actual,
+      'Expected value: ' .. PrettyString(expected),
+      '  Actual value: ' .. PrettyString(actual),
     ],
   }
 enddef
