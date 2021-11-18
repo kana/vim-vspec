@@ -152,11 +152,16 @@ export def Equal(expected: any): dict<any>  # {{{2
   return {
     expected: expected,
     Matches: (actual) => actual == expected,
-    FailureMessage: (actual) => [
-      'Expected value: ' .. PrettyString(expected),
-      '  Actual value: ' .. PrettyString(actual),
-    ],
+    FailureMessage: (actual) => FailureMessageForSimpleComparison(actual, expected),
   }
+enddef
+
+# Matcher utilities  # {{{1
+def FailureMessageForSimpleComparison(actual: any, expected: any): list<string>  # {{{2
+  return [
+    'Expected value: ' .. PrettyString(expected),
+    '  Actual value: ' .. PrettyString(actual),
+  ]
 enddef
 
 # Matchers  # {{{1
