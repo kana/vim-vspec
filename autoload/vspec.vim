@@ -59,6 +59,7 @@
 " }}}
 
 import {
+\   Be,
 \   BreakLineForcibly,
 \   Call,
 \   Equal,
@@ -214,6 +215,13 @@ command! -nargs=+ SKIP
 " :TODO  "{{{2
 command! -bar -nargs=0 TODO
 \ call s:Todo()
+
+
+
+
+function! Be(a1, a2 = v:none)  "{{{2
+  return s:Be(a:a1, a:a2)
+endfunction
 
 
 

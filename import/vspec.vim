@@ -164,6 +164,55 @@ def MakeExpectation(actual: any): dict<any>  # {{{2
 enddef
 
 # Matchers v2  # {{{1
+export def Be(a1: any, a2: any = v:none): dict<any>  # {{{2
+  # "a2 is v:none" causes E1072: Cannot compare any with special.
+  const none: any = v:none
+  if a2 is none
+    return BeInternal('is', a1)
+  else
+    return BeInternal(a1, a2)
+  end
+enddef
+
+def BeInternal(operator: string, expected: any): dict<any>
+  return {
+    expected: expected,
+    Matches: (actual) => BeMatcherTable[operator](actual, expected),
+    FailureMessage: (actual) => FailureMessageForSimpleComparison(actual, expected),
+  }
+enddef
+
+# Alternative syntax ideas:
+#
+#   Expect(actual).To(BeLessThan(expected))  # Natural to read, but lengthy.
+#   Expect(actual).To(LT(expected))  # Concise, but cryptic.
+#
+# Intentionally omitted operators:
+#
+#   ==#, !=#, ...
+#      Use non-# version instead.
+const BeMatcherTable = {
+  '==': (actual, expected) => actual == expected,
+  '!=': (actual, expected) => actual != expected,
+  '<':  (actual, expected) => actual <  expected,
+  '<=': (actual, expected) => actual <= expected,
+  '>':  (actual, expected) => actual >  expected,
+  '>=': (actual, expected) => actual >= expected,
+  '=~': (actual, expected) => actual =~ expected,
+  '!~': (actual, expected) => actual !~ expected,
+  'is': (actual, expected) => actual is expected,
+  'isnot': (actual, expected) => actual isnot expected,
+
+  '==?': (actual, expected) => actual ==? expected,
+  '!=?': (actual, expected) => actual !=? expected,
+  '<?':  (actual, expected) => actual <?  expected,
+  '<=?': (actual, expected) => actual <=? expected,
+  '>?':  (actual, expected) => actual >?  expected,
+  '>=?': (actual, expected) => actual >=? expected,
+  '=~?': (actual, expected) => actual =~? expected,
+  '!~?': (actual, expected) => actual !~? expected,
+}
+
 export def Equal(expected: any): dict<any>  # {{{2
   return {
     expected: expected,
