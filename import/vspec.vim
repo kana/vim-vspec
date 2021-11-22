@@ -126,7 +126,8 @@ function s:Expect_To(matcher) dict  # {{{2
 endfunction
 
 def To(self: dict<any>, matcher: dict<any>): void
-  if !matcher.Matches(self.actual)
+  const matched = matcher.Matches(self.actual)
+  if self.negated ? matched : !matched
     ThrowInternalException(
       'ExpectationFailureV2',
       {
@@ -141,18 +142,13 @@ function s:Expect_NotTo(matcher) dict  # {{{2
 endfunction
 
 def NotTo(self: dict<any>, matcher: dict<any>): void
-  if matcher.Matches(self.actual)
-    ThrowInternalException(
-      'ExpectationFailureV2',
-      {
-        message: matcher.FailureMessage(self.actual),
-      }
-    )
-  endif
+  self.negated = true
+  return To(self, matcher)
 enddef
 
 const ExpectationPrototype = {  # {{{2
   actual: v:none,  # any
+  negated: false,  # bool
   NotTo: Expect_NotTo,
   To: Expect_To,
 }
