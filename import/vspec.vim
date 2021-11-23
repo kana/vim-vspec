@@ -474,7 +474,7 @@ export def RunSuites(all_suites: list<dict<any>>): void  # {{{2
           suite.pretty_subject,
           example
         )
-        echo '#' SimplifyCallStack(v:throwpoint, expand('<sfile>'), 'it')
+        echo '#' SimplifyCallStack(v:throwpoint, expand('<stack>'), 'it')
         for exception_line in split(v:exception, '\n')
           echo '#' exception_line
         endfor
@@ -552,8 +552,10 @@ export def GetInternalCallStackForExpect(): string  # {{{2
   #                                                                             |___________|
   #                                                                                  (A)
   # This function returns (A) to remove this noise part later.
-  # <stack> is not useful here, because it includes the line number (789),
-  # and that line number doesn't match v:throwpoint (333).
+  # Note that:
+  # - <stack> includes a line number (789), and that line number doesn't match
+  #   v:throwpoint (333).
+  # - <sfile> can't be used in Vim9 script functions.
   if s:internal_call_stack_for_expect != ''
     return s:internal_call_stack_for_expect
   endif
@@ -561,7 +563,7 @@ export def GetInternalCallStackForExpect(): string  # {{{2
   try
     Expect 0 == 1
   catch
-    const base_call_stack = expand('<sfile>')
+    const base_call_stack = substitute(expand('<stack>'), '\[\d\+\]$', '', '')
     s:internal_call_stack_for_expect = substitute(
     \   v:throwpoint,
     \   '\V' .. escape(base_call_stack, '\') .. '[\d\+]..',
@@ -582,7 +584,7 @@ export def GetInternalCallStackForExpectV2(): string  # {{{2
   try
     ExpectV2(0).To(Equal(1))
   catch
-    const base_call_stack = expand('<sfile>')
+    const base_call_stack = substitute(expand('<stack>'), '\[\d\+\]$', '', '')
     s:internal_call_stack_for_expect_v2 = substitute(
     \   v:throwpoint,
     \   '\V' .. escape(base_call_stack, '\') .. '[\d\+]..',
@@ -603,7 +605,12 @@ export def ParseString(string_expression: string): any  # {{{2
   return eval(s)
 enddef
 
-export def SimplifyCallStack(throwpoint: string, base_call_stack: string, type: string): string  # {{{2
+export def SimplifyCallStack(throwpoint: string, stack: string, type: string): string  # {{{2
+  # expand('<sfile>') ==> "script a.vim[123]..function B[456]..function C"
+  # expand('<stack>') ==> "script a.vim[123]..function B[456]..function C[789]"
+  # v:throwpoint      ==> "script a.vim[123]..function B[456]..function C[333]..{...}, line 1"
+  const base_call_stack = substitute(stack, '\[\d\+\]$', '', '')
+
   if type == 'expectv2'
     # Where the last ExpectV2() is called _________
     #                                             |
