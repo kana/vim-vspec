@@ -17,10 +17,12 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - name: Get local Vim version
+      run: echo "local_vim_version=$(<.vim-version)" >>$GITHUB_ENV
     - name: Set up Vim
       uses: thinca/action-setup-vim@v1
       with:
-        vim_version: ${{ github.event_name == 'schedule' && 'head' || 'v8.2.3446' }}
+        vim_version: ${{ github.event_name == 'schedule' && 'head' || env.local_vim_version }}
         vim_type: vim
         download: never # For some reason 'available' doesn't build from source as a fallback.
     - name: Set up Git
