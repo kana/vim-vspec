@@ -122,7 +122,7 @@ enddef
 
 # Expectation  # {{{1
 function s:Expect_To(matcher) dict  # {{{2
-  return s:To(self, a:matcher)
+  call s:To(self, a:matcher)
 endfunction
 
 def To(self: dict<any>, matcher: dict<any>): void
@@ -138,12 +138,12 @@ def To(self: dict<any>, matcher: dict<any>): void
 enddef
 
 function s:Expect_NotTo(matcher) dict  # {{{2
-  return s:NotTo(self, a:matcher)
+  call s:NotTo(self, a:matcher)
 endfunction
 
 def NotTo(self: dict<any>, matcher: dict<any>): void
   self.negated = true
-  return To(self, matcher)
+  To(self, matcher)
 enddef
 
 const ExpectationPrototype = {  # {{{2
