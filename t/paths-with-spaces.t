@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ./t/check-vspec-result -d 'foo bar' <(cat <<'END'
 describe './bin/vspec'

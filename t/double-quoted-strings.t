@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ./t/check-vspec-result <(cat <<'END'
 describe "\<Char-0x3a>describe command"

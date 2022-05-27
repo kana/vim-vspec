@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # bin/vspec - Driver script to test Vim script
 # Version: 1.9.2
 # Copyright (C) 2009-2021 Kana Natsuno <https://whileimautomaton.net/>

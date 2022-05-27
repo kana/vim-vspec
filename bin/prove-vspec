@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # bin/prove-vspec - Utility to run many tests on Vim script at once
 # Version: 1.9.2
 # Copyright (C) 2009-2021 Kana Natsuno <https://whileimautomaton.net/>
