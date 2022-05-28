@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ./t/check-vspec-result <(cat <<'END'
 let s:to_be_empty = {}
