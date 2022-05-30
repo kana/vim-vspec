@@ -27,6 +27,7 @@
 " indent/{filetype}_*.vim nor indent/{filetype}/*.vim.
 
 let &l:indentexpr = 'GetVimVspecIndent(' . &l:indentexpr . ')'
+setlocal indentkeys+==end
 
 if exists('*GetVimVspecIndent')
   finish
@@ -35,10 +36,12 @@ endif
 function GetVimVspecIndent(base_indent)
   let indent = a:base_indent
 
-  let base_lnum = prevnonblank(v:lnum - 1)
-  let line = getline(base_lnum)
-  if 0 <= match(line, '\(^\||\)\s*\(after\|before\|context\|describe\|it\)\>')
+  let prev_lnum = prevnonblank(v:lnum - 1)
+  let prev_line = getline(prev_lnum)
+  if 0 <= match(prev_line, '\(^\||\)\s*\(after\|before\|context\|describe\|it\)\>')
     let indent += &l:shiftwidth
+  elseif 0 <= match(getline(v:lnum), '^\s*end')
+    let indent -= &l:shiftwidth
   endif
 
   return indent
