@@ -26,7 +26,13 @@
 " $VIMRUNTIME/ftplugin.vim, $VIMRUNTIME/indent.vim does not :runtime! neither
 " indent/{filetype}_*.vim nor indent/{filetype}/*.vim.
 
-let &l:indentexpr = 'GetVimVspecIndent(' . &l:indentexpr . ')'
+if has('patch-9.0.0612')
+  import autoload $VIMRUNTIME .. '/autoload/dist/vimindent.vim'
+  let &l:indentexpr = 'GetVimVspecIndent(s:vimindent.Expr(v:lnum))'
+else
+  let &l:indentexpr = 'GetVimVspecIndent(' . &l:indentexpr . ')'
+endif
+
 setlocal indentkeys+==end
 
 if exists('*GetVimVspecIndent')
