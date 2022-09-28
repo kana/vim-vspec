@@ -39,9 +39,15 @@ function GetVimVspecIndent(base_indent)
   let prev_lnum = prevnonblank(v:lnum - 1)
   let prev_line = getline(prev_lnum)
   if 0 <= match(prev_line, '\(^\||\)\s*\(after\|before\|context\|describe\|it\)\>')
-    let indent += &l:shiftwidth
+    let delta = &l:shiftwidth
   elseif 0 <= match(getline(v:lnum), '^\s*end')
-    let indent -= &l:shiftwidth
+    let delta = -&l:shiftwidth
+  else
+    let delta = 0
+  endif
+
+  if delta != 0
+    let indent = (indent != -1 ? indent : indent(v:lnum)) + delta
   endif
 
   return indent
