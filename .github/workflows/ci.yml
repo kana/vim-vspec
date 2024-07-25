@@ -12,7 +12,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
@@ -20,7 +20,7 @@ jobs:
     - name: Get local Vim version
       run: echo "local_vim_version=$(<.vim-version)" >>$GITHUB_ENV
     - name: Set up Vim
-      uses: thinca/action-setup-vim@v1
+      uses: thinca/action-setup-vim@v2
       with:
         vim_version: ${{ github.event_name == 'schedule' && 'head' || env.local_vim_version }}
         vim_type: vim
