@@ -17,6 +17,7 @@ let s:symbol_table = {
 \   'vimString': 'S',
 \   'vimUsrCmd': 'U',
 \   'vimVar': 'V',
+\   'vimVarScope': 'v',
 \   'vimVspecCommand': 'c',
 \   'vimVspecExpectation': '_',
 \   'vimVspecLambda': 'l',
