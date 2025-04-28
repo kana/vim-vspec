@@ -4,6 +4,8 @@ syntax enable
 let s:symbol_table = {
 \   ' ': ' ',
 \   'vimCommand': 'C',
+\   'vimContinueString': 'S',
+\   'vimEndif': 'c',
 \   'vimFuncName': 'F',
 \   'vimIsCommand': '?',
 \   'vimNumber': 'N',
